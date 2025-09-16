@@ -1,0 +1,6 @@
+contest_name,audit_reason,random_audit_status,winners_allowed,ballot_card_count,contest_ballot_card_count,winners,min_margin,risk_limit,audited_sample_count,two_vote_over_count,one_vote_over_count,one_vote_under_count,two_vote_under_count,disagreement_count,other_count,gamma,overstatements,optimistic_samples_to_audit,estimated_samples_to_audit
+Example3,county_wide_contest,in_progress,1,225,225,"""Cherry""",25,0.03000000,2,1,0,0,0,0,0,1.03905000,0,127,191
+PluralityExample2,opportunistic_benefits,in_progress,2,10,10,"""Ho"",""Gertrude""",6,0.03000000,0,0,0,0,0,0,0,1.03905000,0,13,13
+PluralityTiedExample,opportunistic_benefits,not_auditable,1,10,10,"""Eli""",0,0.03000000,0,0,0,0,0,0,0,1.03905000,0,0,0
+Tied_IRV,opportunistic_benefits,not_auditable,1,10,10,"""""",0,0.03000000,0,0,0,0,0,0,0,1.03905000,0,0,0
+TinyExample1,state_wide_contest,risk_limit_achieved,1,20,20,"""Alice""",12,0.03000000,14,0,0,0,0,0,0,1.03905000,0,13,13

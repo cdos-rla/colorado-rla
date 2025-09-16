@@ -1,0 +1,119 @@
+{
+  "NAME": "IRVContestOneCandidateTest",
+  "RISK_LIMIT": 0.03,
+  "SEED": "13957212984612379471248937125374127964",
+  "SQLS": [
+    "SQL/onecandidate-tiny-irv-assertions.sql"
+  ],
+  "CVRS": [
+    "src/test/resources/CSVs/Tiny-IRV-Examples/OneCandidateTenVotesPlusTiedPlurality.csv",
+    "src/test/resources/CSVs/Tiny-IRV-Examples/OneCandidateTenInvalidVotes.csv",
+    "src/test/resources/CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_TiedIRV.csv",
+    "src/test/resources/CSVs/Tiny-IRV-Examples/GuideToRAIREExample3.csv"
+  ],
+  "MANIFESTS": [
+    "src/test/resources/CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv",
+    "src/test/resources/CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv",
+    "src/test/resources/CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv",
+    "src/test/resources/CSVs/Tiny-IRV-Examples/GuideToRAIREExample3-manifest.csv"
+  ],
+  "CANONICAL_LIST": "src/test/resources/CSVs/Tiny-IRV-Examples/Tiny_IRV_OneCandidate_Demo_Canonical_List.csv",
+  "CONTEST_NAME_CHANGE" : {
+    "TinyInvalidExample1" : "TinyExample1"
+  },
+  "CANDIDATE_NAME_CHANGE" : {
+    "Example3" : {
+      "A" : "Aaron",
+      "B" : "Bernice",
+      "C" : "Cherry",
+      "D" : "Dinh"
+    }
+  },
+  "CONTESTS_BY_SELECTED_COUNTIES" : {
+    "Adams" : [
+      "TinyExample1",
+      "PluralityTiedExample",
+      "PluralityExample2"
+    ],
+    "Alamosa" : [
+      "TinyExample1"
+    ],
+    "Arapahoe" : [
+      "Tied_IRV"
+    ],
+    "Archuleta" : [
+      "Example3"
+    ]
+  },
+  "TARGETS": {
+    "Example3" : "COUNTY_WIDE_CONTEST"
+  },
+  "WINNERS": {
+    "TinyExample1" : "Alice",
+    "Example3" : "Cherry"
+
+  },
+  "RAW_MARGINS" : {
+    "TinyExample1" : 0,
+    "Example3" : 25,
+    "Tied_IRV" : 0,
+    "PluralityTiedExample" : 0,
+    "PluralityExample2" : 6
+  },
+  "DILUTED_MARGINS": {
+    "TinyExample1" : 0.6,
+    "Example3" : 0.11111111,
+    "Tied_IRV" : 0.0,
+    "PluralityTiedExample" : 0.0,
+    "PluralityExample2" : 0.1
+  },
+  "EXPECTED_SAMPLES": {
+    "Example3": 66
+  },
+  "FINAL_EXPECTED_AUDITED_BALLOTS": {
+    "Example3": 66
+  },
+  "FINAL_EXPECTED_OPTIMISTIC_SAMPLES": {
+    "Example3": 66
+  },
+  "FINAL_EXPECTED_ESTIMATED_SAMPLES": {
+    "Example3": 66
+  },
+  "IRV_CONTESTS": [
+    "TinyExample1",
+    "Example3",
+    "Tied_IRV"
+  ],
+
+  "PLURALITY_TABULATION" : {
+  },
+
+  "PLURALITY_COUNTY_TABULATION" : {
+  },
+
+  "EXPECTED_ROUNDS": 1,
+
+  "PHANTOM_BALLOTS": {
+  },
+  "DISAGREEMENTS" : {
+  },
+
+  "DISCREPANT_AUDITED_BALLOT_CHOICES": {
+  },
+
+  "REAUDITS": {
+  },
+
+  "CONTEST_RESULTS": {
+    "1": {
+      "Example3": {
+        "one_over_count": 0,
+        "two_over_count": 0,
+        "one_under_count": 0,
+        "two_under_count": 0,
+        "other_count": 0,
+        "disagreements": 0
+      }
+    }
+  }
+}

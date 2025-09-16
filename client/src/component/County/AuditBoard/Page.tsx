@@ -53,7 +53,7 @@ class AuditBoardSignInPage extends React.Component<PageProps, PageState> {
             <div>
                 <IdleDialog />
                 <div>
-                    <h2>Audit Board { auditBoardIndex + 1 }</h2>
+                    <h1 className={'mediumHeader'}>Audit Board { auditBoardIndex + 1 }</h1>
                     <Card>
                         <span className='pt-ui-text-large font-weight-bold'>
                             Enter the full names and party affiliations of each

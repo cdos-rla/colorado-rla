@@ -48,3 +48,6 @@ us.freeandfair.corla.endpoint.StateReportDownload
 us.freeandfair.corla.endpoint.Unauthenticate
 us.freeandfair.corla.endpoint.UpdateAuditInfo
 us.freeandfair.corla.endpoint.DownloadAuditReport
+au.org.democracydevelopers.corla.endpoint.EstimateSampleSizes
+au.org.democracydevelopers.corla.endpoint.GenerateAssertions
+au.org.democracydevelopers.corla.endpoint.GetAssertions

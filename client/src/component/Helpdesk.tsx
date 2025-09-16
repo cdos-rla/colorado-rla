@@ -9,7 +9,7 @@ const Helpdesk = () => {
             <ul style ={{padding: "0px",listStyleType: "disc"}}>
             <li>To log into the RLA Software please use your SCORE username and password plus your grid card</li>                 
             <li>To reset your password, please contact SCORE Customer Support</li>             
-            <li>To add a new county user, please contact <a href={emailLink}>{config.helpEmail}</a></li> 
+            <li>To add a new county user, please contact <a className='text-link' href={emailLink}>{config.helpEmail}</a></li>
             </ul>
         </div>
     );

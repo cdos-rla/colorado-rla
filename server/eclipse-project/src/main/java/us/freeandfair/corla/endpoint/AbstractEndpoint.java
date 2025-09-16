@@ -205,7 +205,18 @@ public abstract class AbstractEndpoint implements Endpoint {
     my_status.set(HttpStatus.OK_200);
     my_endpoint_result.set("");
   }
-  
+
+  /**
+   * Indicate and log that the operation completed successfully. To be used when
+   * a plain string response should be sent in the body.
+   * @param the_response the HTTP response.
+   */
+  public void okString(final Response the_response) {
+    my_log_entries.get().add(new LogEntry(HttpStatus.OK_200, endpointName(), Instant.now()));
+    my_status.set(HttpStatus.OK_200);
+    my_endpoint_result.set(the_response.body());
+  }
+
   /**
    * Indicate and log that the operation completed successfully.
    * @param the_response the HTTP response.

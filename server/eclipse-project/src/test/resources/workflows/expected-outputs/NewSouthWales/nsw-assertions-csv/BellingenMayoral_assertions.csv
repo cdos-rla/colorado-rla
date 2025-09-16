@@ -1,0 +1,17 @@
+Contest name,Bellingen Mayoral
+Candidates,"ALLAN Steve,WOODWARD Andrew,KING Dominic"
+Winner,ALLAN Steve
+Total universe,8374
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,2512,"2"
+Diluted margin,0.29997612,"2"
+Raire difficulty,3.3335987261146496,"2"
+Current risk,1.00000000,"1, 2"
+Optimistic samples to audit,25,"2"
+Estimated samples to audit,25,"2"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,ALLAN Steve,WOODWARD Andrew,,2.6441,3167,0.3782,1.00000000,20,20,0,0,0,0,0
+2,NEN,ALLAN Steve,KING Dominic,"ALLAN Steve,KING Dominic",3.3336,2512,0.3,1.00000000,25,25,0,0,0,0,0

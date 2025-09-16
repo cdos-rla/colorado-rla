@@ -149,7 +149,7 @@ public final class CastVoteRecordQueries {
     } catch (final PersistenceException e) {
       Main.LOGGER.error(COULD_NOT_QUERY_DATABASE);
     }
-    if (result == null) {
+    if (result == OptionalLong.empty()) {
       Main.LOGGER.debug("found no CVRs for type " + the_type);
     } else {
       Main.LOGGER.debug("query succeeded, returning CVR stream");
@@ -222,7 +222,7 @@ public final class CastVoteRecordQueries {
     } catch (final PersistenceException e) {
       Main.LOGGER.error(COULD_NOT_QUERY_DATABASE);
     }
-    if (result == null) {
+    if (result == OptionalLong.empty()) {
       Main.LOGGER.debug("found no CVRs for county " + the_county + ", type " + the_type);
     } else {
       Main.LOGGER.debug("query succeeded, returning CVR stream");
@@ -243,7 +243,7 @@ public final class CastVoteRecordQueries {
     newChoice = (newChoice.substring(0, newChoice.length() - 1));
     newChoice = (newChoice.substring(1, newChoice.length()));
 
-    String escapedOldChoice = oldChoice.replaceAll("\"", Matcher.quoteReplacement("\\\\\""));
+    String escapedOldChoice = oldChoice.replaceAll("\"", Matcher.quoteReplacement("\\\\\"")).replace("?", "\\?");
 
        final Query q = s
         // this will only fix the first match, which is what we want, because
@@ -323,6 +323,7 @@ public final class CastVoteRecordQueries {
       final TypedQuery<CastVoteRecord> query = s.createQuery(cq);
       final List<CastVoteRecord> query_results = query.getResultList();
       // if there's exactly one result, return that
+      // TODO the else branch here shouldn't return null?
       if (query_results.size() == 1) {
         result = query_results.get(0);
       }
@@ -352,6 +353,9 @@ public final class CastVoteRecordQueries {
   public static Map<Integer, CastVoteRecord> get(final Long the_county_id,
                                                  final RecordType the_type,
                                                  final List<Integer> the_sequence_numbers) {
+
+    // TODO: this doesn't handle the case where two CVRs in the same county have the same sequence number.
+    // TODO: There should probably be a DB error or something if that happens.
     Map<Integer, CastVoteRecord> result = null;
     final Set<Integer> unique_numbers = new HashSet<>(the_sequence_numbers);
 
@@ -411,7 +415,7 @@ public final class CastVoteRecordQueries {
     } catch (final PersistenceException e) {
       Main.LOGGER.error(COULD_NOT_QUERY_DATABASE);
     }
-    if (result == null) {
+    if (result.isEmpty()) {
       Main.LOGGER.debug("found no CVRs with ids " + the_ids);
       return new ArrayList<>();
     } else {
@@ -474,7 +478,7 @@ public final class CastVoteRecordQueries {
           return t.getUri();
         }))
             // is it faster to let the db do this with an except query?
-            .filter(t -> !foundUris.contains(t.getUri())).map(t -> phantomRecord(t))
+            .filter(t -> !foundUris.contains(t.getUri())).map(CastVoteRecordQueries::phantomRecord)
             .map(Persistence::persist).collect(Collectors.toSet());
 
     results.addAll(phantomRecords);
@@ -496,8 +500,10 @@ public final class CastVoteRecordQueries {
     }
 
     final List<CastVoteRecord> returnList =
-        randomOrder.stream().filter(cvr -> null != cvr).collect(Collectors.toList());
+        randomOrder.stream().filter(Objects::nonNull).collect(Collectors.toList());
     if (returnList.size() != uris.size()) {
+      // TODO: I'm pretty sure this code is unreachable, since any time |URIs| < |return|, we
+      // TODO: make phantoms until they equal. Maybe take this out?
       // we got a problem here
       Main.LOGGER
           .error("something went wrong with atPosition - returnList.size() != uris.size()");
@@ -570,13 +576,21 @@ public final class CastVoteRecordQueries {
     q.setLong("countyId", cvr.countyID());
     q.setString("imprintedId", cvr.imprintedID());
 
-    final Long result = (Long) q.getSingleResult();
-
-    if (null == result) {
+    try {
+      // Make sure not to return null, which causes errors later. 0L is the correct return value if
+      // there are no prior revisions in the database.
+      // Some documentation says that getSingleResult() never returns null, but it definitely does.
+      final Long result = (Long) q.getSingleResult();
+      return result == null ? 0L : result;
+    } catch (final PersistenceException e) {
+      // the DB had a problem!
+      // TODO: Technically this should probably be an error code?
+      // TODO: Otherwise there's no way to discern this from a CVR with no revisions?
+      // VT: Agree. Since 0L is used for "valid; no prior revisions", suggest using a different value
+      // here (-1?) or throwing an exception.
       return 0L;
-    } else {
-      return result;
     }
+
   }
 
   /**

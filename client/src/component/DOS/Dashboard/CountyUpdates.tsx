@@ -239,7 +239,7 @@ class CountyUpdates extends React.Component<UpdatesProps, UpdatesState> {
             <div>
                 <div className='state-dashboard-updates-preface'>
                     <div className='state-dashboard-updates-preface-description'>
-                        <h3>County Updates</h3>
+                        <h1 className='smallHeader'>County Updates</h1>
                         <p>
                             Click on a column name to sort by that column’s data. To
                             reverse sort, click on the column name again.

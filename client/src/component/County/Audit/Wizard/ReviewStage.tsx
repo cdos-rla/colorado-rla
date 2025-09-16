@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 
 import { Button, Icon, Intent } from '@blueprintjs/core';
 
+import IrvChoiceForm from 'corla/component/County/Audit/Wizard/IrvChoiceForm';
 import SubmittingACVR from './SubmittingACVR';
 
 interface EditButtonProps {
@@ -38,7 +39,7 @@ const AuditInstructions = (props: InstructionsProps) => {
     return (
         <div>
             <div className='current-ballot-info'>
-                <h3 className='sidebar-heading'>Current ballot:</h3>
+                <h2 className='sidebar-heading'>Current ballot:</h2>
                 <ul className='current-ballot-stats pt-list-unstyled'>
                     <li>
                         <span className='current-ballot-stats-label'>Storage bin</span>
@@ -75,7 +76,7 @@ interface BallotContestReviewProps {
 const BallotContestReview = (props: BallotContestReviewProps) => {
     const { back, contest, marks } = props;
     const { comments, noConsensus } = marks;
-    const { votesAllowed } = contest;
+    const { votesAllowed, description } = contest;
 
     const markedChoices: County.ACVRChoices = _.pickBy(marks.choices);
     const votesMarked = _.size(markedChoices);
@@ -121,6 +122,24 @@ const BallotContestReview = (props: BallotContestReviewProps) => {
             );
         }
 
+        if (description === 'IRV') {
+            // convert props to ChoicesProps for IRV Display
+            const irvChoicesProps: ChoicesProps = {
+                choices: contest.choices,
+                description,
+                marks,
+                noConsensus,
+                // null OnClick for review stage since clicking should not change markings
+                updateBallotMarks: () => null,
+            };
+
+            return (
+                <div className='contest-choice-selection'>
+                    { IrvChoiceForm(irvChoicesProps) }
+                </div>
+            );
+        }
+
         return (
             <div className='contest-choice-selection contest-choice-review'>
                 { markedChoiceDivs.length ? markedChoiceDivs : noMarksDiv }
@@ -134,7 +153,7 @@ const BallotContestReview = (props: BallotContestReviewProps) => {
           <strong><div className='contest-name'>{ contest.name }</div></strong>
           <strong><div>{ contest.description }</div></strong>
         </div>
-        <div className='contest-choice-review-grid'>
+        <div className={'contest-choice-review-grid' + (description === 'IRV' ? '-irv' : '')}>
           { noConsensus ? noConsensusDiv : renderMarkedChoices() }
           <div className='edit-button'>
             <EditButton back={ back } />
@@ -217,7 +236,7 @@ const ReviewStage = (props: ReviewStageProps) => {
         <div className='rla-page'>
             <div className='audit-page-container'>
                 <div className='audit-page-header'>
-                    <h2 className='audit-page-title'>Ballot Card Verification</h2>
+                    <h1 className='audit-page-title'>Ballot Card Verification</h1>
                     <div className='audit-page-subtitle'>Review ballot</div>
                     <div className='ballot-number'>
                         Auditing ballot card { currentBallotNumber } of { totalBallotsForBoard }
@@ -248,7 +267,7 @@ const ReviewStage = (props: ReviewStageProps) => {
                         </p>
                         <BallotReview countyState={ countyState } marks={ marks } back={ prevStage } />
                         <div className='button-container button-container-left'>
-                          <Button large intent={ Intent.SUCCESS } onClick={ onClick }>
+                          <Button large className={'blackButtonText'} intent={ Intent.SUCCESS } onClick={ onClick }>
                               Submit & Next Ballot Card
                           </Button>
                         </div>

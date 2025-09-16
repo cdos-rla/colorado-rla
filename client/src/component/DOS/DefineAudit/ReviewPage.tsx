@@ -146,8 +146,8 @@ class AuditReviewContainer extends React.Component<AuditReviewProps, ReviewPageS
             <div>
             <IdleDialog />
                 <Breadcrumbs />
-                <h2>Audit</h2>
-                <h3>Audit Definition Review</h3>
+                <h1 className={'mediumHeader'}>Audit</h1>
+                <h2 className={'smallHeader'}>Audit Definition Review</h2>
                 <div>
                     This is the set of audit data which will be used to define the list of
                     ballots to audit for each county. Once this is submitted, it will be released

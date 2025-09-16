@@ -40,6 +40,8 @@ import us.freeandfair.corla.persistence.StringSetConverter;
 /**
  * A class representing the results for a contest across counties.
  * A roll-up  of CountyContestResults
+ * Many of these values, including the tallies, do not make sense for IRV, or are not correctly
+ * initialized for IRV. These are generally not used unless set after assertion generation.
  */
 @Entity
 @Cacheable(true)
@@ -55,8 +57,7 @@ public class ContestResult implements PersistentEntity, Serializable {
   /**
    * Class-wide logger
    */
-  public static final Logger LOGGER =
-    LogManager.getLogger(ContestResult.class);
+  public static final Logger LOGGER = LogManager.getLogger(ContestResult.class);
 
   /**
    * text
@@ -99,21 +100,23 @@ public class ContestResult implements PersistentEntity, Serializable {
   private Integer winnersAllowed;
 
   /**
-   * The set of contest winners.
+   * The set of contest winners. Not correctly initialized for IRV unless externally
+   * set after assertion generation.
    */
   @Column(name = "winners", columnDefinition = TEXT)
   @Convert(converter = StringSetConverter.class)
   private final Set<String> winners = new HashSet<>();
 
   /**
-   * The set of contest losers.
+   * The set of contest losers. Not correctly initialized for IRV unless externally
+   * set after assertion generation.
    */
   @Column(name = "losers", columnDefinition = TEXT)
   @Convert(converter = StringSetConverter.class)
   private final Set<String> losers = new HashSet<>();
 
   /**
-   * A map from choices to vote totals.
+   * A map from choices to vote totals. Not meaningful for IRV.
    */
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "contest_vote_total",
@@ -151,19 +154,21 @@ public class ContestResult implements PersistentEntity, Serializable {
   private String contestName;
 
   /**
-   * The margin divided by total number of ballots cast.
+   * The margin divided by total number of ballots cast. Not correct, and not used, for IRV.
    */
   @Column(name = "diluted_margin")
   private BigDecimal dilutedMargin;
 
   /**
-   * The smallest margin between any winner and loser of the contest
+   * The smallest margin between any winner and loser of the contest. Not correct, and not used,
+   * for IRV.
    */
   @Column(name = "min_margin")
   private Integer minMargin;
 
   /**
-   * The largest margin between any winner and loser of the contest.
+   * The largest margin between any winner and loser of the contest. Not correct, and not used,
+   * for IRV.
    */
   @Column(name = "max_margin")
   private Integer maxMargin;
@@ -310,7 +315,7 @@ public class ContestResult implements PersistentEntity, Serializable {
   }
 
   /**
-   * @return the winners for thie ContestResult.
+   * @return the winners for this ContestResult.
    */
   public Set<String> getWinners() {
     return Collections.unmodifiableSet(this.winners);
@@ -332,7 +337,7 @@ public class ContestResult implements PersistentEntity, Serializable {
   }
 
   /**
-   * @return a map from choices to vote totals.
+   * @return a map from choices to vote totals. Not relevant or correct for IRV.
    */
   public Map<String, Integer> getVoteTotals() {
     return Collections.unmodifiableMap(this.vote_totals);
@@ -344,7 +349,7 @@ public class ContestResult implements PersistentEntity, Serializable {
   }
 
   /**
-   * @param voteTotals a map from choices to vote totals.
+   * @param voteTotals a map from choices to vote totals. Not relevant or correct for IRV.
    */
   public void setVoteTotals(final Map<String, Integer> voteTotals) {
     this.vote_totals = voteTotals;
@@ -358,7 +363,8 @@ public class ContestResult implements PersistentEntity, Serializable {
   }
 
   /**
-   * The diluted margin (μ) of this ContestResult
+   * The diluted margin (μ) of this ContestResult.  Not relevant or correct for IRV unless it has
+   * been externally set after assertion generation.
    */
   public BigDecimal getDilutedMargin() {
     return this.dilutedMargin;
@@ -372,21 +378,23 @@ public class ContestResult implements PersistentEntity, Serializable {
   }
 
   /**
-   * The smallest margin between any winner and loser of the contest
+   * The smallest margin between any winner and loser of the contest. Not relevant or correct for
+   * IRV unless it has been externally set after assertion generation.
    */
   public Integer getMinMargin() {
     return this.minMargin;
   }
 
   /**
-   * set maxMargin.
+   * set maxMargin. Not relevant or correct for IRV.
    */
   public void setMaxMargin(final Integer maxMargin) {
     this.maxMargin = maxMargin;
   }
 
   /**
-   * The largest margin between any winner and loser of the contest
+   * The largest margin between any winner and loser of the contest. Not relevant or correct for
+   * IRV.
    */
   public Integer getMaxMargin() {
     return this.maxMargin;

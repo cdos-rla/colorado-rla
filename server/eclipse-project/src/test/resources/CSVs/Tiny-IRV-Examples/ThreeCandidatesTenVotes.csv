@@ -1,0 +1,14 @@
+Tiny IRV Example Contest 1,5.10.11.24,,,,,,,,,,,,,,
+,,,,,,,"TinyExample1 (Number of positions=1, Number of ranks=3)","TinyExample1 (Number of positions=1, Number of ranks=3)","TinyExample1 (Number of positions=1, Number of ranks=3)","TinyExample1 (Number of positions=1, Number of ranks=3)","TinyExample1 (Number of positions=1, Number of ranks=3)","TinyExample1 (Number of positions=1, Number of ranks=3)","TinyExample1 (Number of positions=1, Number of ranks=3)","TinyExample1 (Number of positions=1, Number of ranks=3)","TinyExample1 (Number of positions=1, Number of ranks=3)"
+,,,,,,,Alice(1),Bob(1),Chuan(1),Alice(2),Bob(2),Chuan(2),Alice(3),Bob(3),Chuan(3)
+CvrNumber,TabulatorNum,BatchId,RecordId,ImprintedId,PrecinctPortion,BallotType,,,,,,,,,
+1,1,1,1,1-1-1,Precinct 1,Ballot 1 - Type 1,1,0,0,0,1,0,0,0,1
+2,1,1,2,1-1-2,Precinct 1,Ballot 1 - Type 1,1,0,0,0,1,0,0,0,1
+3,1,1,3,1-1-3,Precinct 1,Ballot 1 - Type 1,1,0,0,0,1,0,0,0,1
+4,1,1,4,1-1-4,Precinct 1,Ballot 1 - Type 1,1,0,0,0,0,1,0,1,0
+5,1,1,5,1-1-5,Precinct 1,Ballot 1 - Type 1,1,0,0,0,0,1,0,1,0
+6,1,1,6,1-1-6,Precinct 1,Ballot 1 - Type 1,1,0,0,0,0,1,0,1,0
+7,1,1,7,1-1-7,Precinct 1,Ballot 1 - Type 1,0,1,0,1,0,0,0,0,1
+8,1,1,8,1-1-8,Precinct 1,Ballot 1 - Type 1,0,0,1,1,0,0,0,1,0
+9,1,1,9,1-1-9,Precinct 1,Ballot 1 - Type 1,0,0,1,1,0,0,0,1,0
+10,1,1,10,1-1-10,Precinct 1,Ballot 1 - Type 1,0,0,1,1,0,0,0,1,0

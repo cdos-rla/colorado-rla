@@ -1,0 +1,201 @@
+### This does two audit CVRs for Byron Mayoral, for Alamosa County,
+### with the two ballots selected for audit given the seed in demo1_defineAudit.http.
+### The total number of audit ballots is currently just hardcoded, so may be wrong if the seed changes.
+
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin2",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin2",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### Tell corla there is only one audit board.
+POST http://localhost:8888/set-audit-board-count
+Content-Type: application/json
+
+{
+  "count": 1
+}
+
+### Audit board sign in.
+POST http://localhost:8888/audit-board-sign-in
+Content-Type: application/json
+
+{
+  "audit_board":[
+    {"first_name":"V","last_name":"T","political_party":"Unaffiliated"},
+    {"first_name":"M","last_name":"B","political_party":"Unaffiliated"}
+  ],
+  "index":0
+}
+
+### Get the list of CVRs to audit. Use it for setting database IDs etc that are used later.
+GET http://localhost:8888/cvr-to-audit-list?round=1
+
+> {%
+    const jsonData = JSON.parse(response.body);
+    for(var i=0 ; i < jsonData.length ; i++) {
+        client.log("Audit cvr request received for CVR number "+jsonData[i]['cvr_number']+", imprinted ID "+jsonData[i]['imprinted_id']);
+    }
+    client.global.set("cvr_number1", jsonData[0]['cvr_number']);
+    client.global.set("cvr_id1", jsonData[0]['db_id']);
+    client.global.set("imprinted_id1", jsonData[0]['imprinted_id']);
+    client.global.set("record_id1", jsonData[0]['record_id']);
+    client.global.set("batch_id1", jsonData[0]['batch_id']);
+    client.global.set("scanner_id1", jsonData[0]['scanner_id']);
+
+    client.global.set("cvr_number2", jsonData[1]['cvr_number']);
+    client.global.set("cvr_id2", jsonData[1]['db_id']);
+    client.global.set("imprinted_id2", jsonData[1]['imprinted_id']);
+    client.global.set("record_id2", jsonData[1]['record_id']);
+    client.global.set("batch_id2", jsonData[1]['batch_id']);
+    client.global.set("scanner_id2", jsonData[1]['scanner_id']);
+ %}
+
+### Get information about the first CVR to audit. The CVR info could also be derived from this.
+< {%
+  request.variables.set("cvr_id", client.global.get("cvr_id1"));
+%}
+GET http://localhost:8888/cvr/id/{{cvr_id}}
+
+> {%
+  const jsonData = JSON.parse(response.body);
+  client.global.set("contestID", jsonData['contest_info'][0]['contest'])
+  client.log("Auditing contest ID "+jsonData['contest_info'][0]['contest']);
+ %}
+
+### POST the first audit cvr, 1-3-27.
+POST http://localhost:8888/upload-audit-cvr
+Content-Type: application/json
+
+{
+  "auditBoardIndex":0,
+  "audit_cvr":{
+    "ballot_type":"Ballot 1 - Type 1",
+    "batch_id":{{batch_id1}},
+    "contest_info":[{
+      "choices":["SWIVEL Mark(1)","LYON Michael(2)","DEY Duncan(3)","COOREY Cate(4)","PUGH Asren(5)","CLARKE Bruce(6)"],
+      "comment":"",
+      "consensus":"YES",
+      "contest":"{{contestID}}"
+    }],
+    "county_id":2,
+    "cvr_number":{{cvr_number1}},
+    "id":{{cvr_id1}},
+    "imprinted_id":{{imprinted_id1}},
+    "record_id":{{record_id1}},
+    "record_type":"UPLOADED",
+    "scanner_id":{{scanner_id1}},
+    "timestamp":"2024-09-16T05:48:55.142Z"
+  },
+  "cvr_id":{{cvr_id1}}
+}
+
+### Post the second audit cvr. Same contestID as before.
+POST http://localhost:8888/upload-audit-cvr
+Content-Type: application/json
+
+{
+  "auditBoardIndex":0,
+  "audit_cvr":{
+    "ballot_type":"Ballot 1 - Type 1",
+    "batch_id":{{batch_id2}},
+    "contest_info":[{
+      "choices":["LYON Michael(1)","SWIVEL Mark(2)","CLARKE Bruce(3)","PUGH Asren(4)"],
+      "comment":"",
+      "consensus":"YES",
+      "contest":"{{contestID}}"
+    }],
+    "county_id":2,
+    "cvr_number":{{cvr_number2}},
+    "id":{{cvr_id2}},
+    "imprinted_id":{{imprinted_id2}},
+    "record_id":{{record_id2}},
+    "record_type":"UPLOADED",
+    "scanner_id":{{scanner_id2}},
+    "timestamp":"2024-09-16T05:48:55.142Z"
+  },
+  "cvr_id":{{cvr_id2}}
+}
+
+
+### Request a reaudit of the second audit cvr. This is a discrepancy - comment it out if you want to finish with R1.
+POST http://localhost:8888/upload-audit-cvr
+Content-Type: application/json
+
+{
+  "auditBoardIndex":0,
+  "audit_cvr":{
+    "ballot_type":"Ballot 1 - Type 1",
+    "batch_id":{{batch_id2}},
+    "contest_info":[{
+      "choices":["ANDERSON John(1)","COOREY Cate(2)","HUNTER Alan(4)","CLARKE Bruce(3)","MCILRATH Christopher(5)","LYON Michael(6)"],
+      "comment":"",
+      "consensus":"YES",
+      "contest":"{{contestID}}"
+    }],
+    "county_id":2,
+    "cvr_number":{{cvr_number2}},
+    "id":{{cvr_id2}},
+    "imprinted_id":{{imprinted_id2}},
+    "record_id":{{record_id2}},
+    "record_type":"UPLOADED",
+    "scanner_id":{{scanner_id2}},
+    "timestamp":"2024-09-16T05:48:55.142Z"
+  },
+  "cvr_id":{{cvr_id2}},
+  "reaudit":true,
+  "comment":"test"
+}
+
+### Sign off on the audit round.
+POST http://localhost:8888/sign-off-audit-round
+Content-Type: application/json
+
+{
+  "audit_board":[{"first_name":"V","last_name":"T"},{"first_name":"M","last_name":"B"}],
+  "index":0
+}
+
+### Log in as state admin.
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"stateadmin1",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"stateadmin1",
+  "second_factor":"s d f"
+}
+
+### GET the DoS dashboard. Check that Alamosa (county 2) has no more ballots remaining in the round.
+GET http://localhost:8888/dos-dashboard
+Content-Type: application/json
+
+> {%
+  const countyStatus = JSON.parse(response.body)['county_status']['2'];
+  client.log("Alamosa County optimistic ballots: "+countyStatus['optimistic_ballots_to_audit']);
+  client.assert(countyStatus['ballots_remaining_in_round'] === 0);
+%}

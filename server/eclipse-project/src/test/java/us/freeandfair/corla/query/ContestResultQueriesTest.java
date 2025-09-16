@@ -2,10 +2,10 @@ package us.freeandfair.corla.query;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Properties;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.AfterTest;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testng.annotations.*;
 import org.testng.Assert;
 
 import us.freeandfair.corla.persistence.Persistence;
@@ -14,24 +14,10 @@ import us.freeandfair.corla.model.CountyContestResult;
 import us.freeandfair.corla.model.ContestResult;
 import us.freeandfair.corla.model.Contest;
 import us.freeandfair.corla.model.County;
+import au.org.democracydevelopers.corla.util.TestClassWithDatabase;
 
 @Test(groups = {"integration"})
-public class ContestResultQueriesTest {
-
-
-  @BeforeTest()
-  public void setUp() {
-    Setup.setProperties();
-    Persistence.beginTransaction();
-  }
-
-  @AfterTest()
-  public void tearDown() {
-    try {
-    Persistence.rollbackTransaction();
-    } catch (Exception e) {
-    }
-  }
+public class ContestResultQueriesTest extends TestClassWithDatabase {
 
   @Test()
   public void findOrCreateTest() {

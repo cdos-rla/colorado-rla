@@ -44,7 +44,7 @@ const CountyDashboardPage = (props: PageProps) => {
               currentRoundNumber={ currentRoundNumber }
               history={ history }
               name={ countyInfo.name }
-              auditBoardButtonDisabled={ auditBoardButtonDisabled } />;
+              auditBoardButtonDisabled={ auditBoardButtonDisabled } />
     </div>;
     return <CountyLayout main={ main } />;
 };

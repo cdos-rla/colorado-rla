@@ -1,0 +1,201 @@
+{
+  "NAME" : "AllPluralityDiscrepanciesReaudited",
+
+  "RISK_LIMIT" : 0.03,
+
+  "SEED" : "24098249082409821390482049098",
+
+  "SQLS" : [
+  ],
+
+  "CVRS" : [
+    "src/test/resources/CSVs/AdamsAndAlamosa/adams-cvrexport.csv",
+    "src/test/resources/CSVs/AdamsAndAlamosa/alamosa-cvrexport.csv"
+  ],
+
+  "MANIFESTS" : [
+    "src/test/resources/CSVs/AdamsAndAlamosa/adams-manifest.csv",
+    "src/test/resources/CSVs/AdamsAndAlamosa/alamosa-manifest.csv"
+  ],
+
+  "CANONICAL_LIST" : "src/test/resources/CSVs/AdamsAndAlamosa/adams-and-alamosa-canonical-list.csv",
+
+  "CONTEST_NAME_CHANGE" : {
+    "Regent of the University of Colorado - At Large" : "Regent of the University of Colorado"
+  },
+
+  "CANDIDATE_NAME_CHANGE" : {
+    "Regent of the University of Colorado" : {
+      "Clear Winner" : "Distant Winner"
+    }
+  },
+
+  "CONTESTS_BY_SELECTED_COUNTIES" : {
+  },
+
+  "TARGETS" : {
+    "Regent of the University of Colorado" : "STATE_WIDE_CONTEST",
+    "Adams COUNTY COMMISSIONER DISTRICT 3" : "COUNTY_WIDE_CONTEST",
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : "COUNTY_WIDE_CONTEST"
+  },
+
+  "WINNERS" : {
+    "Regent of the University of Colorado" : "Distant Winner",
+    "Adams COUNTY COMMISSIONER DISTRICT 3" : "Jeff Baker",
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : "Jeff Baker"
+  },
+
+  "RAW_MARGINS" : {
+    "Regent of the University of Colorado" : 216,
+    "Adams COUNTY COMMISSIONER DISTRICT 3" : 42,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 37
+  },
+
+  "DILUTED_MARGINS" : {
+    "Regent of the University of Colorado" : 0.654545455,
+    "Adams COUNTY COMMISSIONER DISTRICT 3" : 0.254545455,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 0.224242424
+  },
+
+  "EXPECTED_SAMPLES" : {
+    "Regent of the University of Colorado" : 12,
+    "Adams COUNTY COMMISSIONER DISTRICT 3" : 29,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 33
+  },
+
+  "FINAL_EXPECTED_AUDITED_BALLOTS" : {
+    "Regent of the University of Colorado" : 12,
+    "Adams COUNTY COMMISSIONER DISTRICT 3" : 29,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 33
+  },
+
+  "FINAL_EXPECTED_OPTIMISTIC_SAMPLES" : {
+    "Regent of the University of Colorado" : 12,
+    "Adams COUNTY COMMISSIONER DISTRICT 3" : 29,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 33
+  },
+
+  "FINAL_EXPECTED_ESTIMATED_SAMPLES" : {
+    "Regent of the University of Colorado" : 12,
+    "Adams COUNTY COMMISSIONER DISTRICT 3" : 29,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 33
+  },
+
+  "IRV_CONTESTS" : [
+  ],
+
+  "EXPECTED_ROUNDS" : 1,
+
+  "PLURALITY_TABULATION" : {
+    "Adams COUNTY COMMISSIONER DISTRICT 3" : {
+      "Jeff Baker" : 43,
+      "Janet Lee Cook" : 1
+    },
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : {
+      "Jeff Baker" : 38,
+      "Janet Lee Cook" : 1
+    },
+    "Regent of the University of Colorado" : {
+      "Distant Winner" : 244,
+      "Distant Loser" : 28
+    }
+  },
+
+  "PLURALITY_COUNTY_TABULATION" : {
+    "Adams" : {
+      "Adams COUNTY COMMISSIONER DISTRICT 3": {
+        "Jeff Baker": 43,
+        "Janet Lee Cook": 1
+      },
+      "Regent of the University of Colorado" : {
+        "Distant Winner" : 122,
+        "Distant Loser" : 14
+      }
+    },
+    "Alamosa" : {
+      "Alamosa COUNTY COMMISSIONER DISTRICT 3": {
+        "Jeff Baker": 38,
+        "Janet Lee Cook": 1
+      },
+      "Regent of the University of Colorado" : {
+        "Distant Winner" : 122,
+        "Distant Loser" : 14
+      }
+    }
+  },
+
+  "PHANTOM_BALLOTS" : {
+  },
+
+  "DISAGREEMENTS" : {
+  },
+
+  "DISCREPANT_AUDITED_BALLOT_CHOICES": {
+    "1": {
+      "3-800-1": {
+        "Regent of the University of Colorado": [
+          "Distant Loser"
+        ]
+      },
+      "3-800-10": {
+        "Regent of the University of Colorado": [
+          "Distant Loser"
+        ]
+      }
+    }
+  },
+
+  "REAUDITS": {
+    "1": {
+      "3-800-1": [
+        {
+          "Regent of the University of Colorado": {
+            "choices": [
+              "Distant Winner"
+            ],
+            "consensus": "YES"
+          }
+        }
+      ],
+      "3-800-10": [
+        {
+          "Regent of the University of Colorado": {
+            "choices": [
+              "Distant Winner"
+            ],
+            "consensus": "YES"
+          }
+        }
+      ]
+    }
+  },
+
+  "CONTEST_RESULTS" : {
+    "1" : {
+      "Regent of the University of Colorado" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "Adams COUNTY COMMISSIONER DISTRICT 3" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "Alamosa COUNTY COMMISSIONER DISTRICT 3" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      }
+    }
+  }
+}

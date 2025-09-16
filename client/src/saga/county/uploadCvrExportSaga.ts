@@ -11,7 +11,7 @@ function* importCvrExportFail(action: any): IterableIterator<any> {
 
     notice.danger('Failed to import CVR export.');
 
-    if (sent.hash_status === 'MISMATCH') {
+    if (sent.status === 'HASH_MISMATCH') {
         notice.warning('Please verify that the hash matches the file to be uploaded.');
         return null;
     }

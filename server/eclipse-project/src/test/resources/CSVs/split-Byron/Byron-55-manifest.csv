@@ -1,0 +1,5 @@
+CountyID,ScannerID,BatchID,NumBallots,StorageLocation
+TestCounty-55,1,1,78,Bin 1
+TestCounty-55,1,2,78,Bin 1
+TestCounty-55,1,3,78,Bin 1
+TestCounty-55,1,4,49,Bin 1

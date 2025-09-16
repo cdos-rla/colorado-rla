@@ -45,7 +45,7 @@ class AuditSeedPage extends React.Component<PageProps> {
                 <IdleDialog />
                 <Breadcrumbs />
                 <div className='mb-default'>
-                    <h3>Audit Definition - Enter Random Seed</h3>
+                    <h1 className={'smallHeader'}>Audit Definition - Enter Random Seed</h1>
                     <div>
                         Enter the random seed generated from the public meeting
                         on { this.props.formattedPublicMeetingDate }.

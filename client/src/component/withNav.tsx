@@ -1,3 +1,4 @@
+import SkipToMain from 'corla/component/SkipToMain';
 import * as React from 'react';
 
 import {
@@ -122,6 +123,7 @@ export default function withNav(Menu: React.ComponentClass, path: string) {
     return () => (
         <Navbar className='l-nav'>
             <NavbarGroup align={Alignment.LEFT}>
+                <SkipToMain />
                 <Popover content={<Menu />} position={Position.RIGHT_TOP}>
                     <MenuButton />
                 </Popover>

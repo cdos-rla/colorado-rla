@@ -19,7 +19,7 @@ function createFetchAction(config: CreateFetchConfig) {
         url,
     } = config;
 
-    async function fetchAction() {
+    async function fetchAction(queryParams: URLSearchParams | null = null) {
         action(sendType);
 
         const init: RequestInit = {
@@ -28,7 +28,10 @@ function createFetchAction(config: CreateFetchConfig) {
         };
 
         try {
-            const r = await fetch(url, init);
+            // append query string if provided
+            const fullUrl = queryParams ? `${url}?${queryParams.toString()}` : url;
+
+            const r = await fetch(fullUrl, init);
 
             if (!r.ok) {
                 action(failType);

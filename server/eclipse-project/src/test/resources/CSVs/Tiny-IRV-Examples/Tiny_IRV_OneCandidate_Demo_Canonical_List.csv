@@ -1,0 +1,7 @@
+CountyName,ContestName,ContestChoices
+Adams,TinyExample1,"Alice"
+Adams,PluralityTiedExample,"Diego, Eli, Farhad"
+Adams,PluralityExample2,"Gertrude, Ho, Imogen"
+Alamosa,TinyExample1,"Alice"
+Arapahoe,Tied_IRV,"Alice, Bob, Chuan"
+Archuleta,Example3,"Aaron,Bernice,Cherry,Dinh"

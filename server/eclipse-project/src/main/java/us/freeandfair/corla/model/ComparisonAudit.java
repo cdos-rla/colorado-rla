@@ -30,6 +30,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,6 +40,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -63,7 +67,9 @@ import us.freeandfair.corla.persistence.LongListConverter;
 @Entity
 @Cacheable(true)
 @Table(name = "comparison_audit")
-
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "audit_type")
+@DiscriminatorValue("PLURALITY")
 @SuppressWarnings({"PMD.ImmutableField", "PMD.ExcessiveClassLength",
     "PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.ModifiedCyclomaticComplexity",
     "PMD.StdCyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods",
@@ -129,11 +135,12 @@ public class ComparisonAudit implements PersistentEntity {
           private BigDecimal my_gamma = Audit.GAMMA;
 
   /**
-   * The diluted margin
+   * The diluted margin. [Democracy Developers: this must be accessible and modifiable by
+   * child classes of ComparisonAudit, hence we have made this attribute protected.]
    */
   @Column(updatable = false, nullable = false,
           precision = PRECISION, scale = SCALE)
-          private BigDecimal diluted_margin = BigDecimal.ONE;
+          protected BigDecimal diluted_margin = BigDecimal.ONE;
 
   /**
    * The risk limit.
@@ -150,16 +157,20 @@ public class ComparisonAudit implements PersistentEntity {
 
   /**
    * The number of samples to audit overall assuming no further overstatements.
+   * [Democracy Developers: this must be accessible and modifiable by child classes of
+   * ComparisonAudit, hence we have made this attribute protected.]
    */
   @Column(nullable = false)
-  private Integer my_optimistic_samples_to_audit = 0;
+  protected Integer my_optimistic_samples_to_audit = 0;
 
   /**
    * The expected number of samples to audit overall assuming overstatements
    * continue at the current rate.
+   * [Democracy Developers: this must be accessible and modifiable by child classes of
+   * ComparisonAudit, hence we have made this attribute protected.]
    */
   @Column(nullable = false)
-  private Integer my_estimated_samples_to_audit = 0;
+  protected Integer my_estimated_samples_to_audit = 0;
 
   /**
    * The number of two-vote understatements recorded so far.
@@ -200,6 +211,11 @@ public class ComparisonAudit implements PersistentEntity {
 
   /**
    * gets incremented
+   * DD: Note, this attribute DOES NOT get incremented during an audit. We (DD) have
+   * implemented a minimal fix by returning the total of the one and two vote
+   * overstatement counts in getOverstatements() rather than returning the value of
+   * this variable. This variable can be removed from ComparisonAudit, and the
+   * database table, in a fuller fix.
    */
   @Column(nullable = true) // true for migration
   private BigDecimal overstatements = BigDecimal.ZERO;
@@ -207,16 +223,20 @@ public class ComparisonAudit implements PersistentEntity {
   /**
    * A flag that indicates whether the optimistic ballots to audit
    * estimate needs to be recalculated.
+   * [Democracy Developers: this must be accessible and modifiable by child classes of
+   * ComparisonAudit, hence we have made this attribute protected.]
    */
   @Column(nullable = false)
-  private Boolean my_optimistic_recalculate_needed = true;
+  protected Boolean my_optimistic_recalculate_needed = true;
 
   /**
    * A flag that indicates whether the non-optimistic ballots to
-   * audit estimate needs to be recalculated
+   * audit estimate needs to be recalculated.
+   * [Democracy Developers: this must be accessible and modifiable by child classes of
+   * ComparisonAudit, hence we have made this attribute protected.]
    */
   @Column(nullable = false)
-  private Boolean my_estimated_recalculate_needed = true;
+  protected Boolean my_estimated_recalculate_needed = true;
 
   /**
    * The sequence of CastVoteRecord ids for this contest ordered by County id
@@ -490,14 +510,42 @@ public class ComparisonAudit implements PersistentEntity {
    *
    * TODO collect the number of 1 and 2 vote overstatements across
    * participating counties.
+   *
+   * DD: We replaced this method with the sum of 1 and 2 vote overstatements as
+   * the 'overstatements' attribute was not being updated throughout an audit. It
+   * was always zero. This was evidently suggested in a prior review of the system.
+   * Note that the overstatements attribute could be removed from the class and
+   * database table if desired.
    */
   public BigDecimal getOverstatements() {
-    return this.overstatements; // FIXME
+    return BigDecimal.valueOf(this.my_one_vote_over_count + this.my_two_vote_over_count);
+    //this.overstatements; // FIXME
   }
 
   /** the number of ballots audited  **/
   public Integer getAuditedSampleCount() {
     return this.my_audited_sample_count;
+  }
+
+  /**
+   * Risk limit achieved according to math.Audit.
+   * This has a fallback to 1.0 (max risk) when ``nothing is known''.
+   **/
+  public BigDecimal riskMeasurement() {
+    if (my_audited_sample_count > 0
+        && diluted_margin.compareTo(BigDecimal.ZERO) > 0) {
+      final BigDecimal result =  Audit.pValueApproximation(my_audited_sample_count,
+          diluted_margin,
+          my_gamma,
+          my_one_vote_under_count,
+          my_two_vote_under_count,
+          my_one_vote_over_count,
+          my_two_vote_over_count);
+      return result.setScale(3, BigDecimal.ROUND_HALF_UP);
+    } else {
+      // full risk (100%) when nothing is known
+      return BigDecimal.ONE;
+    }
   }
 
   /**
@@ -521,7 +569,7 @@ public class ComparisonAudit implements PersistentEntity {
    * object's `my_optimistic_samples_to_audit` and
    * `my_estimates_samples_to_audit` fields.
    */
-  private void recalculateSamplesToAudit() {
+  protected void recalculateSamplesToAudit() {
     LOGGER.debug(String.format("[recalculateSamplestoAudit start contestName=%s, "
                                + "twoUnder=%d, oneUnder=%d, oneOver=%d, twoOver=%d"
                                + " optimistic=%d, estimated=%d]",
@@ -761,10 +809,10 @@ public class ComparisonAudit implements PersistentEntity {
   /**
    * Records the specified discrepancy. If the discrepancy is for this Contest
    * but from a CVR/ballot that was not selected for this Contest (selected for
-   * another Contest), is does not contribute to the counts and calculations. It
+   * another Contest), it does not contribute to the counts and calculations. It
    * is still recorded, though, for informational purposes. The valid range is
    * -2 .. 2: -2 and -1 are understatements, 0 is a discrepancy that doesn't
-   * affect the RLA calculations, and 1 and 2 are overstatements).
+   * affect the RLA calculations, and 1 and 2 are overstatements.
    *
    * @param the_record The CVRAuditInfo record that generated the discrepancy.
    * @param the_type The type of discrepancy to add.

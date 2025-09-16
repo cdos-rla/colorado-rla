@@ -1,0 +1,14 @@
+Tiny STV Example Contest 1,5.10.11.24,,,,,,,,,,,,,,
+,,,,,,,"STVExample1 (Number of positions=2, Number of ranks=3)","STVExample1 (Number of positions=2, Number of ranks=3)","STVExample1 (Number of positions=2, Number of ranks=3)","STVExample1 (Number of positions=2, Number of ranks=3)","STVExample1 (Number of positions=2, Number of ranks=3)","STVExample1 (Number of positions=2, Number of ranks=3)","STVExample1 (Number of positions=2, Number of ranks=3)","STVExample1 (Number of positions=2, Number of ranks=3)","STVExample1 (Number of positions=2, Number of ranks=3)"
+,,,,,,,Jaya(1),Kun(1),Lou(1),Jaya(2),Kun(2),Lou(2),Jaya(3),Kun(3),Lou(3)
+CvrNumber,TabulatorNum,BatchId,RecordId,ImprintedId,PrecinctPortion,BallotType,,,,,,,,,
+1,1,1,1,1-1-1,Precinct 1,Ballot 1 - Type 1,1,0,0,0,1,0,0,0,1
+2,1,1,2,1-1-2,Precinct 1,Ballot 1 - Type 1,1,0,0,0,1,0,0,0,1
+3,1,1,3,1-1-3,Precinct 1,Ballot 1 - Type 1,1,0,0,0,1,0,0,0,1
+4,1,1,4,1-1-4,Precinct 1,Ballot 1 - Type 1,1,0,0,0,0,1,0,1,0
+5,1,1,5,1-1-5,Precinct 1,Ballot 1 - Type 1,1,0,0,0,0,1,0,1,0
+6,1,1,6,1-1-6,Precinct 1,Ballot 1 - Type 1,1,0,0,0,0,1,0,1,0
+7,1,1,7,1-1-7,Precinct 1,Ballot 1 - Type 1,0,1,0,1,0,0,0,0,1
+8,1,1,8,1-1-8,Precinct 1,Ballot 1 - Type 1,0,0,1,1,0,0,0,1,0
+9,1,1,9,1-1-9,Precinct 1,Ballot 1 - Type 1,0,0,1,1,0,0,0,1,0
+10,1,1,10,1-1-10,Precinct 1,Ballot 1 - Type 1,0,0,1,1,0,0,0,1,0

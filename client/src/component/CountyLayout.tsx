@@ -11,7 +11,7 @@ const CountyLayout = (props: Props) => {
     return (
         <div className='l-wrapper'>
             <CountyNav />
-            <div className='l-main'>
+            <div id='main' className='l-main'>
                 { props.main }
             </div>
             <LicenseFooter />

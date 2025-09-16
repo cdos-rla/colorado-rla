@@ -16,33 +16,24 @@
 
 package us.freeandfair.corla.json;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import javax.persistence.PersistenceException;
 
+import au.org.democracydevelopers.corla.model.GenerateAssertionsSummary;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import us.freeandfair.corla.asm.ASMState;
 import us.freeandfair.corla.asm.ASMUtilities;
 import us.freeandfair.corla.asm.DoSDashboardASM;
-import us.freeandfair.corla.model.AuditInfo;
-import us.freeandfair.corla.model.AuditReason;
-import us.freeandfair.corla.model.AuditType;
-import us.freeandfair.corla.model.ContestToAudit;
-import us.freeandfair.corla.model.County;
-import us.freeandfair.corla.model.ComparisonAudit;
-import us.freeandfair.corla.model.CountyDashboard;
-import us.freeandfair.corla.model.DoSDashboard;
+import us.freeandfair.corla.model.*;
 import us.freeandfair.corla.persistence.Persistence;
 import us.freeandfair.corla.query.ComparisonAuditQueries;
+import us.freeandfair.corla.query.ContestResultQueries;
 import us.freeandfair.corla.util.SuppressFBWarnings;
+
+import static au.org.democracydevelopers.corla.endpoint.GetAssertions.pingRaireService;
 
 /**
  * The response generated on a refresh of the DoS dashboard.
@@ -112,19 +103,38 @@ public class DoSDashboardRefreshResponse {
   private final SortedMap<Long, AuditType> my_audit_types;
 
   /**
+   * The generate assertions summaries, for IRV contests. Keyed by contest name (which is repeated
+   * in the GenerateAssertionsSummary).
+   */
+  private final List<GenerateAssertionsSummaryWithCounty> my_generate_assertions_summaries;
+
+  /**
+   * The status of the raire service when ping'd. Either "OK" or "Unreachable".
+   */
+  private final String my_raire_service_status;
+
+  /**
+   * Placeholder string for when a contest crosses multiple counties. Used for IRV assertion-generation
+   * summaries.
+   */
+  private final static String MULTIPLE_COUNTIES = "Multiple";
+
+  /**
    * Constructs a new DosDashboardRefreshResponse.
    *
-   * @param the_asm_state The ASM state.
-   * @param the_audited_contests The audited contests.
-   * @param the_estimated_ballots_to_audit The estimated ballots to audit, by
-   *          contest.
-   * @param the_optimistic_ballots_to_audit The optimistic ballots to audit, by
-   *          contest.
-   * @param the_discrepancy_count The discrepancy count for each discrepancy
-   *          type, by contest.
-   * @param the_county_status The county statuses.
-   * @param the_hand_count_contests The hand count contests.
-   * @param the_audit_info The election info.
+   * @param the_asm_state                     The ASM state.
+   * @param the_audited_contests              The audited contests.
+   * @param the_estimated_ballots_to_audit    The estimated ballots to audit, by contest.
+   * @param the_optimistic_ballots_to_audit   The optimistic ballots to audit, by contest.
+   * @param the_discrepancy_counts            The discrepancy count for each discrepancy
+   *                                          type, by contest.
+   * @param the_county_status                 The county statuses.
+   * @param the_hand_count_contests           The hand count contests.
+   * @param the_audit_info                    The election info.
+   * @param the_audit_reasons                 The reasons for auditing each contest.
+   * @param the_audit_types                   The audit type (usually either COMPARISON or NOT_AUDITABLE)
+   * @param the_generate_assertions_summaries The GenerateAssertionsSummaries, for IRV contests, with contest names added.
+   * @param the_raire_service_status          The status of the raire service, either "OK" or "Unreachable".
    */
   @SuppressWarnings("PMD.ExcessiveParameterList")
   protected DoSDashboardRefreshResponse(final ASMState the_asm_state,
@@ -136,7 +146,9 @@ public class DoSDashboardRefreshResponse {
                                         final List<Long> the_hand_count_contests,
                                         final AuditInfo the_audit_info,
                                         final SortedMap<Long, AuditReason> the_audit_reasons,
-                                        final SortedMap<Long, AuditType> the_audit_types) {
+                                        final SortedMap<Long, AuditType> the_audit_types,
+                                        final List<GenerateAssertionsSummaryWithCounty> the_generate_assertions_summaries,
+                                        final String the_raire_service_status) {
     my_asm_state = the_asm_state;
     my_audited_contests = the_audited_contests;
     my_estimated_ballots_to_audit = the_estimated_ballots_to_audit;
@@ -147,6 +159,8 @@ public class DoSDashboardRefreshResponse {
     my_audit_info = the_audit_info;
     my_audit_reasons = the_audit_reasons;
     my_audit_types = the_audit_types;
+    my_generate_assertions_summaries = the_generate_assertions_summaries;
+    my_raire_service_status = the_raire_service_status;
   }
 
   /**
@@ -186,7 +200,7 @@ public class DoSDashboardRefreshResponse {
             optimistic = ca.optimisticRemaining();
             estimated = ca.estimatedRemaining();
 
-            LOGGER.debug(String
+            LOGGER.info(String
                 .format("[createResponse: optimistic=%d, estimated = %d, ca.optimisticSamplesToAudit()=%d, ca.estimatedSamplesToAudit()=%d, ca.getAuditedSampleCount()=%d]",
                         optimistic, estimated, ca.optimisticSamplesToAudit(),
                         ca.estimatedSamplesToAudit(), ca.getAuditedSampleCount()));
@@ -201,8 +215,8 @@ public class DoSDashboardRefreshResponse {
             }
           }
 
-          estimated_ballots_to_audit.put(cta.contest().id(), optimistic);
-          optimistic_ballots_to_audit.put(cta.contest().id(), estimated);
+          estimated_ballots_to_audit.put(cta.contest().id(), estimated);
+          optimistic_ballots_to_audit.put(cta.contest().id(), optimistic);
           discrepancy_count.put(cta.contest().id(), discrepancy);
           break;
 
@@ -223,11 +237,51 @@ public class DoSDashboardRefreshResponse {
     final DoSDashboardASM asm =
         ASMUtilities.asmFor(DoSDashboardASM.class, DoSDashboardASM.IDENTITY);
 
+    final String raireServiceStatus = pingRaireService();
+
     return new DoSDashboardRefreshResponse(asm.currentState(), audited_contests,
                                            estimated_ballots_to_audit,
                                            optimistic_ballots_to_audit, discrepancy_count,
                                            countyStatusMap(), hand_count_contests,
-                                           dashboard.auditInfo(), audit_reasons, audit_types);
+                                           dashboard.auditInfo(), audit_reasons, audit_types,
+                                           addCountiesToSummaries(), raireServiceStatus);
+  }
+
+
+  /**
+   * Gets the GenerateAssertionsSummary list from the database, and makes a corresponding list
+   * with the applicable Counties included in each item.
+   * @return a list of GenerateAssertionsSummaryWithCounty, which includes the County name if there's
+   * a unique on for this contest, or "Multiple" if there is more than one.
+   */
+  private static List<GenerateAssertionsSummaryWithCounty> addCountiesToSummaries() {
+    List<GenerateAssertionsSummaryWithCounty> generateAssertionsSummaries = new ArrayList<>();
+
+    // Load all the Generate Assertions Summaries from the database into the generate_assertions_list.
+    final List<GenerateAssertionsSummary> generate_assertions_list
+        = Persistence.getAll(GenerateAssertionsSummary.class);
+
+    // Find out which county each contest is in; fill in 'Multiple' if there is more than one.
+    for (GenerateAssertionsSummary summary : generate_assertions_list) {
+      final Optional<ContestResult> cr = ContestResultQueries.find(summary.getContestName());
+      String countyName = "";
+      if (cr.isEmpty() || cr.get().getCounties().isEmpty()) {
+        // This isn't supposed to happen. Keep the summary, with a blank county name, and continue but warn.
+        LOGGER.warn(String.format("%s %s %s.", "[addCountiesToSummaries] ", "Empty ContestResult or County Name for Contest ",
+            summary.getContestName()));
+      } else {
+        Set<County> counties = cr.get().getCounties();
+        if (counties.size() == 1) {
+          countyName = counties.stream().findFirst().get().name();
+        } else {
+          // Must be >1 because we already checked for zero.
+          countyName = MULTIPLE_COUNTIES;
+        }
+      }
+      // Add the summary in, whether we found a county or not.
+      generateAssertionsSummaries.add(new GenerateAssertionsSummaryWithCounty(summary, countyName));
+    }
+    return generateAssertionsSummaries;
   }
 
   /**
@@ -251,4 +305,12 @@ public class DoSDashboardRefreshResponse {
 
     return status_map;
   }
+
+  /**
+   * The same as a GenerateAssertionsSummary, but with the county name attached, or "multiple" if more than one.
+   */
+  protected record GenerateAssertionsSummaryWithCounty(
+      GenerateAssertionsSummary summary,
+      String countyName
+  ){}
 }

@@ -1,0 +1,31 @@
+Contest name,Wollondilly Mayoral
+Candidates,"KHAN Robert,BANASIK Michael,DEETH Matthew,LAW Ray,GOULD Matt,HANNAN Judy"
+Winner,GOULD Matt
+Total universe,31355
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,1285,"5"
+Diluted margin,0.0409823,"5"
+Raire difficulty,24.40077821011673,"5"
+Current risk,1.00000000,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16"
+Optimistic samples to audit,178,"5"
+Estimated samples to audit,178,"5"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,GOULD Matt,KHAN Robert,,20.3208,1543,0.0492,1.00000000,149,149,0,0,0,0,0
+2,NEN,GOULD Matt,BANASIK Michael,"BANASIK Michael,GOULD Matt",8.1739,3836,0.1223,1.00000000,60,60,0,0,0,0,0
+3,NEN,GOULD Matt,DEETH Matthew,"DEETH Matthew,GOULD Matt",15.973,1963,0.0626,1.00000000,117,117,0,0,0,0,0
+4,NEN,GOULD Matt,LAW Ray,"LAW Ray,GOULD Matt",10.9825,2855,0.0911,1.00000000,81,81,0,0,0,0,0
+5,NEN,GOULD Matt,HANNAN Judy,"GOULD Matt,HANNAN Judy",24.4008,1285,0.041,1.00000000,178,178,0,0,0,0,0
+6,NEN,GOULD Matt,BANASIK Michael,"BANASIK Michael,DEETH Matthew,GOULD Matt",9.4757,3309,0.1055,1.00000000,70,70,0,0,0,0,0
+7,NEN,GOULD Matt,BANASIK Michael,"BANASIK Michael,LAW Ray,GOULD Matt",9.2876,3376,0.1077,1.00000000,68,68,0,0,0,0,0
+8,NEN,GOULD Matt,BANASIK Michael,"BANASIK Michael,GOULD Matt,HANNAN Judy",8.0937,3874,0.1236,1.00000000,59,59,0,0,0,0,0
+9,NEN,GOULD Matt,DEETH Matthew,"DEETH Matthew,GOULD Matt,HANNAN Judy",19.1073,1641,0.0523,1.00000000,140,140,0,0,0,0,0
+10,NEN,GOULD Matt,LAW Ray,"DEETH Matthew,LAW Ray,GOULD Matt",11.7259,2674,0.0853,1.00000000,86,86,0,0,0,0,0
+11,NEN,GOULD Matt,LAW Ray,"LAW Ray,GOULD Matt,HANNAN Judy",14.9809,2093,0.0668,1.00000000,110,110,0,0,0,0,0
+12,NEN,GOULD Matt,BANASIK Michael,"BANASIK Michael,DEETH Matthew,LAW Ray,GOULD Matt",10.0723,3113,0.0993,1.00000000,74,74,0,0,0,0,0
+13,NEN,GOULD Matt,BANASIK Michael,"BANASIK Michael,DEETH Matthew,GOULD Matt,HANNAN Judy",8.9127,3518,0.1122,1.00000000,65,65,0,0,0,0,0
+14,NEN,GOULD Matt,BANASIK Michael,"BANASIK Michael,LAW Ray,GOULD Matt,HANNAN Judy",8.7977,3564,0.1137,1.00000000,65,65,0,0,0,0,0
+15,NEN,GOULD Matt,LAW Ray,"DEETH Matthew,LAW Ray,GOULD Matt,HANNAN Judy",15.4763,2026,0.0646,1.00000000,113,113,0,0,0,0,0
+16,NEN,GOULD Matt,BANASIK Michael,"BANASIK Michael,DEETH Matthew,LAW Ray,GOULD Matt,HANNAN Judy",9.3513,3353,0.1069,1.00000000,69,69,0,0,0,0,0

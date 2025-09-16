@@ -1,0 +1,23 @@
+Contest name,Mosman Mayoral
+Candidates,"MOLINE Libby,BENDALL Roy,HARDING Sarah,CORRIGAN Carolyn,MENZIES Simon"
+Winner,CORRIGAN Carolyn
+Total universe,16425
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,3651,"4"
+Diluted margin,0.22228311,"4"
+Raire difficulty,4.498767460969598,"4"
+Current risk,1.00000000,"1, 2, 3, 4, 5, 6, 7, 8"
+Optimistic samples to audit,33,"4"
+Estimated samples to audit,33,"4"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,CORRIGAN Carolyn,HARDING Sarah,,3.2798,5008,0.3049,1.00000000,24,24,0,0,0,0,0
+2,NEN,CORRIGAN Carolyn,MOLINE Libby,"MOLINE Libby,CORRIGAN Carolyn",3.744,4387,0.2671,1.00000000,28,28,0,0,0,0,0
+3,NEN,CORRIGAN Carolyn,BENDALL Roy,"BENDALL Roy,CORRIGAN Carolyn",3.4369,4779,0.291,1.00000000,26,26,0,0,0,0,0
+4,NEN,CORRIGAN Carolyn,MENZIES Simon,"CORRIGAN Carolyn,MENZIES Simon",4.4988,3651,0.2223,1.00000000,33,33,0,0,0,0,0
+5,NEN,CORRIGAN Carolyn,MOLINE Libby,"MOLINE Libby,CORRIGAN Carolyn,MENZIES Simon",3.3727,4870,0.2965,1.00000000,25,25,0,0,0,0,0
+6,NEN,CORRIGAN Carolyn,BENDALL Roy,"MOLINE Libby,BENDALL Roy,CORRIGAN Carolyn",3.6306,4524,0.2754,1.00000000,27,27,0,0,0,0,0
+7,NEN,CORRIGAN Carolyn,BENDALL Roy,"BENDALL Roy,CORRIGAN Carolyn,MENZIES Simon",3.65,4500,0.274,1.00000000,27,27,0,0,0,0,0
+8,NEN,CORRIGAN Carolyn,MOLINE Libby,"MOLINE Libby,BENDALL Roy,CORRIGAN Carolyn,MENZIES Simon",3.442,4772,0.2905,1.00000000,26,26,0,0,0,0,0

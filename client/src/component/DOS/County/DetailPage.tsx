@@ -137,7 +137,7 @@ const CountyDetailPage = (props: PageProps) => {
     const main =
         <div>
             <Breadcrumbs county={ county } />
-            <h3 className='mt-default'>{ county.name } County Info</h3>
+            <h1 className='smallHeader'>{ county.name } County Info</h1>
             <CountyDetails county={ county } status={ status } />
         </div>;
 

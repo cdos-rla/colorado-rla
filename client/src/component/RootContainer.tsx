@@ -16,6 +16,9 @@ import CountyDashboardPageContainer from './County/Dashboard/PageContainer';
 
 import LoginContainer from './Login/Container';
 
+
+import DOSDefineAuditEstimateSampleSizesPageContainer from './DOS/DefineAudit/EstimateSampleSizesPageContainer';
+import DOSDefineAuditGenerateAssertionsPageContainer from './DOS/DefineAudit/GenerateAssertionsPageContainer';
 import DOSDefineAuditReviewPageContainer from './DOS/DefineAudit/ReviewPageContainer';
 import DOSDefineAuditSeedPageContainer from './DOS/DefineAudit/SeedPageContainer';
 import DOSDefineAuditSelectContestsPageContainer from './DOS/DefineAudit/SelectContestsPageContainer';
@@ -72,6 +75,12 @@ export class RootContainer extends React.Component<RootContainerProps> {
                         <LoginRoute exact
                                     path='/sos/audit/standardize-choices'
                                     page={ DOSDefineAuditStandardizeChoicesPageContainer } />
+                        <LoginRoute exact
+                                    path='/sos/audit/generate-assertions'
+                                    page={ DOSDefineAuditGenerateAssertionsPageContainer } />
+                        <LoginRoute exact
+                                    path='/sos/audit/estimate-sample-sizes'
+                                    page={ DOSDefineAuditEstimateSampleSizesPageContainer } />
                         <LoginRoute exact
                                     path='/sos/audit/select-contests'
                                     page={ DOSDefineAuditSelectContestsPageContainer } />

@@ -1,0 +1,3889 @@
+### This loads all the CVRs for Demo1, except Boulder - see README for details.
+
+### 1. Adams County, using 1-adams-cvrexport-plusByron-1.csv.
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin1",
+  "password":""
+}
+> {%
+  import {authSanityCheck} from 'workflows/IntelliJ-http-workflows/testScripts/testUtils';
+  authSanityCheck("countyadmin1", 1, 'TRADITIONALLY_AUTHENTICATED');
+%}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin1",
+  "second_factor":"s d f"
+}
+
+> {%
+  import {authSanityCheck} from 'workflows/IntelliJ-http-workflows/testScripts/testUtils';
+  authSanityCheck("countyadmin1", 2, 'SECOND_FACTOR_AUTHENTICATED');
+ %}
+
+### GET the county dashboard. This is just to test that the login worked.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="1-adams-cvrexport-plusByron-1.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Demo1/1-adams-cvrexport-plusByron-1.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+Content-Type: text/csv
+
+< ../../CSVs/Demo1/1-adams-cvrexport-plusByron-1.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin1"
+}
+
+### 2. Alamosa County, using 2-alamosa-cvrexport-plusByron-2.csv
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin2",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin2",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="2-alamosa-cvrexport-plusByron-2.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Demo1/2-alamosa-cvrexport-plusByron-2.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+Content-Type: text/csv
+
+< ../../CSVs/Demo1/2-alamosa-cvrexport-plusByron-2.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin2"
+}
+
+### 3. Arapahoe County, using 3-arapahoe-Byron-3-plus-tied-irv.csv
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin3",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin3",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="3-arapahoe-Byron-3-plus-tied-irv.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Demo1/3-arapahoe-Byron-3-plus-tied-irv.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+Content-Type: text/csv
+
+< ../../CSVs/Demo1/3-arapahoe-Byron-3-plus-tied-irv.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin3"
+}
+
+### 4. Archuleta County, using 4-archuleta-kempsey-plusByron-4.csv
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin4",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin4",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="4-archuleta-kempsey-plusByron-4.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Demo1/4-archuleta-kempsey-plusByron-4.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/Demo1/4-archuleta-kempsey-plusByron-4.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin4"
+}
+
+### Now run counties n = 5..64, except 7 (Boulder) which is done separately, uploading split-Byron-n for each.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin5",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin5",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-5.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-5.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-5.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin5"
+}
+
+### Now county 6
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+"username":"countyadmin6",
+"password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin6",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-6.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-6.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-6.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin6"
+}
+
+### Now county 8 - note we skipped 7 (Boulder)
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin8",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin8",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-8.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-8.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-8.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin8"
+}
+
+### Now county 9
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin9",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin9")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-9.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-9.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-9.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 10
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin10",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin10")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-10.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-10.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-10.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 11
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin11",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin11")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-11.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-11.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-11.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 12
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin12",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin12")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-12.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-12.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-12.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 13
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin13",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin13")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-13.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-13.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-13.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 14
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin14",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin14")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-14.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-14.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-14.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 15
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin15",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin15")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-15.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-15.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-15.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 16
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin16",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin16")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-16.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-16.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-16.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 17
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin17",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin17")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-17.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-17.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-17.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 18
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin18",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin18")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-18.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-18.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-18.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 19
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin19",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin19")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-19.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-19.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-19.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 20
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin20",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin20")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-20.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-20.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-20.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 21
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin21",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin21")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-21.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-21.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-21.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 22
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin22",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin22")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-22.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-22.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-22.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 23
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin23",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin23")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-23.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-23.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-23.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 24
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin24",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin24")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-24.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-24.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-24.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 25
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin25",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin25")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-25.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-25.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-25.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 26
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin26",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin26")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-26.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-26.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-26.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 27
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin27",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin27")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-27.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-27.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-27.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 28
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin28",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin28")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-28.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-28.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-28.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 29
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin29",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin29")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-29.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-29.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-29.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 30
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin30",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin30")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-30.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-30.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-30.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 31
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin31",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin31")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-31.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-31.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-31.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 32
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin32",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin32")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-32.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-32.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-32.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 33
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin33",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin33")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-33.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-33.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-33.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 34
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin34",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin34")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-34.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-34.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-34.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 35
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin35",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin35")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-35.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-35.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-35.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 36
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin36",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin36")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-36.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-36.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-36.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 37
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin37",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin37")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-37.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-37.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-37.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 38
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin38",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin38")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-38.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-38.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-38.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 39
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin39",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin39")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-39.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-39.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-39.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 40
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin40",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin40")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-40.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-40.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-40.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 41
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin41",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin41")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-41.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-41.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-41.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 42
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin42",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin42")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-42.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-42.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-42.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 43
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin43",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin43")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-43.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-43.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-43.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 44
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin44",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin44")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-44.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-44.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-44.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 45
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin45",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin45")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-45.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-45.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-45.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 46
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin46",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin46")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-46.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-46.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-46.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 47
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin47",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin47")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-47.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-47.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-47.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 48
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin48",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin48")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-48.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-48.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-48.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 49
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin49",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin49")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-49.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-49.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-49.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 50
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin50",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin50")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-50.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-50.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-50.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 51
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin51",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin51")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-51.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-51.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-51.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 52
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin52",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin52")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-52.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-52.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-52.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 53
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin53",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin53")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-53.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-53.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-53.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 54
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin54",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin54")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-54.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-54.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-54.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 55
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin55",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin55")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-55.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-55.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-55.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 56
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin56",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin56")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-56.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-56.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-56.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 57
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin57",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin57")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-57.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-57.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-57.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 58
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin58",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin58")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-58.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-58.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-58.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 59
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin59",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin59")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-59.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-59.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-59.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 60
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin60",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin60")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-60.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-60.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-60.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 61
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin61",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin61")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-61.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-61.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-61.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 62
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin62",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin62")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-62.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-62.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-62.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 63
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin63",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin63")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-63.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-63.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-63.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+
+### Now county 64
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin64",
+  "password":""
+}
+
+> {%
+    client.global.set("countyUsername", "countyadmin64")
+%}
+
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}},
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Byron-64.csv"
+Content-Type: text/csv
+
+< ../../CSVs/split-Byron/Byron-64.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/split-Byron/Byron-64.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":{{countyUsername}}
+}
+

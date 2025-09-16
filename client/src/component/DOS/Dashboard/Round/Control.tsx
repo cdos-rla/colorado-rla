@@ -3,6 +3,8 @@ import * as React from 'react';
 import { Button, Card, Elevation, Intent, ProgressBar } from '@blueprintjs/core';
 import startNextRound from 'corla/action/dos/startNextRound';
 import AuditReportForm from 'corla/component/AuditReportForm';
+import exportAssertionsAsJson from "corla/action/dos/exportAssertionsAsJson";
+import exportAssertionsAsCsv from "corla/action/dos/exportAssertionsAsCsv";
 
 interface ControlProps {
     canRenderReport: boolean;
@@ -39,17 +41,28 @@ class Control extends React.Component<ControlProps, ControlState>  {
                     <div>
                         <h4>Round {currentRound} completed</h4>
                         <Button intent={Intent.PRIMARY}
-                            onClick={waitForNextRound}>
+                                onClick={waitForNextRound}>
                             Start round {currentRound + 1}
                         </Button>
                     </div>
                     <div>
+                        <Button onClick={exportAssertionsAsJson} className='pt-button pt-intent-primary'>
+                            Export Assertions as JSON
+                        </Button>
+                    </div>
                     <div>
-                        {canRenderReport && (<AuditReportForm
-                            canRenderReport={canRenderReport}
-                        /> 
-                        )}
-            </div>                    </div>
+                        <Button onClick={exportAssertionsAsCsv} className='pt-button pt-intent-primary'>
+                            Export Assertions as CSV
+                        </Button>
+                    </div>
+                    <div>
+                        <div>
+                            {canRenderReport && (<AuditReportForm
+                                    canRenderReport={canRenderReport}
+                                />
+                            )}
+                        </div>
+                    </div>
                 </div>
             );
         };

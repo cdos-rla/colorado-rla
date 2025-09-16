@@ -1,0 +1,78 @@
+county_name,contest_name,imprinted_id,ballot_type,choice_per_voting_computer,audit_board_selection,consensus,record_type,audit_board_comment,timestamp,cvr_id,audit_reason
+Lake,PluralityExample2,1-1-10,Ballot 1 - Type 1,"""Gertrude"",""Ho""","""Gertrude"",""Ho""",YES,uploaded,"",2025-03-21 12:41:53.959465,4964824,
+Lake,PluralityExample2,1-1-2,Ballot 1 - Type 1,"""Imogen""","""Imogen""",YES,uploaded,"",2025-03-21 12:35:12.309498,4964816,
+Lake,PluralityExample2,1-1-4,Ballot 1 - Type 1,"""Gertrude"",""Ho""","""Gertrude"",""Ho""",YES,uploaded,"",2025-03-21 12:44:01.375845,4964818,
+Lake,PluralityExample2,1-1-6,Ballot 1 - Type 1,"""Gertrude"",""Ho""","""Gertrude"",""Ho""",YES,uploaded,"",2025-03-21 12:44:24.992935,4964820,
+Lake,PluralityExample2,1-1-7,Ballot 1 - Type 1,"""Gertrude"",""Ho""","""Gertrude"",""Ho""",YES,uploaded,"",2025-03-21 12:44:44.407507,4964821,
+Lake,PluralityTiedExample,1-1-10,Ballot 1 - Type 1,"""Eli""","""Eli""",YES,uploaded,"",2025-03-21 12:41:53.959465,4964824,
+Lake,PluralityTiedExample,1-1-2,Ballot 1 - Type 1,"""Farhad""","""Farhad""",YES,uploaded,"",2025-03-21 12:35:12.309498,4964816,
+Lake,PluralityTiedExample,1-1-4,Ballot 1 - Type 1,"""Farhad""","""Farhad""",YES,uploaded,"",2025-03-21 12:44:01.375845,4964818,
+Lake,PluralityTiedExample,1-1-6,Ballot 1 - Type 1,"""Diego""","""Diego""",YES,uploaded,"",2025-03-21 12:44:24.992935,4964820,
+Lake,PluralityTiedExample,1-1-7,Ballot 1 - Type 1,"""Diego""","""Diego""",YES,uploaded,"",2025-03-21 12:44:44.407507,4964821,
+Lake,TinyExample1,1-1-10,Ballot 1 - Type 1,"""Chuan"",""Alice"",""Bob""","""Chuan"",""Alice"",""Bob""",YES,uploaded,"",2025-03-21 12:41:53.959465,4964824,STATE_WIDE_CONTEST
+Lake,TinyExample1,1-1-2,Ballot 1 - Type 1,"""Alice"",""Bob"",""Chuan""","""Alice"",""Bob"",""Chuan""",YES,uploaded,"",2025-03-21 12:35:12.309498,4964816,STATE_WIDE_CONTEST
+Lake,TinyExample1,1-1-4,Ballot 1 - Type 1,"""Alice"",""Chuan"",""Bob""","""Alice"",""Chuan"",""Bob""",YES,uploaded,"",2025-03-21 12:44:01.375845,4964818,STATE_WIDE_CONTEST
+Lake,TinyExample1,1-1-6,Ballot 1 - Type 1,"""Alice"",""Chuan"",""Bob""","""Alice"",""Chuan"",""Bob""",YES,uploaded,"",2025-03-21 12:44:24.992935,4964820,STATE_WIDE_CONTEST
+Lake,TinyExample1,1-1-7,Ballot 1 - Type 1,"""Bob"",""Alice"",""Chuan""","""Bob"",""Alice"",""Chuan""",YES,uploaded,"",2025-03-21 12:44:44.407507,4964821,STATE_WIDE_CONTEST
+La Plata,TinyExample1,1-1-1,Ballot 1 - Type 1,"""Alice"",""Bob"",""Chuan""","""Alice"",""Bob"",""Chuan""",YES,uploaded,"",2025-03-21 13:02:54.86576,4964890,STATE_WIDE_CONTEST
+La Plata,TinyExample1,1-1-2,Ballot 1 - Type 1,"""Alice"",""Bob"",""Chuan""","""Alice"",""Bob"",""Chuan""",YES,uploaded,"",2025-03-21 12:57:46.80738,4964892,STATE_WIDE_CONTEST
+La Plata,TinyExample1,1-1-3,Ballot 1 - Type 1,"""Alice"",""Bob"",""Chuan""","""Alice"",""Bob"",""Chuan""",YES,uploaded,"",2025-03-21 12:58:52.04826,4964894,STATE_WIDE_CONTEST
+La Plata,TinyExample1,1-1-7,Ballot 1 - Type 1,"""Alice""","""Alice""",YES,uploaded,"",2025-03-21 12:59:45.454819,4964902,STATE_WIDE_CONTEST
+La Plata,TinyExample1,1-1-9,Ballot 1 - Type 1,"","",YES,uploaded,"",2025-03-21 13:01:11.153223,4964906,STATE_WIDE_CONTEST
+Las Animas,Example3,1-1-20,Ballot 1 - Type 1,"""Cherry"",""Dinh""",,,uploaded,,,4965086,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-23,Ballot 1 - Type 1,"""Cherry"",""Dinh""",,,uploaded,,,4965089,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-28,Ballot 1 - Type 1,"""Cherry"",""Dinh""",,,uploaded,,,4965094,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-31,Ballot 1 - Type 1,"""Cherry"",""Dinh""",,,uploaded,,,4965097,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-32,Ballot 1 - Type 1,"""Cherry"",""Dinh""",,,uploaded,,,4965098,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-33,Ballot 1 - Type 1,"""Cherry"",""Dinh""",,,uploaded,,,4965099,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-4,Ballot 1 - Type 1,"""Cherry"",""Dinh""","""Aaron"",""Dinh""",YES,uploaded,"",2025-03-21 13:16:56.087375,4965070,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-40,Ballot 1 - Type 1,"""Cherry"",""Dinh""",,,uploaded,,,4965106,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-41,Ballot 1 - Type 1,"""Cherry"",""Dinh""",,,uploaded,,,4965107,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-46,Ballot 1 - Type 1,"""Cherry"",""Bernice"",""Dinh""",,,uploaded,,,4965112,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-48,Ballot 1 - Type 1,"""Cherry"",""Bernice"",""Dinh""",,,uploaded,,,4965114,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-49,Ballot 1 - Type 1,"""Cherry"",""Bernice"",""Dinh""",,,uploaded,,,4965115,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-55,Ballot 1 - Type 1,"""Cherry"",""Bernice"",""Dinh""",,,uploaded,,,4965121,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-56,Ballot 1 - Type 1,"""Cherry"",""Bernice"",""Dinh""",,,uploaded,,,4965122,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-66,Ballot 1 - Type 1,"""Cherry"",""Bernice"",""Dinh""",,,uploaded,,,4965132,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-74,Ballot 1 - Type 1,"""Cherry"",""Bernice"",""Dinh""",,,uploaded,,,4965140,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-76,Ballot 1 - Type 1,"""Cherry"",""Bernice"",""Dinh""",,,uploaded,,,4965142,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-8,Ballot 1 - Type 1,"""Cherry"",""Dinh""","""Cherry"",""Dinh""",YES,uploaded,"",2025-03-21 13:25:18.044172,4965074,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-1-9,Ballot 1 - Type 1,"""Cherry"",""Dinh""",,,uploaded,,,4965075,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-13,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965157,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-14,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965158,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-15,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965159,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-18,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965162,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-26,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965170,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-30,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965174,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-31,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965175,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-36,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965180,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-42,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965186,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-43,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965187,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-44,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965188,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-46,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965190,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-47,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965191,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-48,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965192,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-49,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965193,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-53,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965197,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-54,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965198,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-57,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965201,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-59,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965203,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-61,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965205,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-66,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965210,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-70,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965214,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-72,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965216,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-76,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965220,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-2-8,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965152,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-11,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965233,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-2,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965224,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-25,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965247,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-26,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965248,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-27,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965249,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-34,Ballot 1 - Type 1,"""Bernice"",""Dinh"",""Cherry""",,,uploaded,,,4965256,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-40,Ballot 1 - Type 1,"""Bernice"",""Dinh"",""Cherry""",,,uploaded,,,4965262,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-48,Ballot 1 - Type 1,"""Bernice"",""Dinh"",""Cherry""",,,uploaded,,,4965270,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-50,Ballot 1 - Type 1,"""Bernice"",""Dinh"",""Cherry""",,,uploaded,,,4965272,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-55,Ballot 1 - Type 1,"""Bernice"",""Dinh"",""Cherry""",,,uploaded,,,4965277,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-59,Ballot 1 - Type 1,"""Bernice"",""Dinh"",""Cherry""",,,uploaded,,,4965281,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-62,Ballot 1 - Type 1,"""Bernice"",""Dinh"",""Cherry""",,,uploaded,,,4965284,COUNTY_WIDE_CONTEST
+Las Animas,Example3,1-3-7,Ballot 1 - Type 1,"""Aaron"",""Bernice"",""Cherry"",""Dinh""",,,uploaded,,,4965229,COUNTY_WIDE_CONTEST

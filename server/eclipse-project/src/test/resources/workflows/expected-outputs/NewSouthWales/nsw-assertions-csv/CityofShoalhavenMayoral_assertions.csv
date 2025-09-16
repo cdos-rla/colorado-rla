@@ -1,0 +1,20 @@
+Contest name,City of Shoalhaven Mayoral
+Candidates,"GREEN Paul,KITCHENER Mark,WHITE Patricia,WATSON Greg,DIGIGLIO Nina,FINDLEY Amanda"
+Winner,FINDLEY Amanda
+Total universe,67030
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,1614,"5"
+Diluted margin,0.02407877,"5"
+Raire difficulty,41.53035935563817,"5"
+Current risk,1.00000000,"1, 2, 3, 4, 5"
+Optimistic samples to audit,303,"5"
+Estimated samples to audit,303,"5"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,FINDLEY Amanda,KITCHENER Mark,,8.6703,7731,0.1153,1.00000000,64,64,0,0,0,0,0
+2,NEB,FINDLEY Amanda,WHITE Patricia,,8.9481,7491,0.1118,1.00000000,66,66,0,0,0,0,0
+3,NEB,FINDLEY Amanda,WATSON Greg,,10.3298,6489,0.0968,1.00000000,76,76,0,0,0,0,0
+4,NEB,FINDLEY Amanda,DIGIGLIO Nina,,6.0095,11154,0.1664,1.00000000,44,44,0,0,0,0,0
+5,NEN,FINDLEY Amanda,GREEN Paul,"GREEN Paul,FINDLEY Amanda",41.5304,1614,0.0241,1.00000000,303,303,0,0,0,0,0

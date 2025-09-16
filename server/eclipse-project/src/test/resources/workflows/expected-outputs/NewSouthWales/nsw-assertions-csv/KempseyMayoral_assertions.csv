@@ -1,0 +1,21 @@
+Contest name,Kempsey Mayoral
+Candidates,"HAUVILLE Leo,EVANS Andrew,BAIN Arthur,CAMPBELL Liz,SAUL Dean,IRWIN Troy,RAEBURN Bruce"
+Winner,HAUVILLE Leo
+Total universe,17585
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,387,"6"
+Diluted margin,0.02200739,"6"
+Raire difficulty,45.43927648578811,"6"
+Current risk,1.00000000,"1, 2, 3, 4, 5, 6"
+Optimistic samples to audit,332,"6"
+Estimated samples to audit,332,"6"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,HAUVILLE Leo,EVANS Andrew,,5.899,2981,0.1695,1.00000000,43,43,0,0,0,0,0
+2,NEB,HAUVILLE Leo,BAIN Arthur,,10.4797,1678,0.0954,1.00000000,77,77,0,0,0,0,0
+3,NEB,HAUVILLE Leo,SAUL Dean,,6.5591,2681,0.1525,1.00000000,48,48,0,0,0,0,0
+4,NEB,HAUVILLE Leo,IRWIN Troy,,6.0223,2920,0.1661,1.00000000,44,44,0,0,0,0,0
+5,NEB,HAUVILLE Leo,RAEBURN Bruce,,5.3793,3269,0.1859,1.00000000,40,40,0,0,0,0,0
+6,NEN,HAUVILLE Leo,CAMPBELL Liz,"HAUVILLE Leo,CAMPBELL Liz",45.4393,387,0.022,1.00000000,332,332,0,0,0,0,0

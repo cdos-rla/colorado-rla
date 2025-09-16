@@ -1,0 +1,20 @@
+Contest name,City of Wollongong Mayoral
+Candidates,"GLYKIS Marie,DORAHY John,BROWN Tania,BRADBERY Gordon,ANTHONY Andrew,COX Mithra"
+Winner,BRADBERY Gordon
+Total universe,127240
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,2666,"5"
+Diluted margin,0.02095253,"5"
+Raire difficulty,47.72693173293323,"5"
+Current risk,1.00000000,"1, 2, 3, 4, 5"
+Optimistic samples to audit,348,"5"
+Estimated samples to audit,348,"5"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,BRADBERY Gordon,GLYKIS Marie,,5.1375,24767,0.1946,1.00000000,38,38,0,0,0,0,0
+2,NEB,BRADBERY Gordon,DORAHY John,,15.3338,8298,0.0652,1.00000000,112,112,0,0,0,0,0
+3,NEB,BRADBERY Gordon,ANTHONY Andrew,,6.1106,20823,0.1637,1.00000000,45,45,0,0,0,0,0
+4,NEB,BRADBERY Gordon,COX Mithra,,11.8143,10770,0.0846,1.00000000,87,87,0,0,0,0,0
+5,NEN,BRADBERY Gordon,BROWN Tania,"BROWN Tania,BRADBERY Gordon",47.7269,2666,0.021,1.00000000,348,348,0,0,0,0,0

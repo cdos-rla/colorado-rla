@@ -30,14 +30,14 @@ const SignedInPage = (props: PageProps) => {
     const main =
         <div>
             <div>
-                <h2>Audit Board { auditBoardIndex + 1 }</h2>
+                <h1 className={'mediumHeader'}>Audit Board { auditBoardIndex + 1 }</h1>
                 <Card>
-                    <h5>The Audit Board members below are signed in.
-                    To sign the Audit Board out, click the "Sign Out" button below.</h5>
+                    <b>The Audit Board members below are signed in.
+                        To sign the Audit Board out, click the "Sign Out" button below.</b>
                 </Card>
             </div>
             <Card>
-                <h4>Board Member 1:</h4>
+                <h2 className={'tinyHeader'}>Board Member 1:</h2>
                 <div>
                     Name: { members[0].firstName } { members[0].lastName }
                 </div>
@@ -46,7 +46,7 @@ const SignedInPage = (props: PageProps) => {
                 </div>
             </Card>
             <Card>
-                <h4>Board Member 2:</h4>
+                <h2 className={'tinyHeader'}>Board Member 2:</h2>
                 <div>
                     Name: { members[1].firstName } { members[1].lastName }
                 </div>

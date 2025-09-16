@@ -1,0 +1,58 @@
+### 7. Boulder County manifest, using /Boulder23/Boulder-IRV-Manifest.csv.
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin7",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin7",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the manifest and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="Boulder-IRV-Manifest.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Boulder23/Boulder-IRV-Manifest.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+Content-Type: text/csv
+
+< ../../CSVs/Boulder23/Boulder-IRV-Manifest.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const manifestUploadResponse = response.body;
+    client.global.set("manifestUploadResponse", manifestUploadResponse)
+%}
+
+### Run import on ballot manifest
+POST  http://localhost:8888/import-ballot-manifest
+Content-Type: application/json
+
+{{manifestUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin7"
+}
+

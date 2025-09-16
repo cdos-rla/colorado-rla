@@ -1,0 +1,6 @@
+County,Contest Name,Contest Type,Ballots Cast,Total ballots,Diluted Margin,Sample Size
+Lake,PluralityExample2,PLURALITY,10,10,0.6,10
+Lake,PluralityTiedExample,PLURALITY,10,10,0,0
+Larimer,Tied_IRV,IRV,10,10,0,0
+Las Animas,Example3,IRV,225,225,0.11,66
+Multiple,TinyExample1,IRV,20,20,0.6,13

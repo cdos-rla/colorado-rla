@@ -1,0 +1,20 @@
+Contest name,Example3
+Candidates,"Aaron,Bernice,Cherry,Dinh"
+Winner,Cherry
+Total universe,225
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,25,"2"
+Diluted margin,0.1111111111111111,"2"
+Raire difficulty,9.0,"2"
+Current risk,1.00,"1, 2, 4"
+Optimistic samples to audit,127,"2"
+Estimated samples to audit,191,"2"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,Cherry,Dinh,,5.0,45,0.2,1.00,107,71,1,0,0,0,0
+2,NEN,Cherry,Aaron,"Aaron,Cherry",9.0,25,0.1111,1.00,191,127,1,0,0,0,0
+3,NEN,Aaron,Bernice,"Aaron,Bernice,Cherry",3.75,60,0.2667,0.51,25,25,0,0,0,1,0
+4,NEN,Cherry,Bernice,"Aaron,Bernice,Cherry",5.0,45,0.2,1.00,66,44,0,1,0,0,0
+5,NEN,Aaron,Dinh,"Aaron,Bernice,Cherry,Dinh",2.25,100,0.4444,0.42,15,15,0,0,0,1,0

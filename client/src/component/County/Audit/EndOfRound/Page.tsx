@@ -86,16 +86,16 @@ const EndOfRoundPage = (props: PageProps) => {
 
     const main =
         <div>
-            <h3>Audit board { auditBoardIndex + 1 }: Sign off on round { roundNumber }</h3>
+            <h1 className={'smallHeader'}>Audit board { auditBoardIndex + 1 }: Sign off on round { roundNumber }</h1>
             <Card>
-              <h3>
+              <h2 className={'smallHeader'}>
                 Congratulations! You have completed reporting the votes on all ballots
                 randomly selected for this round of the risk-limiting audit of the
                 <span> { countyName }</span> County <span> { electionDate }</span>
                 <span> { electionType}</span>. After you have signed off on the
                 round, you will be taken back to the main audit screen to await
                 further instruction.
-              </h3>
+              </h2>
             </Card>
 
             <Card>

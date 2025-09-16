@@ -21,19 +21,14 @@ import java.util.Map;
 import java.util.OptionalInt;
 import java.util.Set;
 
+import au.org.democracydevelopers.corla.model.ContestType;
+import au.org.democracydevelopers.corla.model.IRVComparisonAudit;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import us.freeandfair.corla.math.Audit;
-import us.freeandfair.corla.model.AuditReason;
-import us.freeandfair.corla.model.CVRAuditInfo;
-import us.freeandfair.corla.model.CVRContestInfo;
+import us.freeandfair.corla.model.*;
 import us.freeandfair.corla.model.CVRContestInfo.ConsensusValue;
-import us.freeandfair.corla.model.CastVoteRecord;
-import us.freeandfair.corla.model.ContestResult;
-import us.freeandfair.corla.model.ComparisonAudit;
-import us.freeandfair.corla.model.CountyDashboard;
-import us.freeandfair.corla.model.Round;
 import us.freeandfair.corla.persistence.Persistence;
 import us.freeandfair.corla.query.CastVoteRecordQueries;
 
@@ -162,19 +157,49 @@ public final class ComparisonAuditController {
   }
 
   /**
-   * @param the_cdb The dashboard.
-   * @return true if an audit round is started for the dashboard, false otherwise;
-   * an audit round might not be started if there are no driving contests in the
-   * county, or if the county needs to audit 0 ballots to meet the risk limit.
+   * Creates a ComparisonAudit (of the appropriate type - either IRV or plurality) for the given contest and risk limit.
+   * No data is persisted. Used both for auditing and sample size estimation.
+   *
+   * @param contestResult   Contest result for the contest.
+   * @param riskLimit       Risk limit for the audit.
+   * @return ComparisonAudit of the appropriate type for the given contest.
+   */
+  public static ComparisonAudit createAuditOfCorrectType(final ContestResult contestResult,
+                                                   final BigDecimal riskLimit) {
+    final String prefix = "[createAuditOfCorrectType]";
+
+    // If it is all plurality, make a (plurality) ComparisonAudit. This will also be true if the contestResult has no
+    // contests.
+    if (contestResult.getContests().stream().map(Contest::description).allMatch(d -> d.equals(ContestType.PLURALITY.toString()))) {
+      return new ComparisonAudit(contestResult, riskLimit, contestResult.getDilutedMargin(), Audit.GAMMA, contestResult.getAuditReason());
+    }
+
+    // If it is all IRV, make an IRVComparisonAudit.
+    if (contestResult.getContests().stream().map(Contest::description).allMatch(d -> d.equals(ContestType.IRV.toString()))) {
+      return new IRVComparisonAudit(contestResult, riskLimit, contestResult.getAuditReason());
+    }
+
+    // If it is a mix of different types of contests, or a contest type that we don't recognize, that is an error.
+    final String msg = String.format("%s Contest %s has inconsistent or unrecognized contest types.", prefix,
+            contestResult.getContestName());
+    LOGGER.error(msg);
+    throw new RuntimeException(msg);
+  }
+
+  /**
+   * Creates a ComparisonAudit object for the given contest, and persists the object in the database.
+   *
+   * @param contestResult  Contest result for the contest.
+   * @param riskLimit      Risk limit for the audit.
+   * @return ComparisonAudit for the contest.
    */
   public static ComparisonAudit createAudit(final ContestResult contestResult,
                                             final BigDecimal riskLimit) {
-    final ComparisonAudit ca =
-      new ComparisonAudit(contestResult, riskLimit, contestResult.getDilutedMargin(),
-                          Audit.GAMMA, contestResult.getAuditReason());
+    final ComparisonAudit ca = createAuditOfCorrectType(contestResult, riskLimit);
+
     Persistence.save(ca);
-    LOGGER.debug(String.format("[createAudit: contestResult=%s, ComparisonAudit=%s]",
-                               contestResult, ca));
+    LOGGER.debug(String.format("[createAudit: contestResult=%s, ComparisonAudit=%s]", contestResult, ca));
+
     return ca;
   }
 
@@ -207,13 +232,14 @@ public final class ComparisonAuditController {
                                 final String comment) {
 
     LOGGER.info("[reaudit] cvr: " + cvr.toString());
-    final CVRAuditInfo cai =
-      Persistence.getByID(cvr.id(), CVRAuditInfo.class);
-    final CastVoteRecord oldAcvr = cai.acvr();
-    if (null == oldAcvr) {
+
+    // DemocracyDevelopers: If this cvr has not been audited before, cai will be null.
+    final CVRAuditInfo cai = Persistence.getByID(cvr.id(), CVRAuditInfo.class);
+    if (cai == null || cai.acvr() == null) {
       LOGGER.error("can't reaudit a cvr that hasn't been audited");
       return false;
     }
+    final CastVoteRecord oldAcvr = cai.acvr();
 
     final Integer former_count = unaudit(cdb, cai);
     LOGGER.debug("[reaudit] former_count: " + former_count.toString());

@@ -33,7 +33,7 @@ class UploadedFileCard extends React.Component<UploadedFileProps, UploadedFileSt
         if (null === file || undefined === file) {
             return (
                 <div className='uploaded-file mt-default'>
-                    <h4>{ description }</h4>
+                    <h2 style={{fontSize: '18px'}}>{ description }</h2>
                     <p>Not yet uploaded</p>
                 </div>
             );
@@ -127,7 +127,7 @@ class UploadedFileCard extends React.Component<UploadedFileProps, UploadedFileSt
 
             return (
                 <div className='uploaded-file mt-default'>
-                    <h4>{ description }</h4>
+                    <h2 style={{fontSize: '18px'}}>{ description }</h2>
                     <dl className='uploaded-file-details'>
                         <dt>File name</dt>
                         <dd>{ file.fileName }</dd>

@@ -4,6 +4,7 @@ declare namespace DOS {
         auditedContests: DOS.AuditedContests;
         auditTypes: ContestAuditTypes;
         contests: DOS.Contests;
+        contestsIgnoringManifests: DOS.Contests;
         countyStatus: DOS.CountyStatuses;
         canonicalContests?: DOS.CanonicalContests;
         canonicalChoices?: DOS.CanonicalChoices;
@@ -15,8 +16,21 @@ declare namespace DOS {
         seed?: string;
         settingAuditInfo?: boolean;
         standardizingContests?: boolean;
+        generatingAssertions?: boolean;
+        assertionsGenerated?: boolean;
+        generateAssertionsSummaries: DOS.GenerateAssertionsSummaryWithCounty[];
+        assertionGenerationStatuses?: DOS.AssertionGenerationStatuses;
+        raireServiceStatus: string;
         type: 'DOS';
     }
+
+    interface AssertionStatus {
+        contestName: string;
+        succeeded: boolean;
+        retry: boolean;
+    }
+
+    interface AssertionGenerationStatuses extends Array<AssertionStatus> {}
 
     interface EstimatedBallotsToAudit {
         [contestId: number]: number;
@@ -36,6 +50,22 @@ declare namespace DOS {
     interface DiscrepancyCount {
         // The index type is really limited to `DiscrepancyType`.
         [type: string]: number;
+    }
+
+    // Exactly matches the structure of the same name in the server.
+    interface GenerateAssertionsSummary {
+        id: number;
+        contestName: string;
+        winner: string;
+        error: string;
+        warning: string;
+        message: string;
+    }
+
+    // Exactly matches the record of the same name in the server.
+    interface GenerateAssertionsSummaryWithCounty {
+        summary: GenerateAssertionsSummary;
+        countyName: string;
     }
 
     interface CanonicalContests {

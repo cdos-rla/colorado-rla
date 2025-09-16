@@ -2,45 +2,30 @@ package us.freeandfair.corla.query;
 
 import java.io.ByteArrayOutputStream;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.*;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.AfterTest;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testng.annotations.*;
+
 import static org.testng.Assert.*;
 
 import us.freeandfair.corla.persistence.Persistence;
-import us.freeandfair.corla.query.Setup;
-import us.freeandfair.corla.query.ExportQueries;
+
+
 
 import org.hibernate.Session;
-import org.hibernate.query.Query;
-
+import au.org.democracydevelopers.corla.util.TestClassWithDatabase;
 
 
 @Test(groups = {"integration"})
-public class ExportQueriesTest {
+public class ExportQueriesTest extends TestClassWithDatabase {
 
-  @BeforeTest()
-  public void setUp() {
-    Setup.setProperties();
-    Persistence.beginTransaction();
+  @BeforeMethod
+  public static void beforeEach() {
     insertSeed();
   }
 
-  @AfterTest()
-  public void tearDown() {
-    try {
-    Persistence.rollbackTransaction();
-    } catch (Exception e) {
-    }
-  }
-
-
-  private void insertSeed() {
+  private static void insertSeed() {
     final Session s = Persistence.currentSession();
     String query = "insert into dos_dashboard (id,seed) values (99,'1234');";
     s.createNativeQuery(query).executeUpdate();

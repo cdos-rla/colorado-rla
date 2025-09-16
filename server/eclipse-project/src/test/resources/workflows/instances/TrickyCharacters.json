@@ -1,0 +1,81 @@
+{
+  "NAME": "TrickyCharacters",
+  "RISK_LIMIT": 0.03,
+  "SEED": "23987213984712389471238947129384128974",
+  "SQLS": [
+    "SQL/tricky-character-assertions.sql"
+  ],
+  "CVRS": [
+    "src/test/resources/CSVs/Tiny-IRV-Examples/ThreeTrickyCharacterCandidatesTenVotes.csv"
+  ],
+  "MANIFESTS": [
+    "src/test/resources/CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv"
+  ],
+  "CANONICAL_LIST": "src/test/resources/CSVs/Tiny-IRV-Examples/Adams_Only_Tiny_IRV_Canonical_List.csv",
+  "CONTEST_NAME_CHANGE" : {
+  },
+  "CANDIDATE_NAME_CHANGE" : {
+    "Example3" : {
+    }
+  },
+  "CONTESTS_BY_SELECTED_COUNTIES" : {
+    "Adams" : [
+      "TinyExample1"
+    ]
+  },
+  "TARGETS": {
+    "TinyExample1" : "COUNTY_WIDE_CONTEST"
+  },
+  "WINNERS": {
+    "TinyExample1" : "A£ϒç©é"
+  },
+  "RAW_MARGINS" : {
+    "TinyExample1" : 4
+  },
+  "DILUTED_MARGINS": {
+    "TinyExample1" : 0.4
+  },
+  "EXPECTED_SAMPLES": {
+    "TinyExample1": 10
+  },
+  "FINAL_EXPECTED_AUDITED_BALLOTS": {
+    "TinyExample1": 10
+  },
+  "FINAL_EXPECTED_OPTIMISTIC_SAMPLES": {
+    "TinyExample1": 0
+  },
+  "FINAL_EXPECTED_ESTIMATED_SAMPLES": {
+    "TinyExample1": 0
+  },
+  "IRV_CONTESTS": [
+    "TinyExample1"
+  ],
+
+  "PLURALITY_TABULATION" : {
+  },
+
+  "PLURALITY_COUNTY_TABULATION" : {
+  },
+
+  "EXPECTED_ROUNDS": 1,
+  "PHANTOM_BALLOTS": {
+  },
+  "DISAGREEMENTS" : {
+  },
+  "DISCREPANT_AUDITED_BALLOT_CHOICES": {
+  },
+  "REAUDITS": {
+  },
+  "CONTEST_RESULTS": {
+    "1": {
+      "TinyExample1": {
+        "one_over_count": 0,
+        "two_over_count": 0,
+        "one_under_count": 0,
+        "two_under_count": 0,
+        "other_count": 0,
+        "disagreements": 0
+      }
+    }
+  }
+}

@@ -60,7 +60,7 @@ const BallotListStage = (props: BallotListStageProps) => {
 
     return (
         <div className='rla-page'>
-            <h2>Audit Board { `${auditBoardIndex + 1 }` }: Ballot Cards to Audit</h2>
+            <h1 className={'mediumHeader'}>Audit Board { `${auditBoardIndex + 1 }` }: Ballot Cards to Audit</h1>
             <Card>
                     <div>
                         The Secretary of State has established the following risk limit(s) for

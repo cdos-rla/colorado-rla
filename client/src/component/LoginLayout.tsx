@@ -1,3 +1,4 @@
+import SkipToMain from 'corla/component/SkipToMain';
 import * as React from 'react';
 
 import LicenseFooter from 'corla/component/LicenseFooter';
@@ -10,7 +11,8 @@ interface Props {
 const LoginLayout = (props: Props) => {
     return (
         <div className='l-wrapper'>
-            <div className='l-main'>
+            <SkipToMain />
+            <div id='main' className='l-main'>
                 { props.main }
                 <Helpdesk/>
             </div>

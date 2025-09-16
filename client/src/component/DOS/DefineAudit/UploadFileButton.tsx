@@ -40,25 +40,27 @@ class UploadFileButton extends React.Component<UploadFileButtonProps, UploadFile
         return (
             <div>
                 <div className='dropzone'>
-                    <Dropzone onDrop={ this.onDrop }
-                              activeStyle={ activeStyle }
-                              multiple={ false }
-                              style={ dropStyle }>
-                        <div>
-                            <strong>
-                                Drag and drop or click here to select the file you wish to use as the source
-                                for standardized contest names across jurisdictions.
-                            </strong>
-                            <div className='mt-default'>File requirements:</div>
-                            <ul>
-                                <li>File must be CSV formatted, with a <em>.csv</em> or <em>.txt</em>
-                                    &nbsp;extension. Other file types are not accepted</li>
-                                <li>The file must contain a header row consisting of <em>CountyName</em>
-                                    &nbsp;and <em>ContestName</em>.</li>
-                                <li>The file may not contain duplicate records</li>
-                            </ul>
-                        </div>
-                    </Dropzone>
+                    <label>
+                        <Dropzone onDrop={ this.onDrop }
+                                  activeStyle={ activeStyle }
+                                  multiple={ false }
+                                  style={ dropStyle }>
+                            <div>
+                                <strong>
+                                    Drag and drop or click here to select the file you wish to use as the source
+                                    for standardized contest names across jurisdictions.
+                                </strong>
+                                <div className='mt-default'>File requirements:</div>
+                                <ul>
+                                    <li>File must be CSV formatted, with a <em>.csv</em> or <em>.txt</em>
+                                        &nbsp;extension. Other file types are not accepted</li>
+                                    <li>The file must contain a header row consisting of <em>CountyName</em>
+                                        &nbsp;and <em>ContestName</em>.</li>
+                                    <li>The file may not contain duplicate records</li>
+                                </ul>
+                            </div>
+                        </Dropzone>
+                    </label>
                 </div>
 
                 <aside>

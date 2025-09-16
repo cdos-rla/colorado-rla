@@ -23,7 +23,7 @@ const SignInForm = (props: FormProps) => {
 
     return (
         <div>
-            <h3>Audit Board Member</h3>
+            <h2 className={'smallHeader'}>Audit Board Member</h2>
             <Card>
                 <label>
                     <strong>First Name: </strong>

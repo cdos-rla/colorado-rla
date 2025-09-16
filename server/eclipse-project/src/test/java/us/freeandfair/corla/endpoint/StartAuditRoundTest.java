@@ -2,35 +2,22 @@ package us.freeandfair.corla.endpoint;
 
 import static org.testng.Assert.assertEquals;
 
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testng.annotations.*;
 
 import us.freeandfair.corla.asm.CountyDashboardASM;
 import us.freeandfair.corla.model.County;
 import us.freeandfair.corla.model.CountyDashboard;
 import us.freeandfair.corla.persistence.Persistence;
 import us.freeandfair.corla.query.Setup;
+import au.org.democracydevelopers.corla.util.TestClassWithDatabase;
+
+import java.util.Properties;
 
 @Test(groups = {"integration"})
-public class StartAuditRoundTest {
+public class StartAuditRoundTest extends TestClassWithDatabase {
 
   private StartAuditRoundTest() {};
-
-
-  @BeforeTest()
-  public void setUp() {
-    Setup.setProperties();
-    Persistence.beginTransaction();
-  }
-
-  @AfterTest()
-  public void tearDown() {
-    try {
-      Persistence.rollbackTransaction();
-    } catch (Exception e) {
-    }
-  }
 
   // this test doesn't do much yet
   @Test()

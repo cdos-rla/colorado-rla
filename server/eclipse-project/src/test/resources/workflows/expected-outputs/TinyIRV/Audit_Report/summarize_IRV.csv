@@ -1,0 +1,4 @@
+contest_name,target_reason,winner,error,message
+TinyExample1,STATE_WIDE_CONTEST,Alice,"",""
+Example3,COUNTY_WIDE_CONTEST,Cherry,"",""
+Tied_IRV,Not targeted,"",TIED_WINNERS,"Tied winners: Alice, Chuan."

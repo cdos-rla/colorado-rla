@@ -1,0 +1,20 @@
+Contest name,Example3,,,,,,,,,,,,,,
+Candidates,"Aaron,Bernice,Cherry,Dinh",,,,,,,,,,,,,,
+Winner,Cherry,,,,,,,,,,,,,,
+Total universe,225,,,,,,,,,,,,,,
+Risk limit,0.03,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+Extreme item,Value,Assertion IDs,,,,,,,,,,,,,
+Margin,25,2,,,,,,,,,,,,,
+Diluted margin,0.111111111111111,2,,,,,,,,,,,,,
+Raire difficulty,9,2,,,,,,,,,,,,,
+Current risk,1,"1, 2, 3, 4, 5",,,,,,,,,,,,,
+Optimistic samples to audit,66,2,,,,,,,,,,,,,
+Estimated samples to audit,66,2,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,Cherry,Dinh,,5,45,0.2,1,37,37,0,0,0,0,0
+2,NEN,Cherry,Aaron,"Aaron,Cherry",9,25,0.1111,1,66,66,0,0,0,0,0
+3,NEN,Aaron,Bernice,"Aaron,Bernice,Cherry",3.75,60,0.2667,1,28,28,0,0,0,0,0
+4,NEN,Cherry,Bernice,"Aaron,Bernice,Cherry",5,45,0.2,1,37,37,0,0,0,0,0
+5,NEN,Aaron,Dinh,"Aaron,Bernice,Cherry,Dinh",2.25,100,0.4444,1,17,17,0,0,0,0,0

@@ -10,18 +10,19 @@ SELECT
    cr.winners_allowed,
    cr.ballot_count AS ballot_card_count,
    agg.contest_ballot_card_count,
+   -- Note these will only be correct for IRV after a run of ExportQueries::updateIRVContestResults.
    SUBSTRING(cr.winners, 2, LENGTH(cr.winners) - 2) AS winners,
    cr.min_margin,
    ca.risk_limit,
    ca.audited_sample_count,
    ca.two_vote_over_count,
    ca.one_vote_over_count,
+   ca.other_count as zero_discrepancy_count,
    ca.one_vote_under_count,
    ca.two_vote_under_count,
    ca.disagreement_count,
-   ca.other_count,
    ca.gamma,
-   ROUND(ca.overstatements, 0) AS overstatements,
+   ROUND(ca.one_vote_over_count+ca.two_vote_over_count, 0) AS overstatements,
    ca.optimistic_samples_to_audit,
    ca.estimated_samples_to_audit
 FROM 

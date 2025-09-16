@@ -23,10 +23,10 @@ const NEXT_PATH = '/sos/audit/standardize-choices';
 const PREV_PATH = '/sos/audit';
 
 const contestsToDisplay = (
-    contests: DOS.Contests,
+    contestsIgnoringManifests: DOS.Contests,
     canonicalContests: DOS.CanonicalContests,
 ): DOS.Contests => {
-    return _.reduce(contests, (acc: DOS.Contests, contest: Contest) => {
+    return _.reduce(contestsIgnoringManifests, (acc: DOS.Contests, contest: Contest) => {
         const countyName = counties[contest.countyId].name;
         const countyStandards = canonicalContests[countyName] || [];
 
@@ -40,24 +40,24 @@ const contestsToDisplay = (
 };
 
 interface Props {
-    areContestsLoaded: boolean;
+    areCVRsLoaded: boolean;
     asm: DOS.ASMState;
-    contests: DOS.Contests;
+    contestsIgnoringManifests: DOS.Contests;
     canonicalContests: DOS.CanonicalContests;
     history: History;
 }
 
 const StandardizeContestsPageContainer = (props: Props) => {
     const {
-        areContestsLoaded,
+        areCVRsLoaded,
         asm,
         canonicalContests,
-        contests,
+        contestsIgnoringManifests,
         history,
     } = props;
 
     const nextPage = (data: DOS.Form.StandardizeContests.FormData) => {
-        standardizeContests(contests, data).then(function(r) {
+        standardizeContests(contestsIgnoringManifests, data).then(function(r) {
             // use the result here
             if (r.ok) {
                 history.push(NEXT_PATH);
@@ -79,33 +79,34 @@ const StandardizeContestsPageContainer = (props: Props) => {
 
     let filteredContests = {};
 
-    if (areContestsLoaded) {
-        filteredContests = contestsToDisplay(contests, canonicalContests);
+    if (areCVRsLoaded) {
+        filteredContests = contestsToDisplay(contestsIgnoringManifests, canonicalContests);
 
         if (_.isEmpty(filteredContests)) {
             return <Redirect to={ NEXT_PATH } />;
         }
     }
 
-    return <StandardizeContestsPage areContestsLoaded={ areContestsLoaded }
+    return <StandardizeContestsPage areCVRsLoaded={ areCVRsLoaded }
                                     back={ previousPage }
                                     canonicalContests={ canonicalContests }
-                                    contests={ filteredContests }
+                                    contestsIgnoringManifests={ filteredContests }
                                     forward={ nextPage } />;
 };
 
 const mapStateToProps = (state: DOS.AppState) => {
     const canonicalContests = state.canonicalContests;
-    const contests = state.contests;
-    const areContestsLoaded = !_.isEmpty(contests)
+    const contestsIgnoringManifests = state.contestsIgnoringManifests;
+    const contests = state.contests; // VT: Now apparently unused.
+    const areCVRsLoaded = !_.isEmpty(contestsIgnoringManifests)
         && !_.isEmpty(canonicalContests)
         && !state.settingAuditInfo;
 
     return {
-        areContestsLoaded,
+        areCVRsLoaded,
         asm: state.asm,
         canonicalContests,
-        contests,
+        contestsIgnoringManifests,
     };
 };
 

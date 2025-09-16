@@ -1,0 +1,18 @@
+Contest name,Singleton Mayoral
+Candidates,"MOORE Sue,THOMPSON Danny,JARRETT Tony,CHARLTON Belinda"
+Winner,MOORE Sue
+Total universe,13755
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,1135,"3"
+Diluted margin,0.08251545,"3"
+Raire difficulty,12.118942731277533,"3"
+Current risk,1.00000000,"1, 2, 3"
+Optimistic samples to audit,89,"3"
+Estimated samples to audit,89,"3"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,MOORE Sue,JARRETT Tony,,11.0216,1248,0.0907,1.00000000,81,81,0,0,0,0,0
+2,NEB,MOORE Sue,CHARLTON Belinda,,5.2924,2599,0.1889,1.00000000,39,39,0,0,0,0,0
+3,NEN,MOORE Sue,THOMPSON Danny,"MOORE Sue,THOMPSON Danny",12.1189,1135,0.0825,1.00000000,89,89,0,0,0,0,0

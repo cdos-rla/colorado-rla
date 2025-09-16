@@ -1,0 +1,7 @@
+CountyName,ContestName,ContestChoices
+Lake,TinyExample1,"Alice, Bob, Chuan"
+Lake,PluralityTiedExample,"Diego, Eli, Farhad"
+Lake,PluralityExample2,"Gertrude, Ho, Imogen"
+La Plata,TinyExample1,"Alice, Bob, Chuan"
+Larimer,Tied_IRV,"Alice, Bob, Chuan"
+Las Animas,Example3,"Aaron,Bernice,Cherry,Dinh"

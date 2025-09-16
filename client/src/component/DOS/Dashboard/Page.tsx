@@ -1,7 +1,7 @@
 import * as React from 'react';
 import IdleDialog from '../../IdleDialogState';
 
-import { Tab, Tabs } from '@blueprintjs/core';
+import {Alignment, Tab, Tabs} from '@blueprintjs/core';
 
 import DOSLayout from 'corla/component/DOSLayout';
 

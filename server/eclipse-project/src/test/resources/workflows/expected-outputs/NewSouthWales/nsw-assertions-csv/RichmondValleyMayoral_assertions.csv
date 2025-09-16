@@ -1,0 +1,16 @@
+Contest name,Richmond Valley Mayoral
+Candidates,"MUSTOW Robert,HAYES Robert"
+Winner,MUSTOW Robert
+Total universe,13405
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,5821,"1"
+Diluted margin,0.43424095,"1"
+Raire difficulty,2.302868922865487,"1"
+Current risk,1.00000000,"1"
+Optimistic samples to audit,17,"1"
+Estimated samples to audit,17,"1"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,MUSTOW Robert,HAYES Robert,,2.3029,5821,0.4342,1.00000000,17,17,0,0,0,0,0

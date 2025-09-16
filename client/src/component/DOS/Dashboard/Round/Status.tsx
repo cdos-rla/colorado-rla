@@ -21,8 +21,8 @@ const Status = (props: StatusProps) => {
     return (
         <div className='state-dashboard-round'>
             <div>
-                { !auditIsComplete && <h4>Round { currentRound } in progress</h4> }
-                { auditIsComplete && <h4>Congratulations! The audit is complete.</h4> }
+                { !auditIsComplete && <div style={{fontSize: '18px', fontWeight: 'bold'}}>Round { currentRound } in progress</div> }
+                { auditIsComplete && <div style={{fontSize: '18px', fontWeight: 'bold'}}>Congratulations! The audit is complete.</div> }
                 <span className='state-dashboard-round-summary'>
                     { finishedCountiesCount } of { totalCountiesCount } counties
                     have finished this round.

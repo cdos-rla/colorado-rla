@@ -1,0 +1,18 @@
+Contest name,City of Cessnock Mayoral
+Candidates,"MURRAY Janet,SUVAAL Jay,MOORES John,OLSEN Ian"
+Winner,SUVAAL Jay
+Total universe,36497
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,5644,"3"
+Diluted margin,0.15464285,"3"
+Raire difficulty,6.466513111268604,"3"
+Current risk,1.00000000,"1, 2, 3"
+Optimistic samples to audit,48,"3"
+Estimated samples to audit,48,"3"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,SUVAAL Jay,MURRAY Janet,,3.6869,9899,0.2712,1.00000000,27,27,0,0,0,0,0
+2,NEB,SUVAAL Jay,MOORES John,,5.3727,6793,0.1861,1.00000000,40,40,0,0,0,0,0
+3,NEN,SUVAAL Jay,OLSEN Ian,"SUVAAL Jay,OLSEN Ian",6.4665,5644,0.1546,1.00000000,48,48,0,0,0,0,0

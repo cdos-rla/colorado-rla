@@ -1,0 +1,6 @@
+[{"county_name":"Lake","scanner_id":1,"batch_id":"1","count_per_manifest":10,"count_per_cvr_file":10,"difference":0},
+{"county_name":"La Plata","scanner_id":1,"batch_id":"1","count_per_manifest":10,"count_per_cvr_file":10,"difference":0},
+{"county_name":"Larimer","scanner_id":1,"batch_id":"1","count_per_manifest":10,"count_per_cvr_file":10,"difference":0},
+{"county_name":"Las Animas","scanner_id":1,"batch_id":"1","count_per_manifest":78,"count_per_cvr_file":78,"difference":0},
+{"county_name":"Las Animas","scanner_id":1,"batch_id":"2","count_per_manifest":78,"count_per_cvr_file":78,"difference":0},
+{"county_name":"Las Animas","scanner_id":1,"batch_id":"3","count_per_manifest":69,"count_per_cvr_file":69,"difference":0}]

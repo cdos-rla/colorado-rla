@@ -77,7 +77,7 @@ class FinalReviewPage extends React.Component<FinalReviewPageProps, FinalReviewP
                                    isOpen={ this.state.dialogIsOpen }
                                    onClose={ this.closeDialog } />
 
-                <h3>Audit Board { auditBoardIndex + 1 }: Final Review</h3>
+                <h1 className={'smallHeader'}>Audit Board { auditBoardIndex + 1 }: Final Review</h1>
 
                 <Card>
                     <p>

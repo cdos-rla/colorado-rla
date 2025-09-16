@@ -83,6 +83,18 @@ function* standardizeChoicesForAuditFail(action: any): IterableIterator<void> {
     notice.danger(result);
 }
 
+function* generateAssertionsFail(): IterableIterator<void> {
+    notice.danger('Unable to generate assertions for contests.');
+}
+
+function* generateAssertionsNetworkFail(): IterableIterator<void> {
+    notice.danger('Unable to generate assertions for contests: network failure.');
+}
+
+function* generateAssertionsOk(): IterableIterator<void> {
+    notice.ok('Assertions have been generated.');
+}
+
 export default function* dosLoginSaga() {
     yield takeLatest('SELECT_CONTESTS_FOR_AUDIT_FAIL', selectContestsForAuditFail);
     yield takeLatest('SELECT_CONTESTS_FOR_AUDIT_NETWORK_FAIL', selectContestsForAuditNetworkFail);
@@ -106,4 +118,8 @@ export default function* dosLoginSaga() {
 
     yield takeLatest('STANDARDIZE_CONTESTS_FOR_AUDIT_FAIL', standardizeContestsForAuditFail);
     yield takeLatest('STANDARDIZE_CHOICES_FOR_AUDIT_FAIL', standardizeChoicesForAuditFail);
+
+    yield takeLatest('GENERATE_ASSERTIONS_FAIL', generateAssertionsFail);
+    yield takeLatest('GENERATE_ASSERTIONS_NETWORK_FAIL', generateAssertionsNetworkFail);
+    yield takeLatest('GENERATE_ASSERTIONS_OK', generateAssertionsOk);
 }

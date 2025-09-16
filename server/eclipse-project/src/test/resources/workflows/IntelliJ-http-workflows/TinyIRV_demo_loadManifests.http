@@ -1,0 +1,245 @@
+### This loads all 32 CVRs for NSW (in alphabetical order) in CO's first 32 counties.
+
+### 1. Lake County, with TinyExample1 (IRV) and a tied and non-tied plurality contest.
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin33",
+  "password":""
+}
+> {%
+  import {authSanityCheck} from 'workflows/IntelliJ-http-workflows/testScripts/testUtils';
+  authSanityCheck("countyadmin33", 1, 'TRADITIONALLY_AUTHENTICATED');
+%}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin33",
+  "second_factor":"s d f"
+}
+
+> {%
+  import {authSanityCheck} from 'workflows/IntelliJ-http-workflows/testScripts/testUtils';
+  authSanityCheck("countyadmin33", 2, 'SECOND_FACTOR_AUTHENTICATED');
+ %}
+
+### GET the county dashboard. This is just to test that the login worked.
+GET http://localhost:8888/county-dashboard
+
+### POST the CVRs and the file hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="ThreeCandidatesTenVotes_Manifest.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+Content-Type: text/csv
+
+< ../../CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const manifestUploadResponse = response.body;
+    client.global.set("manifestUploadResponse", manifestUploadResponse)
+%}
+
+### Request the CVR export to be imported.
+### Oddly enough, this requires resending the response from the file upload.
+POST  http://localhost:8888/import-ballot-manifest
+Content-Type: application/json
+
+{{manifestUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin33"
+}
+
+### 2. La Plata County, with contest and candidate names that need canonicalization,
+### and IRV votes that have invalid ballots.
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin34",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin34",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the CVRs and the file hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="ThreeCandidatesTenVotes_Manifest.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+Content-Type: text/csv
+
+< ../../CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const manifestUploadResponse = response.body;
+    client.global.set("manifestUploadResponse", manifestUploadResponse)
+%}
+
+### Request the CVR export to be imported.
+POST  http://localhost:8888/import-ballot-manifest
+Content-Type: application/json
+
+{{manifestUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin34"
+}
+
+### 3. Larimer County, with a tied IRV contest.
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin35",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin35",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the CVRs and the file hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="ThreeCandidatesTenVotes_Manifest.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+Content-Type: text/csv
+
+< ../../CSVs/Tiny-IRV-Examples/ThreeCandidatesTenVotes_Manifest.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const manifestUploadResponse = response.body;
+    client.global.set("manifestUploadResponse", manifestUploadResponse)
+%}
+
+### Request the CVR export to be imported.
+POST  http://localhost:8888/import-ballot-manifest
+Content-Type: application/json
+
+{{manifestUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin35"
+}
+
+
+### 4. Las Animas County, with the Guide To Raire Example 3.
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin36",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin36",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the CVRs and the file hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="GuideToRAIREExample3-manifest.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Tiny-IRV-Examples/GuideToRAIREExample3-manifest.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+Content-Type: text/csv
+
+< ../../CSVs/Tiny-IRV-Examples/GuideToRAIREExample3-manifest.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const manifestUploadResponse = response.body;
+    client.global.set("manifestUploadResponse", manifestUploadResponse)
+%}
+
+### Request the CVR export to be imported.
+POST  http://localhost:8888/import-ballot-manifest
+Content-Type: application/json
+
+{{manifestUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin36"
+}

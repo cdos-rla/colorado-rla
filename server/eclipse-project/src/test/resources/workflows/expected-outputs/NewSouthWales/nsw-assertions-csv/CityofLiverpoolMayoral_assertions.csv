@@ -1,0 +1,19 @@
+Contest name,City of Liverpool Mayoral
+Candidates,"HAGARTY Nathan,MORSHED Asm,ANDJELKOVIC Milomir (Michael),HARLE Peter,MANNOUN Ned"
+Winner,MANNOUN Ned
+Total universe,115177
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,2536,"4"
+Diluted margin,0.02201828,"4"
+Raire difficulty,45.416798107255524,"4"
+Current risk,1.00000000,"1, 2, 3, 4"
+Optimistic samples to audit,331,"4"
+Estimated samples to audit,331,"4"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,MANNOUN Ned,MORSHED Asm,,3.5588,32364,0.281,1.00000000,26,26,0,0,0,0,0
+2,NEB,MANNOUN Ned,ANDJELKOVIC Milomir (Michael),,4.1135,28000,0.2431,1.00000000,30,30,0,0,0,0,0
+3,NEB,MANNOUN Ned,HARLE Peter,,4.0113,28713,0.2493,1.00000000,30,30,0,0,0,0,0
+4,NEN,MANNOUN Ned,HAGARTY Nathan,"HAGARTY Nathan,MANNOUN Ned",45.4168,2536,0.022,1.00000000,331,331,0,0,0,0,0

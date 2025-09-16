@@ -1,0 +1,171 @@
+### This defines the audit for Demo 1.
+### This needs to run with the 'dev' environment, which reads http-client.env.json to retrieve the nsw-canonical-list.
+### It also needs both the colorado-rla server and the raire-server to be running, because it generates assertions.
+
+### 1. Define the audit
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"stateadmin1",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"stateadmin1",
+  "second_factor":"s d f"
+}
+
+### GET the DoS dashboard. This is just to test that the login worked.
+GET http://localhost:8888/dos-dashboard
+Content-Type: text/html
+
+### Define the audit. This reads in from the canonical list contents hardcoded in the http-client.env file,
+### Note that that doesn't include canonicalization data for most of the contests.
+### Reading in from the nsw-canonical-list.csv file would be better.
+POST http://localhost:8888/update-audit-info
+Content-Type: application/json
+
+{
+    "election_date":"2024-09-15T05:42:17.796Z",
+    "election_type":"general",
+    "public_meeting_date":"2024-09-22T05:42:22.037Z",
+    "risk_limit":0.03,
+    "upload_file": [{"contents" : "{{tiny-irv-canonical-list}}" }]
+}
+
+### Request contests.
+GET http://localhost:8888/contest?ignoreManifests=true
+Content-Type: text/plain
+
+> {%
+    client.global.set("contestTinyIRVJsonData", response.body);
+%}
+
+### Canonicalize contest names. This just matches what comes up when we do the obvious thing from
+### the (real) client.
+### Note that the set-contest-names endpoint is used for both contest names and candidate names,
+### which are called separately.
+### Also note that we have to find the IDs by asking for the _wrong_ names, then put the right name
+### in the request.
+< {%
+    import {getContestIDsWithCounties} from 'workflows/IntelliJ-http-workflows/testScripts/testUtils';
+    const contestIDData = getContestIDsWithCounties(client.global.get("contestTinyIRVJsonData"));
+    console.log("contestTinyIRVJsonData = "+client.global.get("contestTinyIRVJsonData"));
+    // Canonicalize TinyInvalidExample1 to TinyExample1
+    request.variables.set("TinyInvalidExample1ID", contestIDData.get("TinyInvalidExample1")[0][0]);
+%}
+POST http://localhost:8888/set-contest-names
+Content-Type: application/json
+
+[
+  {"contestId":{{TinyInvalidExample1ID}},"countyId":34,"name":"TinyExample1"}
+]
+
+### Canonicalize candidate names.
+< {%
+    import {getContestIDsWithCounties} from 'workflows/IntelliJ-http-workflows/testScripts/testUtils';
+    const contestIDData = getContestIDsWithCounties(client.global.get("contestTinyIRVJsonData"));
+    client.global.set("TinyExample1ID", contestIDData.get("TinyExample1")[0][0]);
+    client.global.set("Example3ID", contestIDData.get("Example3")[0][0]);
+%}
+POST http://localhost:8888/set-contest-names
+Content-Type: application/json
+
+[
+  {
+    "choices":[
+      {"newName":"Aaron","oldName":"A"},
+      {"newName":"Bernice","oldName":"B"},
+      {"newName":"Cherry","oldName":"C"},
+      {"newName":"Dinh","oldName":"D"}],
+    "contestId":{{Example3ID}},
+    "countyId":36
+  }
+]
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Generate assertions.
+GET http://localhost:8888/generate-assertions?timeLimitSeconds=1
+Content-Type: application/x-www-form-urlencoded
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+client.test("Response content-type is json", function() {
+    var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+    });
+%}
+
+
+### Select contests to be targeted.
+POST http://localhost:8888/select-contests
+Content-Type: application/json
+
+[
+    {"audit":"COMPARISON","contest":{{TinyExample1ID}},"reason":"STATE_WIDE_CONTEST"},
+    {"audit":"COMPARISON","contest":{{Example3ID}},"reason":"COUNTY_WIDE_CONTEST"}
+]
+
+### Request sample size estimates.
+GET http://localhost:8888/estimate-sample-sizes
+
+# Save the response to a file.
+>>! demo-stored-data/tiny-irv-sample-sizes.csv
+
+### Post the random seed.
+POST http://localhost:8888/random-seed
+Content-Type: application/json
+
+{
+  "seed":"23987213984712389471238947129384128974"
+}
+
+### Start the audit round.
+POST http://localhost:8888/start-audit-round
+
+### Get the DoS dashboard; log all the estimated sample sizes. Note that a few zeros are OK, but they're mostly
+### expected to be not zero.
+GET http://localhost:8888/dos-dashboard
+
+> {%
+  const countyStatus = JSON.parse(response.body)['county_status'];
+  for(var id in countyStatus) {
+      client.log("County "+countyStatus[id]['id']+". Ballots remaining in round: "+countyStatus[id]['ballots_remaining_in_round']);
+  }
+
+ %}
+
+### Get the assertions as json.
+GET localhost:8888/get-assertions
+
+# Save them to a file.
+>>! demo-stored-data/tiny-irv-assertions-json.zip
+
+### Get the assertions as csv.
+GET http://localhost:8888/get-assertions?format=csv
+Content-Type: application/x-www-form-urlencoded
+
+# Save them to a file.
+>>! demo-stored-data/tiny-irv-assertions-csv.zip
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"stateadmin1"
+}

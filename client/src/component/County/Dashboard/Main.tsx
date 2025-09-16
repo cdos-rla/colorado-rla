@@ -53,7 +53,9 @@ const AuditBoardButtons = (props: AuditBoardButtonsProps) => {
         const buttonIntent = hasBoard ? Intent.WARNING : Intent.PRIMARY;
 
         return (
-            <Button icon='people'
+            <Button
+                    className={'blackButtonText'}
+                    icon='people'
                     intent={ buttonIntent }
                     key={ boardIndex.toString() }
                     onClick={ (e: any) => handleButtonClick(e, boardIndex, hasBoard) }>
@@ -69,7 +71,7 @@ const AuditBoardButtons = (props: AuditBoardButtonsProps) => {
 
     return (
         <div className='mt-default'>
-            <h5 className='pt-ui-text-large font-weight-bold'>Sign in to an audit board</h5>
+            <h2 className='pt-ui-text-large font-weight-bold tinyHeader'>Sign in to an audit board</h2>
             <div className='pt-button-group pt-large rla-spaced'>{ buttons }</div>
         </div>
     );
@@ -138,7 +140,7 @@ const Main = (props: MainProps) => {
             { fileUploadContainer }
             { fileDownloadButtons }
             <div>
-                <h4 className='form-container-heading'>{ reportType } audit report (CSV)</h4>
+                <h2 className='form-container-heading'>{ reportType } audit report (CSV)</h2>
                 <button
                     className='pt-button  pt-intent-primary'
                     disabled={ !canRenderReport }
@@ -148,7 +150,7 @@ const Main = (props: MainProps) => {
                 <hr />
             </div>
             <div className='mt-default'>
-                <h4 className='form-container-heading'>List of ballots to audit (CSV)</h4>
+                <h2 className='form-container-heading'>List of ballots to audit (CSV)</h2>
                 <button
                     className='pt-button pt-intent-primary'
                     disabled={ typeof countyState.auditBoardCount !== 'number' }

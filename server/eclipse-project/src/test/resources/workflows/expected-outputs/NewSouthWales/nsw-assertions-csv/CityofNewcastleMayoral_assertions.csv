@@ -1,0 +1,20 @@
+Contest name,City of Newcastle Mayoral
+Candidates,"CHURCH John,NELMES Nuatali,HOLDING Rod,MACKENZIE John,O'BRIEN Steve,BARRIE Jenny"
+Winner,NELMES Nuatali
+Total universe,100275
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,16957,"5"
+Diluted margin,0.16910496,"5"
+Raire difficulty,5.913487055493307,"5"
+Current risk,1.00000000,"1, 2, 3, 4, 5"
+Optimistic samples to audit,44,"5"
+Estimated samples to audit,44,"5"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,NELMES Nuatali,HOLDING Rod,,3.546,28278,0.282,1.00000000,26,26,0,0,0,0,0
+2,NEB,NELMES Nuatali,MACKENZIE John,,4.9789,20140,0.2008,1.00000000,37,37,0,0,0,0,0
+3,NEB,NELMES Nuatali,O'BRIEN Steve,,3.0928,32422,0.3233,1.00000000,23,23,0,0,0,0,0
+4,NEB,NELMES Nuatali,BARRIE Jenny,,4.7843,20959,0.209,1.00000000,35,35,0,0,0,0,0
+5,NEN,NELMES Nuatali,CHURCH John,"CHURCH John,NELMES Nuatali",5.9135,16957,0.1691,1.00000000,44,44,0,0,0,0,0

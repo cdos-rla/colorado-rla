@@ -54,6 +54,8 @@ import us.freeandfair.corla.util.SuppressFBWarnings;
 
 /**
  * A class representing the results for a single contest for a single county.
+ * This always does a *plurality* count, which will give wrong answers (including wrong winners)
+ * for IRV. These are never used for IRV contests.
  * 
  * @author Daniel M. Zimmerman <dmz@freeandfair.us>
  * @version 1.0.0
@@ -252,7 +254,7 @@ public class CountyContestResult implements PersistentEntity, Serializable {
   
   /**
    * @return a list of the choices in descending order by number of votes
-   * received.
+   * received. This is a plurality tally with no connection to ranked-choice voting.
    */
   public List<String> rankedChoices() {
     final List<String> result = new ArrayList<String>();

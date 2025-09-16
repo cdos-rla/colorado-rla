@@ -1,8 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 
 import * as _ from 'lodash';
 
-import { Button, Checkbox, EditableText, Intent, Dialog } from '@blueprintjs/core';
+import { Button, Checkbox, Dialog, EditableText, Intent } from '@blueprintjs/core';
 
 import BackButton from './BackButton';
 import WaitingForNextBallot from './WaitingForNextBallot';
@@ -10,6 +10,7 @@ import WaitingForNextBallot from './WaitingForNextBallot';
 import CommentIcon from '../../../CommentIcon';
 
 import ballotNotFound from 'corla/action/county/ballotNotFound';
+import IrvChoiceForm from 'corla/component/County/Audit/Wizard/IrvChoiceForm';
 
 interface NotFoundProps {
     notFound: OnClick;
@@ -18,7 +19,7 @@ interface NotFoundProps {
 
 const BallotNotFoundForm = (props: NotFoundProps) => {
 
-    const { notFound, currentBallot, } = props;
+    const { notFound, currentBallot } = props;
 
     const onClick = () => {
         if (confirm('By continuing, this ballot will be recorded as “not found”'
@@ -30,7 +31,6 @@ const BallotNotFoundForm = (props: NotFoundProps) => {
     return (
 
         <div>
-
 
             <div className='not-found-header'>Are you looking at the right ballot?</div>
             <div className='not-found-copy'>
@@ -63,7 +63,7 @@ const AuditInstructions = (props: AuditInstructionsProps) => {
     return (
         <div>
             <div className='current-ballot-info'>
-                <h3 className='sidebar-heading'>Current ballot:</h3>
+                <h2 className='sidebar-heading'>Current ballot:</h2>
                 <ul className='current-ballot-stats pt-list-unstyled'>
                     <li>
                         <span className='current-ballot-stats-label'>Storage bin</span>
@@ -106,19 +106,13 @@ const ContestInfo = ({ contest }: ContestInfoProps) => {
     );
 };
 
-interface ChoicesProps {
-    choices: ContestChoice[];
-    marks: County.ACVRContest;
-    noConsensus: boolean;
-    updateBallotMarks: OnClick;
-}
-
 const ContestChoices = (props: ChoicesProps) => {
     const {
         choices,
         marks,
         noConsensus,
         updateBallotMarks,
+        description,
     } = props;
 
     function updateChoiceByName(name: string) {
@@ -131,7 +125,7 @@ const ContestChoices = (props: ChoicesProps) => {
         return updateChoice;
     }
 
-    const choiceForms = _.map(choices, choice => {
+    const pluralityChoiceForms = _.map(choices, choice => {
         const checked = marks.choices[choice.name];
 
         return (
@@ -147,9 +141,13 @@ const ContestChoices = (props: ChoicesProps) => {
         );
     });
 
+    function isPlurality() {
+        return description === 'PLURALITY';
+    }
+
     return (
-        <div className='contest-choice-grid'>
-            {choiceForms}
+        <div className={isPlurality() ? 'plurality-contest-choice-grid' : ''}>
+            {isPlurality() ? pluralityChoiceForms : IrvChoiceForm(props)}
         </div>
     );
 };
@@ -225,6 +223,7 @@ const BallotContestMarkForm = (props: MarkFormProps) => {
                 marks={contestMarks}
                 noConsensus={!!contestMarks.noConsensus}
                 updateBallotMarks={updateBallotMarks}
+                description={description}
             />
 
             <div className='contest-choice-grid'>
@@ -296,7 +295,6 @@ interface BallotAuditStageState {
     showDialog: boolean;
 }
 
-
 class BallotAuditStage extends React.Component<StageProps, BallotAuditStageState> {
 
     constructor(props: StageProps) {
@@ -307,8 +305,6 @@ class BallotAuditStage extends React.Component<StageProps, BallotAuditStageState
     private closeDialog = () => {
         this.setState({ showDialog: !this.state.showDialog });
      }
-
-
 
        public render() {
 
@@ -372,11 +368,10 @@ class BallotAuditStage extends React.Component<StageProps, BallotAuditStageState
             return <WaitingForNextBallot />;
         }
 
-
         return (
             <div className='rla-page'>
                 <div>
-                    <Dialog 
+                    <Dialog
                         isOpen={this.state.showDialog}
                     >
                         <div className='pt-dialog-body'>
@@ -390,7 +385,7 @@ class BallotAuditStage extends React.Component<StageProps, BallotAuditStageState
                         <div className='pt-dialog-footer'>
                             <div className='pt-dialog-footer-actions'>
                                 <Button intent={Intent.PRIMARY}
-                                    onClick={() =>this.closeDialog()}
+                                    onClick={() => this.closeDialog()}
                                     text='Continue' />
                             </div>
                         </div>
@@ -399,9 +394,9 @@ class BallotAuditStage extends React.Component<StageProps, BallotAuditStageState
 
                 <div className='audit-page-container'>
                     <div className='audit-page-header'>
-                        <h2 className='audit-page-title'>
+                        <h1 className='audit-page-title'>
                             Audit Board {`${auditBoardIndex + 1}`}: Ballot Card Verification
-                        </h2>
+                        </h1>
                         <div className='audit-page-subtitle'>Enter ballot information</div>
                         <div className='ballot-number'>
                             Auditing ballot card {currentBallotNumber} of {totalBallotsForBoard}
@@ -519,7 +514,7 @@ class BallotAuditStage extends React.Component<StageProps, BallotAuditStageState
                     <div className='button-container'>
                         <BackButton back={prevStage} />
 
-                        <Button className='ml-default'
+                        <Button className='ml-default blackButtonText'
                             intent={Intent.SUCCESS}
                             large
                             onClick={validatingAcvr(nextStage)}>

@@ -43,12 +43,15 @@ import org.eclipse.jetty.server.Server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.eclipse.jetty.util.thread.ThreadPool;
+import spark.ExceptionMapper;
 import spark.Request;
 import spark.Response;
 import spark.Service;
 import spark.embeddedserver.EmbeddedServers;
 import spark.embeddedserver.jetty.EmbeddedJettyServer;
 import spark.embeddedserver.jetty.JettyHandler;
+import spark.embeddedserver.jetty.JettyServerFactory;
 import spark.http.matching.MatcherFilter;
 import spark.route.Routes;
 import spark.staticfiles.StaticFilesConfiguration;
@@ -236,8 +239,10 @@ public final class Main {
    */
   public static Properties defaultProperties() {
     final Properties properties = new Properties();
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
     try {
-      properties.load(ClassLoader.getSystemResourceAsStream(DEFAULT_PROPERTIES));
+      properties.load(classLoader.getResourceAsStream(DEFAULT_PROPERTIES));
     } catch (final IOException e) {
       throw new IllegalStateException
       ("Error loading default properties file, aborting.", e);
@@ -328,8 +333,10 @@ public final class Main {
    */
   private void activateEndpoints() {
     final List<Endpoint> endpoints = new ArrayList<>();
-    try (InputStream endpoint_stream = 
-        ClassLoader.getSystemResourceAsStream(ENDPOINT_CLASSES)) {
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+    try (InputStream endpoint_stream =
+                 classLoader.getResourceAsStream(ENDPOINT_CLASSES)) {
       if (endpoint_stream == null) {
         Main.LOGGER.error("could not load list of entity classes");          
       } else {
@@ -450,9 +457,10 @@ public final class Main {
    */
   private List<County> initializeCounties() {
     final Properties properties = new Properties();
+
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     try {
-      properties.load(ClassLoader.
-                      getSystemResourceAsStream(static_properties.getProperty(COUNTY_IDS)));
+      properties.load(classLoader.getResourceAsStream(static_properties.getProperty(COUNTY_IDS)));
     } catch (final IOException e) {
       throw new IllegalStateException("Error loading county IDs, aborting.", e);
     }
@@ -538,12 +546,13 @@ public final class Main {
     
     // secure the session cookies by adding an embedded server handler
     EmbeddedServers.add(EmbeddedServers.Identifiers.JETTY, 
-        (final Routes the_route_matcher, 
-         final StaticFilesConfiguration the_static_files_config, 
+        (final Routes the_route_matcher,
+         final StaticFilesConfiguration the_static_files_config,
+         final ExceptionMapper the_exception_mapper,
          final boolean the_has_multiple_handler) -> {
         final MatcherFilter matcher_filter = 
-            new MatcherFilter(the_route_matcher, the_static_files_config, 
-                              false, the_has_multiple_handler);
+            new MatcherFilter(the_route_matcher, the_static_files_config,
+                    new ExceptionMapper(), false, the_has_multiple_handler);
         matcher_filter.init(null);
 
         final JettyHandler handler = new JettyHandler(matcher_filter);
@@ -551,10 +560,16 @@ public final class Main {
         // secure cookies don't work if we're not using HTTPS
         // handler.getSessionCookieConfig().setSecure(true);
 
-        return new EmbeddedJettyServer((int the_max_threads, 
-                                        int the_min_threads, 
-                                        int the_thread_timeout) -> {
-          return new Server();
+        return new EmbeddedJettyServer(new JettyServerFactory() {
+          @Override
+          public Server create(int the_max_threads, int the_min_threads, int the_threat_timeout) {
+            return new Server();
+          }
+
+          @Override
+          public Server create(ThreadPool threadPool) {
+            return null;
+          }
         }, handler);
       });
     

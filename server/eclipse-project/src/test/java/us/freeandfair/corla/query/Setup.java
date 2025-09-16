@@ -21,10 +21,12 @@ public class Setup {
   public static final Properties properties = new Properties();
 
   public static void setProperties(){
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
     try {
-    properties.load(ClassLoader.getSystemResourceAsStream(DEFAULT_PROPERTIES));
+    properties.load(classLoader.getResourceAsStream(DEFAULT_PROPERTIES));
     // overrides database name
-    properties.load(ClassLoader.getSystemResourceAsStream(TEST_PROPERTIES));
+    properties.load(classLoader.getResourceAsStream(TEST_PROPERTIES));
 
     Persistence.setProperties(properties);
     } catch (final IOException e) {

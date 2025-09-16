@@ -174,6 +174,14 @@ interface CountyInfo {
     name: string;
 }
 
+interface ChoicesProps {
+    choices: ContestChoice[];
+    marks: County.ACVRContest;
+    noConsensus: boolean;
+    updateBallotMarks: OnClick;
+    description: string;
+}
+
 // TODO: Narrow type.
 type OnClick = (...args: any[]) => any;
 

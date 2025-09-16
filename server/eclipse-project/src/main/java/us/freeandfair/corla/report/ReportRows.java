@@ -13,6 +13,8 @@ import java.util.OptionalInt;
 
 import java.math.BigDecimal;
 
+import au.org.democracydevelopers.corla.model.IRVComparisonAudit;
+import au.org.democracydevelopers.corla.query.GenerateAssertionsSummaryQueries;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.time.Instant;
@@ -24,7 +26,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import us.freeandfair.corla.controller.ContestCounter;
-import us.freeandfair.corla.math.Audit;
 import us.freeandfair.corla.model.CastVoteRecord;
 import us.freeandfair.corla.model.CVRAuditInfo;
 import us.freeandfair.corla.model.CVRContestInfo;
@@ -220,7 +221,7 @@ public class ReportRows {
       row.put("comment", info.comment());
     }
 
-    if (null == discrepancy || 0 == discrepancy) {
+    if (null == discrepancy) {
       row.put("discrepancy", null);
     } else {
       row.put("discrepancy", renderDiscrepancy(discrepancy));
@@ -308,6 +309,7 @@ public class ReportRows {
       "diluted margin %",
       "disc +2",
       "disc +1",
+      "disc 0",
       "disc -1",
       "disc -2",
       "gamma",
@@ -330,25 +332,7 @@ public class ReportRows {
     }
   }
 
-  /** risk limit achieved according to math.Audit **/
-  public static BigDecimal riskMeasurement(final ComparisonAudit ca) {
-    if (ca.getAuditedSampleCount() > 0
-        && ca.getDilutedMargin().compareTo(BigDecimal.ZERO) > 0) {
-      final BigDecimal result =  Audit.pValueApproximation(ca.getAuditedSampleCount(),
-                                                           ca.getDilutedMargin(),
-                                                           ca.getGamma(),
-                                                           ca.discrepancyCount(-1),
-                                                           ca.discrepancyCount(-2),
-                                                           ca.discrepancyCount(1),
-                                                           ca.discrepancyCount(2));
-      return result.setScale(3, BigDecimal.ROUND_HALF_UP);
-    } else {
-      // full risk (100%) when nothing is known
-      return BigDecimal.ONE;
-    }
-  }
-
-  /** compare risk sought vs measured **/
+   /** compare risk sought vs measured **/
   public static boolean riskLimitMet(final BigDecimal sought, final BigDecimal measured) {
     return sought.compareTo(measured) > 0;
   }
@@ -373,8 +357,11 @@ public class ReportRows {
   }
 
   /**
-   * for each contest(per row), show all the variables that are interesting or
+   * For each contest (per row), show all the variables that are interesting or
    * needed to perform the risk limit calculation
+   * This checks whether the contest is IRV and makes two modifications:
+   * 1. it takes the winner from the GenerateAssertionsSummary table, rather than the ComparisonAudit,
+   * 2. it omits the candidate tallies (for winner and runner-up), which are not meaningful for IRV.
    **/
   public static List<List<String>> genSumResultsReport() {
     final List<List<String>> rows = new ArrayList();
@@ -383,44 +370,61 @@ public class ReportRows {
     for (final ComparisonAudit ca: ComparisonAuditQueries.sortedList()) {
       final Row row = SummaryReport.newRow();
 
-      final BigDecimal riskMsmnt = riskMeasurement(ca);
+      final BigDecimal riskMsmnt = ca.riskMeasurement();
 
       // general info
       row.put("Contest", ca.contestResult().getContestName());
       row.put("targeted", yesNo(ca.isTargeted()));
 
-      if (ca.contestResult().getWinners() == null || ca.contestResult().getWinners().isEmpty()) {
-        LOGGER.info("no winner!!! " + ca);
+      if(ca instanceof IRVComparisonAudit) {
+        // If IRV, get the winner's name from the GenerateAssertionsSummary.
+        row.put("Winner", GenerateAssertionsSummaryQueries.matchingWinner(ca.getContestName()));
+      } else {
+        // Must be a plurality audit. ContestResult.winner is correct.
+        if (ca.contestResult().getWinners() == null || ca.contestResult().getWinners().isEmpty()) {
+          LOGGER.info("no winner!!! " + ca);
+        }
+        row.put("Winner", toString(ca.contestResult().getWinners().iterator().next()));
       }
-      row.put("Winner", toString(ca.contestResult().getWinners().iterator().next()));
+
+      // All this data makes sense for both IRV and plurality.
       row.put("Risk Limit met?", yesNo(riskLimitMet(ca.getRiskLimit(), riskMsmnt)));
       row.put("Risk measurement %", sigFig(percentage(riskMsmnt), 1).toString());
       row.put("Audit Risk Limit %", sigFig(percentage(ca.getRiskLimit()),1).toString());
       row.put("diluted margin %", percentage(ca.getDilutedMargin()).toString());
       row.put("disc +2", toString(ca.discrepancyCount(2)));
       row.put("disc +1", toString(ca.discrepancyCount(1)));
+      row.put("disc 0", toString(ca.discrepancyCount(0)));
       row.put("disc -1", toString(ca.discrepancyCount(-1)));
       row.put("disc -2", toString(ca.discrepancyCount(-2)));
       row.put("gamma", toString(ca.getGamma()));
       row.put("audited sample count", toString(ca.getAuditedSampleCount()));
-
-      // very detailed extra info
+      // For IRV, this is the total number of mentions among all valid interpretations.
       row.put("ballot count", toString(ca.contestResult().getBallotCount()));
-      row.put("min margin", toString(ca.contestResult().getMinMargin()));
 
-      final List<Entry<String, Integer>> rankedTotals =
-          ContestCounter.rankTotals(ca.contestResult().getVoteTotals());
+      if(ca instanceof IRVComparisonAudit) {
+        // For IRV, get the min margin direct from the IRVComparisonAudit.
+        row.put("min margin", toString(((IRVComparisonAudit) ca).getMinMargin()));
 
-      try {
-        row.put("votes for winner", toString(rankedTotals.get(0).getValue()));
-      } catch (IndexOutOfBoundsException e) {
-        row.put("votes for winner", "");
-      }
+      } else {
+        // For plurality, get the min margin from the contestResult.
+        row.put("min margin", toString(ca.contestResult().getMinMargin()));
 
-      try {
-        row.put("votes for runner up", toString(rankedTotals.get(1).getValue()));
-      } catch (IndexOutOfBoundsException e) {
-        row.put("votes for runner up", "");
+        // These totals make sense only for plurality. Omit entirely for IRV.
+        final List<Entry<String, Integer>> rankedTotals =
+            ContestCounter.rankTotals(ca.contestResult().getVoteTotals());
+
+        try {
+          row.put("votes for winner", toString(rankedTotals.get(0).getValue()));
+        } catch (IndexOutOfBoundsException e) {
+          row.put("votes for winner", "");
+        }
+
+        try {
+          row.put("votes for runner up", toString(rankedTotals.get(1).getValue()));
+        } catch (IndexOutOfBoundsException e) {
+          row.put("votes for runner up", "");
+        }
       }
 
       row.put("total votes", toString(ca.contestResult().totalVotes()));

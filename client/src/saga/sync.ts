@@ -6,6 +6,7 @@ import fetchCountyASMState from 'corla/action/county/fetchCountyASMState';
 
 import dosDashboardRefresh from 'corla/action/dos/dashboardRefresh';
 import dosFetchContests from 'corla/action/dos/fetchContests';
+import dosFetchContestsIgnoreManifests from 'corla/action/dos/fetchContestsIgnoreManifests';
 
 function* countyRefresh() {
     yield all([
@@ -19,6 +20,7 @@ function* dosRefresh() {
     yield all([
         call(dosDashboardRefresh),
         call(dosFetchContests),
+        call(dosFetchContestsIgnoreManifests),
     ]);
 }
 

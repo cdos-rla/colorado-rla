@@ -1,0 +1,20 @@
+Contest name,Canada Bay Mayoral
+Candidates,"TSIREKAS Angelo,LITTLE Julia,MEGNA Michael,JAGO Charles,RAMONDINO Daniela"
+Winner,TSIREKAS Angelo
+Total universe,48542
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,5963,"3"
+Diluted margin,0.12284207,"3"
+Raire difficulty,8.140533288613113,"3"
+Current risk,1.00000000,"1, 2, 3, 4, 5"
+Optimistic samples to audit,60,"3"
+Estimated samples to audit,60,"3"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,TSIREKAS Angelo,JAGO Charles,,5.6379,8610,0.1774,1.00000000,42,42,0,0,0,0,0
+2,NEB,TSIREKAS Angelo,RAMONDINO Daniela,,4.1242,11770,0.2425,1.00000000,31,31,0,0,0,0,0
+3,NEN,TSIREKAS Angelo,LITTLE Julia,"TSIREKAS Angelo,LITTLE Julia",8.1405,5963,0.1228,1.00000000,60,60,0,0,0,0,0
+4,NEN,TSIREKAS Angelo,MEGNA Michael,"TSIREKAS Angelo,MEGNA Michael",5.3643,9049,0.1864,1.00000000,40,40,0,0,0,0,0
+5,NEN,TSIREKAS Angelo,MEGNA Michael,"TSIREKAS Angelo,LITTLE Julia,MEGNA Michael",6.2241,7799,0.1607,1.00000000,46,46,0,0,0,0,0

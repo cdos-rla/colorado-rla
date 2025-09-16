@@ -1,0 +1,18 @@
+Contest name,Burwood Mayoral
+Candidates,"HULL David,MURRAY Alan,CUTCHER Ned,FAKER John"
+Winner,FAKER John
+Total universe,17797
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,7043,"3"
+Diluted margin,0.39574086,"3"
+Raire difficulty,2.5269061479483175,"3"
+Current risk,1.00000000,"1, 2, 3"
+Optimistic samples to audit,19,"3"
+Estimated samples to audit,19,"3"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,FAKER John,MURRAY Alan,,2.1427,8306,0.4667,1.00000000,16,16,0,0,0,0,0
+2,NEB,FAKER John,CUTCHER Ned,,2.3423,7598,0.4269,1.00000000,18,18,0,0,0,0,0
+3,NEN,FAKER John,HULL David,"HULL David,FAKER John",2.5269,7043,0.3957,1.00000000,19,19,0,0,0,0,0

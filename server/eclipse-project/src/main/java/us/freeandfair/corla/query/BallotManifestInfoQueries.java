@@ -206,6 +206,7 @@ public final class BallotManifestInfoQueries {
       result = new HashSet<BallotManifestInfo>(query.getResultList());
     } catch (final PersistenceException e) {
       Main.LOGGER.error("Exception when reading ballot manifests from database: ", e);
+      return Optional.empty();
     }
     return result.stream().findFirst();
   }

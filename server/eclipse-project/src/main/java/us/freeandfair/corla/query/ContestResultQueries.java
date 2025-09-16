@@ -38,6 +38,21 @@ public final class ContestResultQueries {
   }
 
   /**
+   * Return an Optional ContestResult, which is Present if a contest of the requested name is in
+   * the database.
+   * @param contestName the name of the contest.
+   * @return an Optional<ContestResult>, containing the contest requested by name if present,
+   * otherwise empty.
+   */
+  public static Optional<ContestResult> find(final String contestName) {
+    final Session s = Persistence.currentSession();
+    final Query<ContestResult> q = s.createQuery("select cr from ContestResult cr " +
+        "where cr.contestName = :contestName", ContestResult.class);
+    q.setParameter("contestName", contestName);
+    return q.uniqueResultOptional();
+  }
+
+  /**
    * Return the ContestResult with the contestName given or create a new
    * ContestResult with the contestName.
    **/

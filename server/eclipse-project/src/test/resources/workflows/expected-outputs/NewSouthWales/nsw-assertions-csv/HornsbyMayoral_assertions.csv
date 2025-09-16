@@ -1,0 +1,16 @@
+Contest name,Hornsby Mayoral
+Candidates,"HEYDE Emma,RUDDOCK Philip"
+Winner,RUDDOCK Philip
+Total universe,85656
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,12474,"1"
+Diluted margin,0.14562903,"1"
+Raire difficulty,6.866762866762866,"1"
+Current risk,1.00000000,"1"
+Optimistic samples to audit,51,"1"
+Estimated samples to audit,51,"1"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,RUDDOCK Philip,HEYDE Emma,,6.8668,12474,0.1456,1.00000000,51,51,0,0,0,0,0

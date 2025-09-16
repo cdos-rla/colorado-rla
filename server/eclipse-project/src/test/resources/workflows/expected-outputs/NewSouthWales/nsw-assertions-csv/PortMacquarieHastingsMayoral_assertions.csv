@@ -1,0 +1,19 @@
+Contest name,Port Macquarie-Hastings Mayoral
+Candidates,"PINSON Peta,GATES Steven,SHEPPARD Rachel,INTEMANN Lisa,LIPOVAC Nik"
+Winner,PINSON Peta
+Total universe,54499
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,19106,"4"
+Diluted margin,0.35057524,"4"
+Raire difficulty,2.8524547262640008,"4"
+Current risk,1.00000000,"1, 2, 3, 4"
+Optimistic samples to audit,21,"4"
+Estimated samples to audit,21,"4"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,PINSON Peta,GATES Steven,,2.4296,22431,0.4116,1.00000000,18,18,0,0,0,0,0
+2,NEB,PINSON Peta,INTEMANN Lisa,,2.6549,20528,0.3767,1.00000000,20,20,0,0,0,0,0
+3,NEB,PINSON Peta,LIPOVAC Nik,,2.2773,23931,0.4391,1.00000000,17,17,0,0,0,0,0
+4,NEN,PINSON Peta,SHEPPARD Rachel,"PINSON Peta,SHEPPARD Rachel",2.8525,19106,0.3506,1.00000000,21,21,0,0,0,0,0

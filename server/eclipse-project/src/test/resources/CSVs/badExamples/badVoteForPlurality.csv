@@ -1,0 +1,8 @@
+Test election,,,,,,,
+,,,,,,Test contest (Vote For=2.0),Test contest (Vote For=2.0)
+,,,,,,Candidate 1,Candidate 2
+CvrNumber,TabulatorNum,BatchId,RecordId,ImprintedId,BallotType,,
+1,108,1,104,108-1-104,DS-01,0,0
+2,108,1,103,108-1-103,DS-01,1,1
+3,108,1,66,108-1-66,DS-01,1,1
+4,108,1,65,108-1-65,DS-01,1,1

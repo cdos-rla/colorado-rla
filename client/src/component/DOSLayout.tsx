@@ -11,7 +11,7 @@ const DOSLayout = (props: Props) => {
     return (
         <div className='l-wrapper'>
             <DOSNav />
-            <div className='l-main'>
+            <div id='main' className='l-main'>
                 { props.main }
             </div>
             <LicenseFooter />

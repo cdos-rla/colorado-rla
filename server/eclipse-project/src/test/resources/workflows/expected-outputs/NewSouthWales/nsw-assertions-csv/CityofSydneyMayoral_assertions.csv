@@ -1,0 +1,31 @@
+Contest name,City of Sydney Mayoral
+Candidates,"VITHOULKAS Angela,WELDON Yvonne,SCOTT Linda,JARRETT Shauna,ELLSMORE Sylvie,MOORE Clover"
+Winner,MOORE Clover
+Total universe,118511
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,32140,"3"
+Diluted margin,0.27119845,"3"
+Raire difficulty,3.6873366521468576,"3"
+Current risk,1.00000000,"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16"
+Optimistic samples to audit,27,"2, 3"
+Estimated samples to audit,27,"2, 3"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,MOORE Clover,VITHOULKAS Angela,,3.4875,33982,0.2867,1.00000000,26,26,0,0,0,0,0
+2,NEN,MOORE Clover,WELDON Yvonne,"WELDON Yvonne,MOORE Clover",3.642,32540,0.2746,1.00000000,27,27,0,0,0,0,0
+3,NEN,MOORE Clover,SCOTT Linda,"SCOTT Linda,MOORE Clover",3.6873,32140,0.2712,1.00000000,27,27,0,0,0,0,0
+4,NEN,MOORE Clover,JARRETT Shauna,"JARRETT Shauna,MOORE Clover",2.8911,40991,0.3459,1.00000000,22,22,0,0,0,0,0
+5,NEN,MOORE Clover,ELLSMORE Sylvie,"ELLSMORE Sylvie,MOORE Clover",3.0948,38294,0.3231,1.00000000,23,23,0,0,0,0,0
+6,NEN,MOORE Clover,WELDON Yvonne,"WELDON Yvonne,SCOTT Linda,MOORE Clover",3.3713,35153,0.2966,1.00000000,25,25,0,0,0,0,0
+7,NEN,MOORE Clover,JARRETT Shauna,"WELDON Yvonne,JARRETT Shauna,MOORE Clover",3.3133,35768,0.3018,1.00000000,25,25,0,0,0,0,0
+8,NEN,MOORE Clover,JARRETT Shauna,"SCOTT Linda,JARRETT Shauna,MOORE Clover",3.1485,37641,0.3176,1.00000000,23,23,0,0,0,0,0
+9,NEN,MOORE Clover,ELLSMORE Sylvie,"WELDON Yvonne,ELLSMORE Sylvie,MOORE Clover",2.8752,41219,0.3478,1.00000000,21,21,0,0,0,0,0
+10,NEN,MOORE Clover,ELLSMORE Sylvie,"SCOTT Linda,ELLSMORE Sylvie,MOORE Clover",2.7691,42798,0.3611,1.00000000,21,21,0,0,0,0,0
+11,NEN,MOORE Clover,ELLSMORE Sylvie,"JARRETT Shauna,ELLSMORE Sylvie,MOORE Clover",3.0142,39317,0.3318,1.00000000,22,22,0,0,0,0,0
+12,NEN,MOORE Clover,WELDON Yvonne,"WELDON Yvonne,SCOTT Linda,JARRETT Shauna,MOORE Clover",3.2483,36484,0.3079,1.00000000,24,24,0,0,0,0,0
+13,NEN,MOORE Clover,ELLSMORE Sylvie,"WELDON Yvonne,SCOTT Linda,ELLSMORE Sylvie,MOORE Clover",2.8153,42096,0.3552,1.00000000,21,21,0,0,0,0,0
+14,NEN,MOORE Clover,ELLSMORE Sylvie,"WELDON Yvonne,JARRETT Shauna,ELLSMORE Sylvie,MOORE Clover",2.912,40697,0.3434,1.00000000,22,22,0,0,0,0,0
+15,NEN,MOORE Clover,ELLSMORE Sylvie,"SCOTT Linda,JARRETT Shauna,ELLSMORE Sylvie,MOORE Clover",2.8403,41725,0.3521,1.00000000,21,21,0,0,0,0,0
+16,NEN,MOORE Clover,ELLSMORE Sylvie,"WELDON Yvonne,SCOTT Linda,JARRETT Shauna,ELLSMORE Sylvie,MOORE Clover",2.8705,41286,0.3484,1.00000000,21,21,0,0,0,0,0

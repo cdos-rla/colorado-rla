@@ -50,7 +50,12 @@ const TiedContestRow = (props: RowProps) => {
                           disabled={ true } />
             </td>
             <td>
-                Contest cannot be audited due to a reported tie.
+                Contest cannot be audited due to a reported tie
+                {
+                    (contest.description === 'IRV')
+                        ? ' or assertion generation error.'
+                        : '.'
+                }
             </td>
         </tr>
     );
@@ -109,6 +114,10 @@ const ContestRow = (props: RowProps) => {
 
     const countyName = counties[contest.countyId].name;
 
+    const htmlProps = {
+        'aria-label': `Select ${contest.name} for auditing.`,
+    };
+
     return (
         <tr>
             {/* This is a shim for future work where the ui is less
@@ -118,6 +127,7 @@ const ContestRow = (props: RowProps) => {
             <td>{ contest.name }</td>
             <td>
                 <Checkbox
+                    {...htmlProps}
                     disabled={ handCount }
                     checked={ toAudit }
                     onChange={ onAuditChange } />
@@ -234,7 +244,7 @@ class SelectContestsForm extends React.Component<FormProps, FormState> {
             const props = d.props;
             const { contest } = props;
 
-            const auditable = isAuditable(contest.id);
+            const auditable = isAuditable(contest);
 
             if (auditable) {
                 return <ContestRow { ...props } />;

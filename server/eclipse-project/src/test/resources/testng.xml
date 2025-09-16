@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="workflow-with-raire-suite" verbose="5">
+    <test name="workflow-with-raire">
+        <parameter name="workflowFile" value="SKIP"/>
+        <classes>
+            <class name="au.org.democracydevelopers.corla.workflows.WorkflowRunnerWithRaire"/>
+        </classes>
+    </test>
+</suite>

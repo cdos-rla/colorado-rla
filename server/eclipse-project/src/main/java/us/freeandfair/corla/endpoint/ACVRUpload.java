@@ -17,6 +17,10 @@ import java.time.Instant;
 
 import javax.persistence.PersistenceException;
 
+import au.org.democracydevelopers.corla.model.ContestType;
+import au.org.democracydevelopers.corla.model.vote.IRVBallotInterpretation;
+import au.org.democracydevelopers.corla.model.vote.IRVChoices;
+import au.org.democracydevelopers.corla.model.vote.IRVParsingException;
 import com.google.gson.JsonParseException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -28,6 +32,7 @@ import us.freeandfair.corla.Main;
 import us.freeandfair.corla.asm.ASMEvent;
 import us.freeandfair.corla.controller.ComparisonAuditController;
 import us.freeandfair.corla.json.SubmittedAuditCVR;
+import us.freeandfair.corla.model.CVRContestInfo;
 import us.freeandfair.corla.model.CastVoteRecord;
 import us.freeandfair.corla.model.CastVoteRecord.RecordType;
 import us.freeandfair.corla.model.CountyDashboard;
@@ -38,6 +43,9 @@ import us.freeandfair.corla.persistence.Persistence;
  *
  * @author Daniel M. Zimmerman <dmz@freeandfair.us>
  * @version 1.0.0
+ * Edits by Vanessa Teague to incorporate recording of IRV invalid ballot interpretations. These
+ * are made only if the upload is OK but the IRV ballot is not a valid list of IRV preferences.
+ * These are stored in the IRVBallotInterpretation table.
  */
 @SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.CyclomaticComplexity"})
 // TODO: consider rewriting along the same lines as CVRExportUpload
@@ -47,6 +55,7 @@ public class ACVRUpload extends AbstractAuditBoardDashboardEndpoint {
    */
   public static final Logger LOGGER =
     LogManager.getLogger(ACVRUpload.class);
+
   /**
    * The event we will return for the ASM.
    */
@@ -132,6 +141,10 @@ public class ACVRUpload extends AbstractAuditBoardDashboardEndpoint {
           newAcvr = buildNewAcvr(submission, cvr, cdb);
 
           if (ComparisonAuditController.reaudit(cdb,cvr,newAcvr, submission.getComment())) {
+            // Make a record of any invalid IRV ballot interpretations.
+            recordIRVBallotInterpretations(submission.auditCVR(), RecordType.REAUDITED,
+                submission.auditCVR().cvrNumber(), submission.auditCVR().imprintedID());
+            // Return success response for reaudit.
             ok(the_response, "ACVR reaudited");
           } else {
             LOGGER.error("CVR has not previously been audited");
@@ -164,6 +177,10 @@ public class ACVRUpload extends AbstractAuditBoardDashboardEndpoint {
             // FIXME return an appropriate value and push HTTP response up
             if (ComparisonAuditController.submitAuditCVR(cdb, cvr, newAcvr)) {
               LOGGER.debug("ACVR OK");
+
+              // Make a record of any invalid IRV ballot interpretations.
+              recordIRVBallotInterpretations(submission.auditCVR(), RecordType.AUDITOR_ENTERED,
+                  submission.auditCVR().cvrNumber(), submission.auditCVR().imprintedID());
               Persistence.saveOrUpdate(cdb);
               ok(the_response, "ACVR submitted");
             } else {
@@ -191,7 +208,7 @@ public class ACVRUpload extends AbstractAuditBoardDashboardEndpoint {
           }
         }
       } // extract-fn: handleACVR will have returned some value or thrown
-    } catch (final JsonParseException e) {
+    } catch (final JsonParseException | IRVParsingException e) {
       LOGGER.error("malformed audit CVR upload");
       badDataContents(the_response, "malformed audit CVR upload");
     } catch (final PersistenceException e) {
@@ -199,5 +216,39 @@ public class ACVRUpload extends AbstractAuditBoardDashboardEndpoint {
       serverError(the_response, "Unable to save audit CVR");
     }
     return my_endpoint_result.get();
+  }
+
+  /**
+   * Takes an uploaded audit cvr, iterates through all the IRV contests in it, and for each one,
+   * examines whether the preferences are valid IRV choices (without skips, overvotes, repeated
+   * preferences). If not, it persists a record of the valid interpretation.
+   * The actual interpretation of the audit cvr, for audit computations, is made in
+   * CVRContestInfoJsonAdapter - this function is just for record keeping.
+   * @param cvr                  the uploaded audit cvr.
+   * @param recordType           should be either AUDITOR_ENTERED or REAUDIT.
+   * @param cvrNumber            the cvr number (as printed on the csv output).
+   * @param imprintedID          the imprinted ID.
+   * @throws IRVParsingException if the choices cannot be interpreted as IRV choices, i.e. of the
+   *                             form name(r) for integer rank r. Note this is separate from whether
+   *                             they are a valid list of IRV choices.
+   */
+  private void recordIRVBallotInterpretations(final CastVoteRecord cvr, final RecordType recordType,
+                               final int cvrNumber, final String imprintedID) throws IRVParsingException {
+    for(CVRContestInfo contestInfo : cvr.contestInfo()) {
+      if(contestInfo.contest().description().equals(ContestType.IRV.toString())) {
+        final IRVChoices irvChoices = new IRVChoices(contestInfo.rawChoices());
+        if(!irvChoices.isValid()) {
+          IRVBallotInterpretation interpretationRecord = new IRVBallotInterpretation(
+              contestInfo.contest(),
+              recordType,
+              cvrNumber,
+              imprintedID,
+              contestInfo.rawChoices(),
+              contestInfo.choices()
+          );
+          Persistence.save(interpretationRecord);
+        }
+      }
+    }
   }
 }

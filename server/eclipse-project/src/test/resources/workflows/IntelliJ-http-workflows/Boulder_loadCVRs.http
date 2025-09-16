@@ -1,0 +1,58 @@
+### 7. Boulder County CVRs, using 7-boulder-2023-plusByron-7.csv
+### POST request with basic login.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin7",
+  "password":""
+}
+
+### POST request for second factor.
+POST http://localhost:8888/auth-admin
+Content-Type: application/json
+
+{
+  "username":"countyadmin7",
+  "second_factor":"s d f"
+}
+
+### GET the county dashboard.
+GET http://localhost:8888/county-dashboard
+
+### POST the cvr file and its hash
+POST http://localhost:8888/upload-file
+Content-Type: multipart/form-data; boundary=TheBoundary
+
+--TheBoundary
+Content-Disposition: form-data; name="file"; filename="7-boulder-2023-plusByron-7.csv"
+Content-Type: text/csv
+
+< ../../CSVs/Demo1/7-boulder-2023-plusByron-7.csv
+
+--TheBoundary
+Content-Disposition: form-data; name="hash"
+
+< ../../CSVs/Demo1/7-boulder-2023-plusByron-7.csv.sha256sum
+--TheBoundary--
+
+> {%
+    const cvrUploadResponse = response.body;
+    client.global.set("cvrUploadResponse", cvrUploadResponse);
+%}
+
+### Request the CVR export to be imported
+### Oddly enough, this requires resending the response from the file upload.
+POST http://localhost:8888/import-cvr-export
+Content-Type: application/json
+
+{{cvrUploadResponse}}
+
+### Log out
+POST http://localhost:8888/unauthenticate
+Content-Type: application/json
+
+{
+  "username":"countyadmin7"
+}
+

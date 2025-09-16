@@ -15,7 +15,6 @@ import static us.freeandfair.corla.util.PrettyPrinter.booleanYesNo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -27,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.OptionalInt;
 import java.util.TimeZone;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -545,76 +543,16 @@ public class CountyReport {
 
     max_cell_number = Math.max(max_cell_number, cell_number);
     row_number = row_number - 1; // don't skip a line for the first contest
+    // Print the county contest results. These do not need IRV summaries.
     for (final CountyContestResult ccr : my_driving_contest_results) {
-      row_number++;
-      row = summary_sheet.createRow(row_number++);
-      cell_number = 0;
-      cell = row.createCell(cell_number++);
-      cell.setCellStyle(bold_style);
-      cell.setCellValue(ccr.contest().name() + " - Vote For " + ccr.contest().votesAllowed());
 
-      cell = row.createCell(cell_number++);
-      cell.setCellStyle(bold_style);
-      cell.setCellValue("Choice");
+      StateReport.CellStatus status = StateReport.makeContestSummary(row_number, max_cell_number, ccr, summary_sheet,
+          bold_style, integer_style, bold_right_style, decimal_style,
+          standard_style, standard_right_style);
 
-      cell = row.createCell(cell_number++);
-      cell.setCellStyle(bold_right_style);
-      cell.setCellValue("W/L");
-
-      cell = row.createCell(cell_number++);
-      cell.setCellStyle(bold_right_style);
-      cell.setCellValue("Votes");
-
-      cell = row.createCell(cell_number++);
-      cell.setCellStyle(bold_right_style);
-      cell.setCellValue("Margin");
-
-      cell = row.createCell(cell_number++);
-      cell.setCellStyle(bold_right_style);
-      cell.setCellValue("Diluted Margin %");
-
-      for (final String choice : ccr.rankedChoices()) {
-        row = summary_sheet.createRow(row_number++);
-        max_cell_number = Math.max(max_cell_number, cell_number);
-        cell_number = 1;
-        cell = row.createCell(cell_number++);
-        cell.setCellStyle(standard_style);
-        cell.setCellValue(choice);
-
-        cell = row.createCell(cell_number++);
-        cell.setCellStyle(standard_right_style);
-        if ((ccr.winners().stream().anyMatch(w -> w.equalsIgnoreCase(choice)))) {
-            cell.setCellValue("W");
-        } else {
-          cell.setCellValue("L");
-        }
-
-        cell = row.createCell(cell_number++);
-        cell.setCellStyle(integer_style);
-        cell.setCellType(CellType.NUMERIC);
-        cell.setCellValue(ccr.voteTotals().get(choice));
-
-        if (ccr.winners().contains(choice)) {
-          cell = row.createCell(cell_number++);
-          cell.setCellStyle(integer_style);
-          cell.setCellType(CellType.NUMERIC);
-          final OptionalInt margin = ccr.marginToNearestLoser(choice);
-          if (margin.isPresent()) {
-            cell.setCellValue(margin.getAsInt());
-          }
-
-          cell = row.createCell(cell_number++);
-          cell.setCellStyle(decimal_style);
-          cell.setCellType(CellType.NUMERIC);
-          final BigDecimal diluted_margin = ccr.countyDilutedMarginToNearestLoser(choice);
-          if (diluted_margin != null) {
-            cell.setCellValue(diluted_margin.doubleValue() * 100);
-          }
-        }
-      }
+      row_number = status.row_number();
+      max_cell_number = status.max_cell_number();
     }
-
-    row_number++;
 
     summary_sheet.getPrintSetup().setLandscape(true);
     summary_sheet.getPrintSetup().setFitWidth((short) 1);

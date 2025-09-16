@@ -72,23 +72,24 @@ const BallotManifestForm = (props: FormProps) => {
         <div>
             <div style={{ width: '500px' }}>
                 <div className='mb-default'>
-                    <span className='form-group-label pt-ui-text-large font-weight-bold'>
-                                Ballot Manifest
-                    </span> 
-                    <div className='dropzone'> 
-                    <Dropzone onDrop={ handleOnDrop }
-                              activeStyle={ activeStyle }
-                              multiple={ false }
-                              style={ dropStyle }>
-                        <div>
-                            <strong>
-                            Click here or drag-and-drop your Ballot Manifest .csv file to upload it
-                            </strong>
+                    <label>
+                        <span className='form-group-label pt-ui-text-large font-weight-bold'>
+                                    Ballot Manifest
+                        </span>
+                        <div className='dropzone'>
+                        <Dropzone onDrop={ handleOnDrop }
+                                  activeStyle={ activeStyle }
+                                  multiple={ false }
+                                  style={ dropStyle }>
+                            <div>
+                                <strong>
+                                Click here or drag-and-drop your Ballot Manifest .csv file to upload it
+                                </strong>
 
+                            </div>
+                        </Dropzone>
                         </div>
-                    </Dropzone>
-                    </div>
-                    
+                    </label>
                    <FormGroup>
                         <aside>
                         <div className='import-file'
@@ -103,17 +104,19 @@ const BallotManifestForm = (props: FormProps) => {
                    </FormGroup>
                  </div>
                 <div className='mb-default'>
-                    <FormGroup label={
-                        <span className='form-group-label pt-ui-text-large font-weight-bold'>
-                            SHA-256 hash for Ballot Manifest
-                        </span>
-                    }>
-                    <EditableText className='pt-input'
-                                    minWidth={ 600 }
-                                    maxLength={ 64 }
-                                    value={ hash }
-                                    onChange={ onHashChange } />
-                    </FormGroup>
+                    <label>
+                        <FormGroup label={
+                            <span className='form-group-label pt-ui-text-large font-weight-bold'>
+                                SHA-256 hash for Ballot Manifest
+                            </span>
+                        }>
+                        <EditableText className='pt-input'
+                                        minWidth={ 600 }
+                                        maxLength={ 64 }
+                                        value={ hash }
+                                        onChange={ onHashChange } />
+                        </FormGroup>
+                    </label>
                 </div>
             </div>
             <div className='form-controls'>

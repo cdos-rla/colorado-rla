@@ -37,10 +37,12 @@ class ElectionDateForm extends React.Component<FormProps, FormState> {
         return (
             <div>
                 <IdleDialog />
-                <div className='mb-default'>Election Date</div>
-                <DateInput { ...blueprintFormatter() }
-                           onChange={ this.onDateChange }
-                           value={ parseLocalDate(this.state.date) } />
+                <label>
+                    <div className='mb-default'>Election Date</div>
+                    <DateInput { ...blueprintFormatter() }
+                               onChange={ this.onDateChange }
+                               value={ parseLocalDate(this.state.date) } />
+                </label>
             </div>
         );
     }

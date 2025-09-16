@@ -63,7 +63,8 @@ public final class AdministratorQueries {
       // if there's exactly one result, return that
       if (query_results.size() == 1) {
         result = query_results.get(0);
-      } 
+      }
+      // TODO: if two admins have the same username, null gets returned. This seems like a bug?
     } catch (final PersistenceException e) {
       Main.LOGGER.error("could not query database for administrator");
     }

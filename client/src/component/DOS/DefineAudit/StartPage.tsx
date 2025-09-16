@@ -81,10 +81,10 @@ const AuditPage = (props: PageProps) => {
             <IdleDialog />
             <Breadcrumbs />
 
-            <h2 className='page-heading'>Administer an Audit</h2>
+            <h1 className='page-heading'>Administer an Audit</h1>
 
             <div>
-                <h3 className='section-heading'>Election Info</h3>
+                <h2 className='section-heading'>Election Info</h2>
                 <div className='mb-default'>Enter the date the election will take place, and the type of election.</div>
                 <div className='mb-default'>
                     <ElectionDateForm onChange={ setElectionDate }
@@ -98,7 +98,7 @@ const AuditPage = (props: PageProps) => {
             <hr />
 
             <div>
-                <h3 className='section-heading'>Public Meeting Date</h3>
+                <h2 className='section-heading'>Public Meeting Date</h2>
                 <div className='mb-default'>Enter the date of the public meeting to establish the random seed.</div>
                 <PublicMeetingDateForm onChange={ setPublicMeetingDate }
                                        initDate={ publicMeetingDate } />
@@ -106,7 +106,7 @@ const AuditPage = (props: PageProps) => {
             <hr />
 
             <div>
-                <h3 className='section-heading'>Risk Limit</h3>
+                <h2 className='section-heading'>Risk Limit</h2>
                 <div className='mb-default'>
                   Enter the risk limit for comparison audits as a percentage.
                 </div>

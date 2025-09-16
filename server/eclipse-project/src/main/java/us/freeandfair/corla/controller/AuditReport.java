@@ -2,17 +2,10 @@
 package us.freeandfair.corla.controller;
 
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.io.IOException;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +25,11 @@ import us.freeandfair.corla.report.ReportRows;
 import us.freeandfair.corla.report.StateReport;
 import us.freeandfair.corla.model.DoSDashboard;
 import us.freeandfair.corla.persistence.Persistence;
-//import us.freeandfair.corla.query.CSVParser;
 import us.freeandfair.corla.query.ExportQueries;
-//import us.freeandfair.corla.query.Reader;
+
+import static au.org.democracydevelopers.corla.endpoint.GetAssertions.CSV_SUFFIX;
+import static au.org.democracydevelopers.corla.endpoint.GetAssertions.JSON_SUFFIX;
+import static au.org.democracydevelopers.corla.endpoint.GetAssertions.getAssertions;
 
 /**
  * Find the data for a report and format it to be rendered into a presentation
@@ -222,8 +217,18 @@ public final class AuditReport {
           zos.write(sr.generateExcel());
           zos.closeEntry();
         }
+
+        // These can throw either IOExceptions or InterruptedExceptions, if the http call to raire
+        // fails or is interrupted.
+        if ("assertions_json".equalsIgnoreCase(reportName)) {
+          getAssertions(zos, "assertions-json", JSON_SUFFIX);
+        }
+
+        if ("assertions_csv".equalsIgnoreCase(reportName)) {
+          getAssertions(zos, "assertions-csv", CSV_SUFFIX);
+        }
       }
-    } catch (IOException e) {
+    } catch (IOException | InterruptedException e) {
       LOGGER.error(e.getMessage());
     } finally {
       try {

@@ -1,6 +1,23 @@
 import * as React from 'react';
 
 import RoundContainer from './RoundContainer';
+import {Button} from "@blueprintjs/core";
+
+interface RaireStatusProps {
+    raireServiceStatus: string,
+}
+
+const RaireStatus = ( { raireServiceStatus }: RaireStatusProps) => {
+    return (
+        <div className ='state-dashboard-audit-definition' >
+            <dl>
+                <dt>Raire service</dt>
+                <dd>{ raireServiceStatus }</dd>
+            </dl>
+        </div>
+    )
+}
+
 
 interface AuditDefinitionProps {
     riskLimit?: number;
@@ -26,6 +43,7 @@ interface MainProps {
     dosState: DOS.AppState;
 }
 
+
 const Main = (props: MainProps) => {
     const { auditDefined, canRenderReport, dosState } = props;
 
@@ -37,6 +55,7 @@ const Main = (props: MainProps) => {
 
     return (
         <div className='sos-notifications'>
+            <RaireStatus { ...dosState }/>
             { auditDefined && <AuditDefinition { ...dosState } /> }
             <RoundContainer auditIsComplete={ auditIsComplete }
                             canRenderReport={ canRenderReport } />

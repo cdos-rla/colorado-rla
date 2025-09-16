@@ -1,0 +1,285 @@
+{
+  "NAME" : "AllCountyWidePluralityAndIRVTwoRounds",
+
+  "RISK_LIMIT" : 0.03,
+
+  "SEED" : "24098249082409821390482049098",
+
+  "SQLS" : [
+    "SQL/WollondillyBallinaBellingenBurwoodByronCanadaBayAssertions.sql"
+  ],
+
+  "CVRS" : [
+    "src/test/resources/CSVs/NewSouthWales21/Wollondilly_Mayoral.csv",
+    "src/test/resources/CSVs/AdamsAndAlamosa/alamosa-cvrexport.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Ballina_Mayoral.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Bellingen_Mayoral.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Burwood_Mayoral.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Byron_Mayoral.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Canada_Bay_Mayoral.csv"
+  ],
+
+  "MANIFESTS" : [
+    "src/test/resources/CSVs/NewSouthWales21/Wollondilly_Mayoral.manifest.csv",
+    "src/test/resources/CSVs/AdamsAndAlamosa/alamosa-manifest.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Ballina_Mayoral.manifest.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Bellingen_Mayoral.manifest.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Burwood_Mayoral.manifest.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Byron_Mayoral.manifest.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Canada_Bay_Mayoral.manifest.csv"
+  ],
+
+  "CANONICAL_LIST" : "src/test/resources/CSVs/NewSouthWales21/WollondillyAlamosaBallinaBellingenBurwoodByronCandadaBay_Canonical_List.csv",
+
+  "CONTEST_NAME_CHANGE" : {
+    "Regent of the University of Colorado - At Large" : "Regent of the University of Colorado"
+  },
+
+  "CANDIDATE_NAME_CHANGE" : {
+    "Regent of the University of Colorado" : {
+      "Clear Winner" : "Distant Winner"
+    }
+  },
+
+  "CONTESTS_BY_SELECTED_COUNTIES" : {
+    "Adams" : [
+      "Wollondilly Mayoral",
+      "Adams COUNTY COMMISSIONER DISTRICT 3",
+      "Regent of the University of Colorado"
+    ],
+    "Alamosa" : [
+      "Alamosa COUNTY COMMISSIONER DISTRICT 3",
+      "Regent of the University of Colorado"
+    ],
+    "Arapahoe" : [
+      "Ballina Mayoral"
+    ],
+    "Archuleta" : [
+      "Bellingen Mayoral"
+    ],
+    "Baca" : [
+      "Burwood Mayoral"
+    ],
+    "Bent" : [
+      "Byron Mayoral"
+    ],
+    "Boulder" : [
+      "Canada Bay Mayoral"
+    ]
+  },
+
+  "TARGETS" : {
+    "Regent of the University of Colorado" : "COUNTY_WIDE_CONTEST",
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : "COUNTY_WIDE_CONTEST",
+    "Wollondilly Mayoral" : "COUNTY_WIDE_CONTEST",
+    "Burwood Mayoral" : "COUNTY_WIDE_CONTEST"
+  },
+
+  "WINNERS" : {
+    "Regent of the University of Colorado" : "Distant Winner",
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : "Jeff Baker",
+    "Wollondilly Mayoral" : "GOULD Matt",
+    "Burwood Mayoral" : "FAKER John"
+  },
+
+  "RAW_MARGINS" : {
+    "Regent of the University of Colorado" : 108,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 37,
+    "Wollondilly Mayoral" : 1285,
+    "Burwood Mayoral" : 7043
+  },
+
+  "DILUTED_MARGINS" : {
+    "Regent of the University of Colorado" : 0.654545455,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 0.224242424,
+    "Wollondilly Mayoral" : 0.04098230,
+    "Burwood Mayoral" : 0.39574086
+  },
+
+  "EXPECTED_SAMPLES" : {
+    "Regent of the University of Colorado" : 12,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 33,
+    "Wollondilly Mayoral" : 178,
+    "Burwood Mayoral" : 19
+  },
+
+  "FINAL_EXPECTED_AUDITED_BALLOTS" : {
+    "Regent of the University of Colorado" : 12,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 33,
+    "Wollondilly Mayoral" : 178,
+    "Burwood Mayoral" : 36
+  },
+
+  "FINAL_EXPECTED_OPTIMISTIC_SAMPLES" : {
+    "Regent of the University of Colorado" : 12,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 33,
+    "Wollondilly Mayoral" : 178,
+    "Burwood Mayoral" : 19
+  },
+
+  "FINAL_EXPECTED_ESTIMATED_SAMPLES" : {
+    "Regent of the University of Colorado" : 12,
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : 33,
+    "Wollondilly Mayoral" : 178,
+    "Burwood Mayoral" : 19
+  },
+
+  "PLURALITY_TABULATION" : {
+    "Alamosa COUNTY COMMISSIONER DISTRICT 3" : {
+      "Jeff Baker" : 38,
+      "Janet Lee Cook" : 1
+    },
+    "Regent of the University of Colorado" : {
+      "Distant Winner" : 122,
+      "Distant Loser" : 14
+    }
+  },
+
+  "PLURALITY_COUNTY_TABULATION" : {
+    "Alamosa" : {
+      "Alamosa COUNTY COMMISSIONER DISTRICT 3": {
+        "Jeff Baker": 38,
+        "Janet Lee Cook": 1
+      },
+      "Regent of the University of Colorado" : {
+        "Distant Winner" : 122,
+        "Distant Loser" : 14
+      }
+    }
+  },
+
+  "IRV_CONTESTS" : [
+    "Wollondilly Mayoral",
+    "Canada Bay Mayoral",
+    "Byron Mayoral",
+    "Bellingen Mayoral",
+    "Ballina Mayoral",
+    "Burwood Mayoral"
+  ],
+
+  "EXPECTED_ROUNDS" : 2,
+
+  "PHANTOM_BALLOTS" : {
+  },
+
+  "DISAGREEMENTS" : {
+  },
+  "DISCREPANT_AUDITED_BALLOT_CHOICES": {
+    "1": {
+      "1-16-45": {
+        "Wollondilly Mayoral": [
+          "HANNAN Judy(1)"
+        ]
+      }
+    },
+    "5": {
+      "1-17-56": {
+        "Burwood Mayoral": [
+          "HULL David(1)",
+          "FAKER John(2)"
+        ]
+      }
+    }
+  },
+
+  "REAUDITS" : {
+  },
+
+  "COUNTY_RESULTS" : {
+    "1" : {
+      "1" : {
+        "discrepancy_count" : {
+          "AUDITED_CONTEST" : 1
+        }
+      },
+      "5" : {
+        "discrepancy_count" : {
+          "AUDITED_CONTEST" : 1
+        }
+      }
+    },
+    "2" : {
+      "1" : {
+        "discrepancy_count" : {
+          "AUDITED_CONTEST" : 1
+        }
+      },
+      "5" : {
+        "discrepancy_count" : {
+          "AUDITED_CONTEST" : 1
+        }
+      }
+    }
+  },
+
+  "CONTEST_RESULTS" : {
+    "1" : {
+      "Regent of the University of Colorado" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "Alamosa COUNTY COMMISSIONER DISTRICT 3" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "Wollondilly Mayoral" : {
+        "one_over_count" : 1,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "Burwood Mayoral" : {
+        "one_over_count" : 0,
+        "two_over_count" : 1,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      }
+    },
+    "2" : {
+      "Regent of the University of Colorado" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "Alamosa COUNTY COMMISSIONER DISTRICT 3" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "Wollondilly Mayoral" : {
+        "one_over_count" : 1,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "Burwood Mayoral" : {
+        "one_over_count" : 0,
+        "two_over_count" : 1,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      }
+    }
+  }
+}

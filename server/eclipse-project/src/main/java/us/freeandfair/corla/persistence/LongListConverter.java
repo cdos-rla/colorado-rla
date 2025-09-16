@@ -12,6 +12,7 @@
 package us.freeandfair.corla.persistence;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.AttributeConverter;
@@ -44,12 +45,18 @@ public class LongListConverter implements AttributeConverter<List<Long>, String>
       new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
   
   /**
-   * Converts the specified list of Strings to a database column entry.
-   * 
-   * @param the_list The list of Strings.
+   * Converts the specified list of Longs to a database column entry.
+   * Do _not_ remove the apparently-redundant check for empty - this corrects an obscure
+   * but important issue related to GSON and reflection
+   * (see <a href="https://github.com/google/gson/issues/1875">...</a>)
+   * which caused occasional failures in ballot generation.
+   * @param the_list The list of Longs.
    */
   @Override
   public String convertToDatabaseColumn(final List<Long> the_list) {
+    if (the_list != null && the_list.isEmpty()) {
+      return GSON.toJson(new ArrayList<Long>());
+    }
     return GSON.toJson(the_list); 
   }
 

@@ -13,25 +13,19 @@ package us.freeandfair.corla.csv;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.PersistenceException;
 
+import au.org.democracydevelopers.corla.model.ContestType;
+import au.org.democracydevelopers.corla.model.vote.IRVChoices;
+import au.org.democracydevelopers.corla.model.vote.IRVParsingException;
+import au.org.democracydevelopers.corla.model.vote.IRVPreference;
+import au.org.democracydevelopers.corla.model.vote.IRVBallotInterpretation;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -48,11 +42,26 @@ import us.freeandfair.corla.query.CountyContestResultQueries;
 import us.freeandfair.corla.util.DBExceptionUtil;
 import us.freeandfair.corla.util.ExponentialBackoffHelper;
 
+import static au.org.democracydevelopers.corla.csv.IRVHeadersParser.generateAllIRVPreferences;
+import static au.org.democracydevelopers.corla.csv.IRVHeadersParser.validateIRVPreferenceHeaders;
+
 /**
  * Parser for Dominion CVR export files.
  *
  * @author Daniel M. Zimmerman <dmz@freeandfair.us>
  * @version 1.0.0
+ * Additions by Vanessa Teague for IRV and STV parsing.
+ * This parser can cope with 3 different kinds of contests, defined by their headers.
+ * - plurality single- and multi- winner contests, which are parsed directly and saved,
+ * - IRV (ranked single-winner) contests, which are parsed with some extra complexity for dealing with
+ *   their special candidate headers (names and ranks), and saved,
+ * - STV (ranked multi-winner) contests, which by request are accepted but then dropped completely.
+ *   These are ephemerally parsed into the Contest data structures, which are then used to parse each
+ *   CVR, but no CountyContestResult is added to my_results, no Contest is persisted, and none of the
+ *   choices are added into the CVRContestInfo structures attached to the CVR. This processing is
+ *   intended to replicate the situation in which the STV contest had simply been omitted from the
+ *   CSV file. However, parsing errors (invalid headers, missing headers, etc) will still cause an
+ *   error message.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "PMD.ExcessiveImports",
     "PMD.ModifiedCyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
@@ -151,6 +160,27 @@ public class DominionCVRExportParser {
       CVR_NUMBER_HEADER, TABULATOR_NUMBER_HEADER, BATCH_ID_HEADER,
       RECORD_ID_HEADER, IMPRINTED_ID_HEADER, BALLOT_TYPE_HEADER
       };
+
+  /**
+   * The string indicating how many votes are permitted, for plurality.
+   */
+  private static final String PLURALITY_VOTE_FOR = "(Vote For=";
+
+  /**
+   * The string indicating how many votes are permitted, for IRV.
+   */
+  private static final String IRV_VOTE_FOR = "Number of ranks=";
+
+  /**
+   * The string indicating how many winners are being selected, for IRV.
+   * We only audit when there is one winner.
+   */
+  private static final String IRV_WINNERS_ALLOWED = "(Number of positions=";
+
+  /**
+   * Indicator (-1) to show that there are no votes allowed. This is used to identify STV contests.
+   */
+  private static final int STV_NO_VOTES = -1;
 
   /**
    * The parser to be used.
@@ -303,7 +333,10 @@ public class DominionCVRExportParser {
   private void updateContestStructures(final CSVRecord the_line,
                                        final List<String> the_names,
                                        final Map<String, Integer> the_votes_allowed,
-                                       final Map<String, Integer> the_choice_counts) {
+                                       final Map<String, Integer> the_choice_counts,
+                                       final Map<String, ContestType> the_contest_types) {
+    final String prefix = "[updateContestStructures] ";
+
     int index = my_first_contest_column;
     do {
       final String c = the_line.get(index);
@@ -313,37 +346,107 @@ public class DominionCVRExportParser {
         index = index + 1;
         count = count + 1;
       }
-      // get the contest name and "(Vote For=" number
-      String cn = c.substring(0, c.indexOf("(Vote For="));
-      final String vf = c.replace(cn, "").replace("(Vote For=", "").replace(")", "");
-      // clean up the contest name (we used it to get the number, before cleaning)
-      cn = cn.trim();
-      int ms = 1; // this is our default maximum selections
+
       try {
-        ms = Integer.parseInt(vf);
-      } catch (final NumberFormatException e) {
-        // ignored
+        final int pluralityVotesAllowed = extractPositiveInteger(c, PLURALITY_VOTE_FOR, ")");
+        final int irvVotesAllowed = extractPositiveInteger(c, IRV_VOTE_FOR, ")");
+        final int irvWinners = extractPositiveInteger(c, IRV_WINNERS_ALLOWED, ",");
+        // If winners and allowed votes are as expected for plurality, this is a plurality contest.
+        final boolean isPlurality = pluralityVotesAllowed > 0 && irvVotesAllowed == -1 && irvWinners == -1;
+        final boolean isIRV = pluralityVotesAllowed == -1 && irvVotesAllowed > 0 && irvWinners == 1;
+        // If it looks like IRV but has more than one winner, it's an STV contest.
+        final boolean isSTV = pluralityVotesAllowed == -1 && irvVotesAllowed > 0 && irvWinners > 1;
+
+        // Counterintuitively, we also code the STV contest as a 'plurality' contest, which works
+        // fine with candidate names of the form Alice(1), Alice(2), etc.
+        // STV_NO_VOTES = -1 in the_votes_allowed to encode that it's an STV contest.
+        if(isPlurality || isSTV) {
+          final String contestName
+              = c.substring(0, c.indexOf(isPlurality ? PLURALITY_VOTE_FOR : IRV_VOTE_FOR)).strip();
+          the_names.add(contestName);
+          the_contest_types.put(contestName, ContestType.PLURALITY);
+          the_choice_counts.put(contestName, count);
+          the_votes_allowed.put(contestName, isPlurality ? pluralityVotesAllowed : STV_NO_VOTES);
+
+        // If winners and allowed votes are as expected for IRV, this is an IRV contest.
+        // We expect the count to be the real number of choices times the number of ranks.
+        } else if(isIRV && count % irvVotesAllowed == 0) {
+          final String contestName = c.substring(0, c.indexOf(IRV_WINNERS_ALLOWED)).strip();
+          the_names.add(contestName);
+          the_contest_types.put(contestName, ContestType.IRV);
+          // Each real choice (i.e. candidate name) is repeated 'irvVotesAllowed' times, e.g.
+          // Alice(1), Alice(2), etc. We just want to record the number of real choices.
+          the_choice_counts.put(contestName, count / irvVotesAllowed);
+          the_votes_allowed.put(contestName, irvVotesAllowed);
+
+        } else {
+          // The header didn't have the keywords we expected.
+          final String msg = "Could not parse header: ";
+          LOGGER.error(String.format("%s %s", prefix, msg+c));
+          throw new RuntimeException(msg+c);
+        }
+      } catch (NumberFormatException e) {
+        // We parsed the header OK, but the values were not as expected.
+        final String msg = "Unexpected or uninterpretable numbers in header: ";
+        LOGGER.error(String.format("%s %s", prefix, msg+c));
+        throw new RuntimeException(msg+c);
       }
-      the_names.add(cn);
-      the_choice_counts.put(cn, count);
-      the_votes_allowed.put(cn, ms);
+
     } while (index < the_line.size());
+
+    LOGGER.debug(String.format("%s %s", prefix, "Successfully parsed headers: "+the_line));
+  }
+
+  /**
+   * Parses and returns a positive integer that occurs in the whole string, between indicatorString
+   * and endString. For example, if wholeString is "[contestname] (Vote For=3)", a call to
+   * getIntegerAfter(wholestring, "VoteFor=", ")") will return 3.
+   * @param wholeString The string from which to extract the value.
+   * @param indicator The substring that indicates the value is next.
+   * @param endString The string that should follow the value.
+   * @return the positive integer between indicatorString and endString, or
+   *         -1 if indicatorString is not present in wholeString.
+   * @throws NumberFormatException if indicatorString appears in wholeString, but what follows
+   *         between it and endString cannot be parsed as a positive integer.
+   */
+  private int extractPositiveInteger(String wholeString, String indicator, String endString)
+      throws NumberFormatException {
+    final String prefix = "[extractPositiveInteger] ";
+
+    // If the indicator is not present, return -1.
+    if(!wholeString.contains(indicator)) {
+      return -1;
+    }
+
+    // The index in wholeString where we expect the integer to start.
+    int intIndex = wholeString.indexOf(indicator)+indicator.length();
+    String intString = wholeString.substring(intIndex, wholeString.indexOf(endString, intIndex));
+    final int val = Integer.parseInt(intString.strip());
+    if(val > 0) {
+      return val;
+    }
+
+    String msg = "Could not parse header: ";
+    LOGGER.error(String.format("%s %s", prefix, msg+wholeString));
+    throw new NumberFormatException(String.format("%s %s", prefix, msg+wholeString));
   }
 
   /**
    * Create contest and result objects for use later in parsing.
    *
-   * @param choiceLine The CSV line containing the choice information.
+   * @param choiceLine      The CSV line containing the choice information.
    * @param explanationLine The CSV line containing the choice explanations.
-   * @param contestNames The list of contest names.
-   * @param votesAllowed The table of votes allowed values.
-   * @param choiceCounts The table of contest choice counts.
+   * @param contestNames    The list of contest names.
+   * @param votesAllowed    The table of votes allowed values.
+   * @param choiceCounts    The table of contest choice counts.
+   * @param contestTypes    The table of contest types (PLURALITY or IRV)
    */
   private Result addContests(final CSVRecord choiceLine,
-                           final CSVRecord explanationLine,
-                           final List<String> contestNames,
-                           final Map<String, Integer> votesAllowed,
-                           final Map<String, Integer> choiceCounts) {
+                             final CSVRecord explanationLine,
+                             final List<String> contestNames,
+                             final Map<String, Integer> votesAllowed,
+                             final Map<String, Integer> choiceCounts,
+                             final Map<String, ContestType> contestTypes) {
     final Result result = new Result();
     int index = my_first_contest_column;
     int contest_count = 0;
@@ -352,43 +455,76 @@ public class DominionCVRExportParser {
       final List<Choice> choices = new ArrayList<Choice>();
       final int end = index + choiceCounts.get(contestName);
       boolean isWriteIn = false;
+      final boolean isIRV = contestTypes.get(contestName).equals(ContestType.IRV);
 
-      while (index < end) {
-        String choice =choiceLine.get(index).trim();
-        final String explanation = explanationLine.get(index).trim();
-        // "Write-in" is a fictitious candidate that denotes the beginning of
-        // the list of qualified write-in candidates
-        final boolean isFictitious = "Write-in".equalsIgnoreCase(choice);
-        choices.add(new Choice(choice, explanation, isWriteIn, isFictitious));
-        if (isFictitious) {
-          // consider all subsequent choices in this contest to be qualified
-          // write-in candidates
-          isWriteIn = true;
-        }
-        index = index + 1;
-      }
-      // now that we have all the choices, we can create a Contest object for
-      // this contest (note the empty contest description at the moment, below,
-      // as that's not in the CVR files and may not actually be used)
-      // note that we're using the "Vote For" number as the number of winners
-      // allowed as well, because the Dominion format doesn't give us that
-      // separately
-      final Contest c = new Contest(contestName, my_county, "", choices,
-                                    votesAllowed.get(contestName), votesAllowed.get(contestName),
-                                    contest_count);
-      LOGGER.debug(String.format("[addContests: county=%s, contest=%s", my_county.name(), c));
-
-      contest_count = contest_count + 1;
       try {
-        Persistence.saveOrUpdate(c);
-        final CountyContestResult r = CountyContestResultQueries.matching(my_county, c);
-        my_contests.add(c);
-        my_results.add(r);
-      } catch (PersistenceException pe) {
+        if (isIRV) {
+          // Ensure that the IRV choices have the expected form, iterating through all ranks and
+          // all candidates for each rank.
+          validateIRVPreferenceHeaders(choiceLine, index, choiceCounts.get(contestName),
+              votesAllowed.get(contestName));
+        }
+        while (index < end) {
+          String choice;
+          if (isIRV) {
+            // If it is IRV, ignore the rank in parentheses and extract the candidate name.
+            choice = new IRVPreference(choiceLine.get(index)).candidateName;
+          } else {
+            // Plurality - just use the candidate/choice name as is.
+            // Also for STV - it will just keep the names followed by rank.
+            choice = choiceLine.get(index).strip();
+          }
+          final String explanation = explanationLine.get(index).trim();
+          // "Write-in" is a fictitious candidate that denotes the beginning of
+          // the list of qualified write-in candidates
+          final boolean isFictitious = choice.toUpperCase().matches("WRITE[-_ \t]*IN");
+          choices.add(new Choice(choice, explanation, isWriteIn, isFictitious));
+          if (isFictitious) {
+            // consider all subsequent choices in this contest to be qualified
+            // write-in candidates
+            isWriteIn = true;
+          }
+          index = index + 1;
+        }
+
+        // Winners allowed is always 1 for IRV, but is assumed to be equal to votesAllowed for
+        // plurality, because the Dominion format doesn't give us that separately.
+        // For STV, it doesn't matter because the contest will be dropped.
+        final int winnersAllowed = isIRV ? 1 : votesAllowed.get(contestName);
+
+        final Contest c = new Contest(contestName, my_county, contestTypes.get(contestName).toString(),
+            choices, votesAllowed.get(contestName), winnersAllowed, contest_count);
+
+        LOGGER.debug(String.format("[addContests: county=%s, contest=%s", my_county.name(), c));
+
+        // If we've just finished a plurality or STV contest header, index is already at the right
+        // place for the next contest.
+        // If we've just finished the 1st-preference IRV choices, e.g. "Alice(1), Bob(1), Chuan(1)",
+        // index will now be pointed at the beginning of the IRV 2nd preferences, e.g.
+        // "Alice(2), Bob(2), Chuan(2)", so we have to advance it to the next contest. There is a
+        // complete list of choices for each of the ranks allowed other than 1, so add
+        // (number of choices)*(ranks allowed -1).
+        index = index + (isIRV ? choices.size() * (votesAllowed.get(contestName) - 1) : 0);
+        contest_count = contest_count + 1;
+        try {
+          // Don't make a CountyContestResult for, and don't persist, an STV contest.
+          if(votesAllowed.get(contestName) != STV_NO_VOTES) {
+            Persistence.saveOrUpdate(c);
+            final CountyContestResult r = CountyContestResultQueries.matching(my_county, c);
+            my_results.add(r);
+          }
+          my_contests.add(c);
+        } catch (PersistenceException pe) {
+          result.success = false;
+          result.errorMessage = StringUtils.abbreviate(DBExceptionUtil.getConstraintFailureReason(pe), 250);
+          result.errorRowContent = StringUtils.abbreviate("Error adding " + c.shortToString(), 250);
+          return result;
+        }
+      } catch (IRVParsingException e) {
         result.success = false;
-        result.errorMessage = StringUtils.abbreviate(DBExceptionUtil.getConstraintFailureReason(pe),250);
-        result.errorRowContent = StringUtils.abbreviate("Error adding " + c.shortToString(),250) ;
-        return result ;
+        result.errorMessage = e.getMessage();
+        result.errorRowContent = "Error doing IRV parsing for "+choiceLine.get(index);
+        return result;
       }
     }
     result.success = true ;
@@ -498,6 +634,7 @@ public class DominionCVRExportParser {
     final String ballot_type =
       stripEqualQuotes(the_line.get(my_columns.get(BALLOT_TYPE_HEADER)));
     final List<CVRContestInfo> contest_info = new ArrayList<CVRContestInfo>();
+    final String prefix = "[extractCVR]";
 
     // for each contest, see if choices exist on the CVR; "0" or "1" are
     // votes or absences of votes; "" means that the contest is not in this style
@@ -505,7 +642,16 @@ public class DominionCVRExportParser {
     for (final Contest co : my_contests) {
       boolean present = false;
       final List<String> votes = new ArrayList<String>();
-      for (final Choice ch : co.choices()) {
+      final boolean isIRV = co.description().equals(ContestType.IRV.toString());
+
+      List<Choice> choices;
+      if(isIRV) {
+        choices = generateAllIRVPreferences(co.choices(), co.votesAllowed());
+      } else {
+        choices = co.choices();
+      }
+
+      for (final Choice ch : choices) {
         final String mark_string = the_line.get(index);
         final boolean p = !mark_string.isEmpty();
         final boolean mark = "1".equals(mark_string);
@@ -516,8 +662,33 @@ public class DominionCVRExportParser {
         index = index + 1;
       }
       // if this contest was on the ballot, add it to the votes
+      try {
       if (present) {
-        contest_info.add(new CVRContestInfo(co, null, null, votes));
+        if(isIRV) {
+            // If it is IRV, convert it into an ordered list of names (without parentheses), then
+            // store.
+            final IRVChoices irvVotes = new IRVChoices(votes);
+            final List<String> orderedChoices = irvVotes.getValidIntentAsOrderedList();
+            if(!irvVotes.isValid()) {
+              // IRV preferences were invalid. Store a record of the raw votes for debugging/record-
+              // keeping purposes, but use the valid interpretation as the choices in the audit.
+              final IRVBallotInterpretation irvInterpretation = new IRVBallotInterpretation(co,
+                  RecordType.UPLOADED, cvr_id, imprinted_id, votes, orderedChoices);
+              Persistence.save(irvInterpretation);
+              final String msg = "Interpretation of invalid IRV choices.";
+              LOGGER.warn(String.format("%s %s %s.", prefix, msg,
+                  irvInterpretation.logMessage(CVR_NUMBER_HEADER, IMPRINTED_ID_HEADER)));
+            }
+            contest_info.add(new CVRContestInfo(co, null, null, orderedChoices));
+
+        } else if(co.votesAllowed() != STV_NO_VOTES) {
+          // Don't store an STV contest (indicated by STV_NO_VOTES in votesAllowed).
+          // Store plurality vote.
+          contest_info.add(new CVRContestInfo(co, null, null, votes));
+        }
+      }
+      } catch (IRVParsingException e) {
+        throw new RuntimeException(e);
       }
     }
 
@@ -622,7 +793,7 @@ public class DominionCVRExportParser {
    * Makes a comma-separated string of the specified collection of
    * strings.
    *
-   * @param the_list The list.
+   * @param the_strings The list.
    * @return the comma-separated string.
    */
   private String stringList(final Collection<String> the_strings) {
@@ -704,12 +875,13 @@ public class DominionCVRExportParser {
     final List<String> contest_names = new ArrayList<String>();
     final Map<String, Integer> contest_votes_allowed = new HashMap<String, Integer>();
     final Map<String, Integer> contest_choice_counts = new HashMap<String, Integer>();
+    final Map<String, ContestType> contest_types = new HashMap<>();
 
     // we expect the second line to be a list of contest names, each appearing once
     // for each choice in the contest
 
     updateContestStructures(contest_line, contest_names, contest_votes_allowed,
-                            contest_choice_counts);
+                            contest_choice_counts, contest_types);
 
 
     headerResult = processHeaders(expl_line);
@@ -717,8 +889,8 @@ public class DominionCVRExportParser {
     if (headerResult.success == false) {
       return headerResult;
     } else {
-      Result addContestResult =addContests(choice_line, expl_line, contest_names,
-                                           contest_votes_allowed, contest_choice_counts);
+      Result addContestResult = addContests(choice_line, expl_line, contest_names,
+          contest_votes_allowed, contest_choice_counts, contest_types);
       if (!addContestResult.success) {
         return addContestResult ;
       }

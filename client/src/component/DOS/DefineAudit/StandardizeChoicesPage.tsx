@@ -58,14 +58,14 @@ interface UpdateFormMessage {
 }
 
 interface TableProps {
-    contests: DOS.Contests;
+    contestsIgnoringManifests: DOS.Contests;
     formData: DOS.Form.StandardizeChoices.FormData;
     rows: DOS.Form.StandardizeChoices.Row[];
     updateFormData: (msg: UpdateFormMessage) => void;
 }
 
 const Table = (props: TableProps) => {
-    const { contests, formData, rows, updateFormData } = props;
+    const { contestsIgnoringManifests, formData, rows, updateFormData } = props;
 
     return (
         <table className='pt-html-table pt-html-table-striped'>
@@ -77,7 +77,7 @@ const Table = (props: TableProps) => {
                     <th>Standardized Choice Name</th>
                 </tr>
             </thead>
-            <TableBody contests={ contests }
+            <TableBody contestsIgnoringManifests={ contestsIgnoringManifests }
                        rows={ rows }
                        formData={ formData }
                        updateFormData={ updateFormData } />
@@ -86,7 +86,7 @@ const Table = (props: TableProps) => {
 };
 
 interface TableBodyProps {
-    contests: DOS.Contests;
+    contestsIgnoringManifests: DOS.Contests;
     formData: DOS.Form.StandardizeChoices.FormData;
     rows: DOS.Form.StandardizeChoices.Row[];
     updateFormData: (msg: UpdateFormMessage) => void;
@@ -141,6 +141,7 @@ const TableRow = (props: TableRowProps) => {
                 <form>
                     <select className='max-width-select'
                             onChange={ changeHandler }
+                            aria-label={ `Standardize Choice Name For ${row.choiceName}` }
                             value={_.defaultTo(_.find(formData[row.contestId],
                                 o => o.existingChoice === row.choiceName), {newChoice: ''})
                                 .newChoice}>
@@ -159,7 +160,7 @@ const TableRow = (props: TableRowProps) => {
 
 interface PageProps {
     areChoicesLoaded: boolean;
-    contests: DOS.Contests;
+    contestsIgnoringManifests: DOS.Contests;
     rows: DOS.Form.StandardizeChoices.Row[];
     forward: (x: DOS.Form.StandardizeChoices.FormData) => void;
     back: () => void;
@@ -225,7 +226,7 @@ class Page extends React.Component<PageProps, PageState> {
         const {
             areChoicesLoaded,
             back,
-            contests,
+            contestsIgnoringManifests,
             rows,
             forward,
         } = this.props;
@@ -236,7 +237,7 @@ class Page extends React.Component<PageProps, PageState> {
             main =
                 <div>
                     <Breadcrumbs />
-                    <h2>Standardize Choice Names</h2>
+                    <h1 className={'mediumHeader'}>Standardize Choice Names</h1>
                     <Card>
                         <p>
                             Choice names for each contest must be standardized
@@ -249,7 +250,7 @@ class Page extends React.Component<PageProps, PageState> {
                             selections and move forward.
                         </p>
 
-                        <Table contests={ contests }
+                        <Table contestsIgnoringManifests={ contestsIgnoringManifests }
                                formData={ this.state.formData }
                                rows={ rows }
                                updateFormData={ this.updateFormData } />

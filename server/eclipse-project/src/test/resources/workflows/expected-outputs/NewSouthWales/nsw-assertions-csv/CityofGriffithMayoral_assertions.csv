@@ -1,0 +1,23 @@
+Contest name,City of Griffith Mayoral
+Candidates,"MERCURI Rina,NAPOLI Anne,ZAPPACOSTA Dino,LA ROCCA Mariacarmina (Carmel),CURRAN Doug"
+Winner,CURRAN Doug
+Total universe,14179
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,3606,"3"
+Diluted margin,0.25431977,"3"
+Raire difficulty,3.9320576816417083,"3"
+Current risk,1.00000000,"1, 2, 3, 4, 5, 6, 7, 8"
+Optimistic samples to audit,29,"3"
+Estimated samples to audit,29,"3"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,CURRAN Doug,LA ROCCA Mariacarmina (Carmel),,3.2431,4372,0.3083,1.00000000,24,24,0,0,0,0,0
+2,NEN,CURRAN Doug,MERCURI Rina,"MERCURI Rina,CURRAN Doug",3.5044,4046,0.2854,1.00000000,26,26,0,0,0,0,0
+3,NEN,CURRAN Doug,NAPOLI Anne,"NAPOLI Anne,CURRAN Doug",3.9321,3606,0.2543,1.00000000,29,29,0,0,0,0,0
+4,NEN,CURRAN Doug,ZAPPACOSTA Dino,"ZAPPACOSTA Dino,CURRAN Doug",3.2491,4364,0.3078,1.00000000,24,24,0,0,0,0,0
+5,NEN,CURRAN Doug,MERCURI Rina,"MERCURI Rina,NAPOLI Anne,CURRAN Doug",3.2284,4392,0.3098,1.00000000,24,24,0,0,0,0,0
+6,NEN,CURRAN Doug,ZAPPACOSTA Dino,"MERCURI Rina,ZAPPACOSTA Dino,CURRAN Doug",3.3663,4212,0.2971,1.00000000,25,25,0,0,0,0,0
+7,NEN,CURRAN Doug,ZAPPACOSTA Dino,"NAPOLI Anne,ZAPPACOSTA Dino,CURRAN Doug",3.3013,4295,0.3029,1.00000000,25,25,0,0,0,0,0
+8,NEN,CURRAN Doug,MERCURI Rina,"MERCURI Rina,NAPOLI Anne,ZAPPACOSTA Dino,CURRAN Doug",3.3229,4267,0.3009,1.00000000,25,25,0,0,0,0,0

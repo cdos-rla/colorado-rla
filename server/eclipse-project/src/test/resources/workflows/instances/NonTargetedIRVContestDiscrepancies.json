@@ -1,0 +1,168 @@
+{
+  "NAME" : "NonTargetedIRVContestDiscrepancies",
+
+  "RISK_LIMIT" : 0.03,
+
+  "SEED" : "24098249082409821390482049098",
+
+  "SQLS" : [
+    "SQL/WollongongRichmondValleyAssertions.sql"
+  ],
+
+  "CVRS" : [
+    "src/test/resources/CSVs/WollongongAndSplitRichmondValley/City_of_Wollongong_Mayoral_PlusRVM_Q3_R1.csv",
+    "src/test/resources/CSVs/WollongongAndSplitRichmondValley/Richmond_Valley_Mayoral_FirstHalf.csv",
+    "src/test/resources/CSVs/WollongongAndSplitRichmondValley/Richmond_Valley_Mayoral_LastQuarter.csv"
+  ],
+
+  "MANIFESTS" : [
+    "src/test/resources/CSVs/NewSouthWales21/City_of_Wollongong_Mayoral.manifest.csv",
+    "src/test/resources/CSVs/WollongongAndSplitRichmondValley/Richmond_Valley_Mayoral_FirstHalf.manifest.csv",
+    "src/test/resources/CSVs/WollongongAndSplitRichmondValley/Richmond_Valley_Mayoral_LastQuarter.manifest.csv"
+  ],
+
+  "CANONICAL_LIST" : "src/test/resources/CSVs/WollongongAndSplitRichmondValley/WollongongAndSplitRichmond_Canonical_List.csv",
+
+  "CONTEST_NAME_CHANGE" : {
+  },
+
+  "CANDIDATE_NAME_CHANGE" : {
+  },
+
+  "CONTESTS_BY_SELECTED_COUNTIES" : {
+  },
+
+  "TARGETS" : {
+    "City of Wollongong Mayoral" : "COUNTY_WIDE_CONTEST"
+  },
+
+  "WINNERS" : {
+    "Richmond Valley Mayoral" : "MUSTOW Robert",
+    "City of Wollongong Mayoral" : "BRADBERY Gordon"
+  },
+
+  "RAW_MARGINS" : {
+    "Richmond Valley Mayoral" : 5821,
+    "City of Wollongong Mayoral" : 2666
+  },
+
+  "DILUTED_MARGINS" : {
+    "Richmond Valley Mayoral" : 0.04239837,
+    "City of Wollongong Mayoral" : 0.02095253
+  },
+
+  "EXPECTED_SAMPLES" : {
+    "City of Wollongong Mayoral" : 348
+  },
+
+  "FINAL_EXPECTED_AUDITED_BALLOTS" : {
+    "City of Wollongong Mayoral" : 348
+  },
+
+  "FINAL_EXPECTED_OPTIMISTIC_SAMPLES" : {
+    "City of Wollongong Mayoral" : 348
+  },
+
+  "FINAL_EXPECTED_ESTIMATED_SAMPLES" : {
+    "City of Wollongong Mayoral" : 348
+  },
+
+  "PLURALITY_TABULATION" : {
+  },
+
+  "PLURALITY_COUNTY_TABULATION" : {
+  },
+
+  "IRV_CONTESTS" : [
+    "Richmond Valley Mayoral",
+    "City of Wollongong Mayoral"
+  ],
+
+  "EXPECTED_ROUNDS" : 1,
+
+  "PHANTOM_BALLOTS" : {
+  },
+
+  "DISAGREEMENTS" : {
+  },
+
+  "DISCREPANT_AUDITED_BALLOT_CHOICES": {
+    "1": {
+      "1-7-54": {
+        "City of Wollongong Mayoral": [
+          "BROWN Tania(1)",
+          "DORAHY John(2)",
+          "ANTHONY Andrew(3)",
+          "GLYKIS Marie(4)",
+          "BRADBERY Gordon(5)"
+        ],
+        "Richmond Valley Mayoral": [
+          "HAYES Robert(1)"
+        ]
+      },
+      "1-11-7": {
+        "Richmond Valley Mayoral": [
+          "HAYES Robert(1)"
+        ]
+      }
+    }
+  },
+  "REAUDITS": {
+    "1": {
+      "1-7-54": [
+        {
+          "City of Wollongong Mayoral": {
+            "choices": [
+              "BROWN Tania(1)",
+              "DORAHY John(2)",
+              "ANTHONY Andrew(3)",
+              "GLYKIS Marie(4)",
+              "BRADBERY Gordon(5)"
+            ],
+            "consensus": "YES"
+          },
+          "Richmond Valley Mayoral": {
+            "choices": [
+              "HAYES Robert(1)"
+            ],
+            "consensus": "YES"
+          }
+        }
+      ],
+      "1-11-7": [
+        {
+          "Richmond Valley Mayoral": {
+            "choices": [
+              "HAYES Robert(1)"
+            ],
+            "consensus": "YES"
+          }
+        }
+      ]
+    }
+  },
+
+  "COUNTY_RESULTS" : {
+    "1" : {
+      "1" : {
+        "discrepancy_count" : {
+          "UNAUDITED_CONTEST" : 2,
+          "AUDITED_CONTEST" : 1
+        }
+      }
+    }
+  },
+
+  "CONTEST_RESULTS" : {
+    "1" : {
+      "City of Wollongong Mayoral" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 1,
+        "disagreements" : 0
+      }
+    }
+  }
+}

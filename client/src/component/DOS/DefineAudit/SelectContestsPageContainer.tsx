@@ -8,8 +8,8 @@ import withPoll from 'corla/component/withPoll';
 
 import SelectContestsPage from './SelectContestsPage';
 
-import selectContestsForAudit from 'corla/action/dos/selectContestsForAudit';
 import resetAudit from 'corla/action/dos/resetAudit';
+import selectContestsForAudit from 'corla/action/dos/selectContestsForAudit';
 
 interface ContainerProps {
     auditedContests: DOS.AuditedContests;
@@ -40,8 +40,8 @@ class SelectContestsPageContainer extends React.Component<ContainerProps> {
         if (dosState.asm === 'DOS_AUDIT_ONGOING') {
             return <Redirect to='/sos' />;
         }
-        const previousPage = async() => {
-			      await resetAudit();
+        const previousPage = async () => {
+            await resetAudit();
             history.push('/sos/audit');
         };
         const props = {
@@ -58,10 +58,20 @@ class SelectContestsPageContainer extends React.Component<ContainerProps> {
 }
 
 function mapStateToProps(dosState: DOS.AppState) {
-    const isAuditable = (contestId: number): boolean => {
+    const isAuditable = (contest: Contest): boolean => {
         if (!dosState.auditTypes) { return false; }
 
-        const t = dosState.auditTypes[contestId];
+        if (contest.description === 'IRV') {
+            const assertionSummary = dosState.generateAssertionsSummaries.find(
+                element => element.summary.contestName === contest.name);
+
+            // Tied IRV contests or contests with failed assertion generations are not auditable
+            if (assertionSummary && assertionSummary.summary.error.length > 0) {
+                return false;
+            }
+        }
+
+        const t = dosState.auditTypes[contest.id];
 
         return t !== 'HAND_COUNT' && t !== 'NOT_AUDITABLE';
     };

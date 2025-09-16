@@ -1,0 +1,21 @@
+Contest name,City of Maitland Mayoral
+Candidates,"BROWN John,MITCHELL Ben,BAKER Loretta,PENFOLD Philip,SAFFARI Shahriar (Sean),COOPER Michael,BURKE Brian"
+Winner,PENFOLD Philip
+Total universe,54181
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,1151,"6"
+Diluted margin,0.02124361,"6"
+Raire difficulty,47.072980017376196,"6"
+Current risk,1.00000000,"1, 2, 3, 4, 5, 6"
+Optimistic samples to audit,344,"6"
+Estimated samples to audit,344,"6"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,PENFOLD Philip,BROWN John,,5.9625,9087,0.1677,1.00000000,44,44,0,0,0,0,0
+2,NEB,PENFOLD Philip,MITCHELL Ben,,10.2869,5267,0.0972,1.00000000,75,75,0,0,0,0,0
+3,NEB,PENFOLD Philip,SAFFARI Shahriar (Sean),,4.1319,13113,0.242,1.00000000,31,31,0,0,0,0,0
+4,NEB,PENFOLD Philip,COOPER Michael,,6.0402,8970,0.1656,1.00000000,45,45,0,0,0,0,0
+5,NEB,PENFOLD Philip,BURKE Brian,,4.5355,11946,0.2205,1.00000000,34,34,0,0,0,0,0
+6,NEN,PENFOLD Philip,BAKER Loretta,"BAKER Loretta,PENFOLD Philip",47.073,1151,0.0212,1.00000000,344,344,0,0,0,0,0

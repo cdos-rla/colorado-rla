@@ -4,46 +4,78 @@ ColoradoRLA
 [![Build Status](https://travis-ci.org/FreeAndFair/ColoradoRLA.svg?branch=master)](https://travis-ci.org/FreeAndFair/ColoradoRLA)
 
 The **ColoradoRLA** system is software to facilitate risk-limiting
-audits at the state level, developed for Colorado's Department of
-State in July and August of 2017.
-
-* Blog announcement: [Free & Fair to build risk-limiting audit system for State of Colorado](http://freeandfair.us/blog/risk-limiting-audits/)
-
-* *To be written:* Project Background
-
-* *To be written:* Future Work
-
-Installation and Use
-====================
-
-A document describing how to download, install, and use this system is
-found in [the docs directory](docs/15_installation.md).
+audits at the state level, initial developed by Free and Fair for Colorado's Department of
+State in July and August of 2017. Extensions for Instant Runoff Voting (IRV) were developed
+by Democracy Developers in 2023-2025.
 
 System Documentation
 ====================
 
-Documentation about this project and the Colorado RLA system includes:
-* a [User Manual (docx)](docs/user_manual.docx)
+Older documentation about this project and the Colorado RLA system is in the legacy-docs folder. It may be somewhat out of date, but is useful for non-IRV aspects of colorado-rla:
+* a [User Manual (docx)](legacy-docs/user_manual.docx)
   with an overview of the system,
-* a [County Run Book (docx)](docs/county_runbook.docx) and
-  [State Run Book (docx)](docs/sos_runbook.docx) for system users,
-* a [description of our development process and methodology](docs/35_methodology.md),
-* a [developer document](docs/25_developer.md) that contains our
-  developer instructions, including the project history, technologies
-  in use, dependencies, how to build the system, how we perform
-  quality assurance, how we perform validation and verification, and
-  what the build status of the project is,
-* the [system requirements](docs/50_requirements.md),
-* the [formal system specification](docs/55_specification.md),
-* the [means by which we validate and verify the system](docs/40_v_and_v.md),
-* a [glossary](docs/89_glossary.md) of the domain terminology used in
-  the system,
-* a full [bibliography](docs/99_bibliography.md) is available.
-* a [document describing how we perform project management](docs/30_project_management.md),
-* the [license](LICENSE.md) under which this software is made available,
-  and
-* all [contributors](#contributors) to the design and development of
-  this system are listed below.
+* a [County Run Book (docx)](legacy-docs/county_runbook.docx) and
+  [State Run Book (docx)](legacy-docs/sos_runbook.docx) for system users,
+* other information related to development, testing and deployment.
+
+Documentation related to IRV extensions is in the irv-docs folder. 
+  - a [slide deck](irv-docs/RaireGuide_SlideDeck.pdf) summarizing the main ideas,
+  - the Guide To RAIRE, [Part 1](irv-docs/A_Guide_to_RAIRE_Part_1.pdf) and [Part 2](irv-docs/A_Guide_to_RAIRE_Part_2.pdf), describing the background theory for IRV auditing,
+  - the [Implementation Report](irv-docs/ImplementationReport.pdf), detailing the implementation and describing the user workflow
+    changes from plurality-only audits.
+
+More recent versions may be available at [the Democracy Developers github repository](https://github.com/DemocracyDevelopers/Colorado-irv-rla-educational-materials),
+
+Deployment Instructions
+=======================
+
+## Running the raire service (needed for IRV)
+Run the raire-service by following the
+[raire-service README](https://github.com/DemocracyDevelopers/raire-service/blob/main/README.md).
+
+## Deploying colorado-rla with the raire-service
+To run an audit, clone and deploy colorado-rla by following the [developer instructions.](legacy-docs/25_developer.md#install-and-setup).
+
+colorado-rla's `raire_url` property tells it where to find raire. The default (`http://localhost:8080`)
+is set up so that both can run on the same machine without any change to the addresses or ports.
+
+If you are running raire-service somewhere different, set 
+```angular2html
+raire_url = [your new location]
+```
+in `src/test/resources/test.properties`, `src/main/resources/us/freeandfair/corla/default.properties`,
+`src/main/resources/us/freeandfair/corla/default.properties` and `src/main/resources/us/freeandfair/corla/default.properties`
+depending on which one of these you are using.
+
+## Deployment security
+In production, authentication between raire-service and colorado-rla MUST be mutual. 
+- Raire-service MUST NOT accept connections from any process other than colorado-rla. 
+- colorado-rla MUST verify that it is communicating with the correct raire-service.
+
+If both services are running on the same host, enforcement is operating-system specific and may require 
+some changes to raire-service's endpoint authentication.
+
+If raire-service is running on a separate machine, the easiest method is probably to put raire-service 
+behind a TLS reverse proxy and then
+- pin raire-service's TLS certificate in colorado-rla (or get it signed by a Certificate Authority),
+- generate a TLS client certificate for colorado-rla, 
+- configure colorado-rla's http client to send the client certificate when communicating with raire-service,
+- configure the raire-service's TLS proxy to accept colorado-rla's client certificate.
+
+This could alternatively be done programmatically in Java.
+
+Whether the mutual authentication is done via a TLS proxy, or directly in Java, there is no particular
+need to get the certificates signed by an external CA, because neither side of the connection needs
+to be authenticated by any third parties. A properly-pinned self-signed certificate, or a certificate
+generated by a private CA, is sufficient.
+
+There are many different tools available for creating and managing TLS certificates. See [RedHat's documentation](
+https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/securing_networks/creating-and-managing-tls-keys-and-certificates_securing-networks)
+for an example using Openssl on Linux.
+
+There are also various tools for deploying reverse proxies. 
+[Nginx on Linux](https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-reverse-proxy-on-ubuntu-22-04)
+is one popular option, but there are many others.
 
 Contributors
 ============
@@ -65,5 +97,14 @@ Contributors
 * Mike Prasad (CDOS Developer/Architect) Authored enhancements to RLA Tool Client and Server
 * Rich Helton (CDOS Developer) Authored enhancements to RLA Tool Client and Server
 * Dogan Cibiceli (CDOS Developer) Authored enhancements to RLA Tool Client and Server
+* [Democracy Developers](https://www.democracydevelopers.org.au/) implemented IRV extensions based on original research by Michelle Blom, Peter Stuckey and Vanessa Teague. Lead developers:
+  - Michelle Blom
+  - Andrew Conway
+  - Vanessa Teague
 
-More information about our team members [is available](docs/70_team.md).
+More information about our team members [is available](legacy-docs/70_team.md).
+
+License
+=======
+
+See the [license](LICENSE.md) under which this software is made available,

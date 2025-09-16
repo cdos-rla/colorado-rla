@@ -104,16 +104,21 @@ public final class ContestQueries {
   /**
    * Deletes all the contests for the county with the specified ID.
    * 
-   * @param the_id The county ID.
+   * @param the_county_id The county ID.
+   * @return the number of contests that were deleted, or -1 if an error occured.
    */
-  public static void deleteForCounty(final Long the_county_id) {
+  public static int deleteForCounty(final Long the_county_id) {
     final Set<Contest> contests = 
         forCounty(Persistence.getByID(the_county_id, County.class));
+
+    int retval = -1;
     if (contests != null) {
+      retval = contests.size();
       for (final Contest c : contests) {
         Persistence.delete(c);
       }
     }
     Persistence.flush();
+    return retval;
   }
 }

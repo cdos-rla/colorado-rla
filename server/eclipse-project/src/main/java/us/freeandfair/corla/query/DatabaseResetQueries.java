@@ -12,6 +12,7 @@
 package us.freeandfair.corla.query;
 
 import javax.persistence.Cache;
+import javax.persistence.PersistenceException;
 
 import org.hibernate.Session;
 
@@ -75,7 +76,13 @@ public final class DatabaseResetQueries {
         "round",
         "audit_board",
         "county_dashboard",
-        "uploaded_file"
+        "uploaded_file",
+        "assertion",
+        "assertion_assumed_continuing",
+        "assertion_discrepancies",
+        "audit_to_assertions",
+        "generate_assertions_summary",
+        "irv_ballot_interpretation"
     };
 
     for (final String t : tables) {

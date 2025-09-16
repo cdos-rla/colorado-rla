@@ -1,0 +1,291 @@
+{
+  "NAME" : "LastBallotInRoundDiscrepancy",
+
+  "RISK_LIMIT" : 0.03,
+
+  "SEED" : "24098249082409821390482049098",
+
+  "SQLS" : [
+    "SQL/demo1-assertions.sql"
+  ],
+
+  "CVRS" : [
+    "src/test/resources/CSVs/Demo1/1-adams-cvrexport-plusByron-1.csv",
+    "src/test/resources/CSVs/Demo1/2-alamosa-cvrexport-plusByron-2.csv",
+    "src/test/resources/CSVs/Demo1/3-arapahoe-Byron-3-plus-tied-irv.csv",
+    "src/test/resources/CSVs/Demo1/4-archuleta-kempsey-plusByron-4.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-5.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-6.csv",
+    "src/test/resources/CSVs/Demo1/7-unredacted-boulder-2023-plusByron-7.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-8.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-9.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-10.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-11.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-12.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-13.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-14.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-15.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-16.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-17.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-18.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-19.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-20.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-21.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-22.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-23.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-24.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-25.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-26.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-27.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-28.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-29.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-30.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-31.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-32.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-33.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-34.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-35.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-36.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-37.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-38.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-39.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-40.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-41.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-42.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-43.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-44.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-45.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-46.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-47.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-48.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-49.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-50.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-51.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-52.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-53.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-54.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-55.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-56.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-57.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-58.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-59.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-60.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-61.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-62.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-63.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-64.csv"
+  ],
+
+  "MANIFESTS" : [
+    "src/test/resources/CSVs/Demo1/1-adams-plusByron-1-manifest.csv",
+    "src/test/resources/CSVs/Demo1/2-alamosa-plusByron-2-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-3-manifest.csv",
+    "src/test/resources/CSVs/NewSouthWales21/Kempsey_Mayoral.manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-5-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-6-manifest.csv",
+    "src/test/resources/CSVs/Demo1/7-unredacted-Boulder-IRV-Manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-8-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-9-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-10-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-11-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-12-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-13-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-14-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-15-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-16-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-17-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-18-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-19-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-20-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-21-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-22-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-23-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-24-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-25-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-26-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-27-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-28-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-29-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-30-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-31-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-32-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-33-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-34-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-35-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-36-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-37-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-38-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-39-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-40-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-41-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-42-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-43-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-44-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-45-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-46-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-47-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-48-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-49-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-50-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-51-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-52-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-53-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-54-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-55-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-56-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-57-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-58-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-59-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-60-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-61-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-62-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-63-manifest.csv",
+    "src/test/resources/CSVs/split-Byron/Byron-64-manifest.csv"
+  ],
+
+  "CANONICAL_LIST" : "src/test/resources/CSVs/Demo1/demo1-canonical-list.csv",
+
+  "CONTEST_NAME_CHANGE" : {
+    "City of Boulder Mayoral Candidates" : "City of Boulder Mayoral",
+  },
+
+  "CANDIDATE_NAME_CHANGE" : {
+  },
+
+  "CONTESTS_BY_SELECTED_COUNTIES" : {
+  },
+
+  "TARGETS" : {
+    "City of Longmont - Mayor" :  "COUNTY_WIDE_CONTEST",
+    "Byron Mayoral" : "STATE_WIDE_CONTEST",
+    "Kempsey Mayoral" : "COUNTY_WIDE_CONTEST"
+  },
+
+  "WINNERS" : {
+    "City of Longmont - Mayor" : "Joan Peck",
+    "Byron Mayoral" : "LYON Michael",
+    "Kempsey Mayoral" : "HAUVILLE Leo"
+  },
+
+  "RAW_MARGINS" : {
+    "City of Longmont - Mayor" : 10773,
+    "Byron Mayoral" : 1060,
+    "Kempsey Mayoral" : 387
+  },
+
+  "DILUTED_MARGINS" : {
+    "City of Longmont - Mayor" : 0.09078192,
+    "Byron Mayoral" : 0.00684644,
+    "Kempsey Mayoral" : 0.02200739
+  },
+
+  "EXPECTED_SAMPLES" : {
+    "City of Longmont - Mayor" : 81,
+    "Byron Mayoral" : 1065,
+    "Kempsey Mayoral" : 332
+  },
+
+  "FINAL_EXPECTED_AUDITED_BALLOTS" : {
+    "City of Longmont - Mayor" : 81,
+    "Byron Mayoral" : 1065,
+    "Kempsey Mayoral" : 332
+  },
+
+  "FINAL_EXPECTED_OPTIMISTIC_SAMPLES" : {
+    "City of Longmont - Mayor" : 81,
+    "Byron Mayoral" : 1065,
+    "Kempsey Mayoral" : 332
+  },
+
+  "FINAL_EXPECTED_ESTIMATED_SAMPLES" : {
+    "City of Longmont - Mayor" : 81,
+    "Byron Mayoral" : 1065,
+    "Kempsey Mayoral" : 332
+  },
+
+  "PLURALITY_TABULATION" : {
+  },
+
+  "PLURALITY_COUNTY_TABULATION" : {
+  },
+
+  "IRV_CONTESTS" : [
+    "Byron Mayoral",
+    "Kempsey Mayoral",
+    "Tied_IRV",
+    "City of Boulder Mayoral"
+  ],
+
+  "EXPECTED_ROUNDS" : 1,
+
+  "PHANTOM_BALLOTS" : {
+  },
+
+  "DISAGREEMENTS" : {
+  },
+
+  "DISCREPANT_AUDITED_BALLOT_CHOICES" : {
+    "64" : {
+      "1-4-25": {
+        "Byron Mayoral": [
+          "SWIVEL Mark(1)",
+          "COOREY Cate(2)",
+          "CLARKE Bruce(3)",
+          "ANDERSON John(4)",
+          "MCILRATH Christopher(5)",
+          "DEY Duncan(6)"
+        ]
+      }
+    }
+  },
+
+  "REAUDITS" : {
+    "64" : {
+      "1-4-25": [
+        {
+          "Byron Mayoral": {
+            "choices" : [
+              "SWIVEL Mark(1)",
+              "LYON Michael(2)",
+              "COOREY Cate(3)",
+              "CLARKE Bruce(4)",
+              "MCILRATH Christopher(5)",
+              "ANDERSON John(6)",
+              "DEY Duncan(7)"
+            ],
+            "consensus" : "YES"
+          }
+        }
+      ]
+    }
+  },
+
+  "CONTEST_RESULTS" : {
+    "1" : {
+      "Byron Mayoral" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "City of Longmont - Mayor" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      },
+      "Kempsey Mayoral" : {
+        "one_over_count" : 0,
+        "two_over_count" : 0,
+        "one_under_count" : 0,
+        "two_under_count" : 0,
+        "other_count" : 0,
+        "disagreements" : 0
+      }
+    }
+  }
+}

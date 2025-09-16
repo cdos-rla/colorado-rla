@@ -1,0 +1,17 @@
+Contest name,City of Willoughby Mayoral
+Candidates,"ROZOS Angelo,CAMPBELL Craig,TAYLOR Tanya"
+Winner,TAYLOR Tanya
+Total universe,37942
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,2531,"2"
+Diluted margin,0.06670708,"2"
+Raire difficulty,14.990912682734097,"2"
+Current risk,1.00000000,"1, 2"
+Optimistic samples to audit,110,"2"
+Estimated samples to audit,110,"2"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,TAYLOR Tanya,CAMPBELL Craig,,12.279,3090,0.0814,1.00000000,90,90,0,0,0,0,0
+2,NEN,TAYLOR Tanya,ROZOS Angelo,"ROZOS Angelo,TAYLOR Tanya",14.9909,2531,0.0667,1.00000000,110,110,0,0,0,0,0

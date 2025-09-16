@@ -69,47 +69,52 @@ const CVRExportForm = (props: FormProps) => {
     return (
         <div>
             <IdleDialog />
-            <div style={{ width: '500px' }}>
-                <div className='mb-default'>
-                    <span className='form-group-label pt-ui-text-large font-weight-bold'>
-                        CVR Export
-                    </span>
-                    <div className='dropzone'>  
-                    <Dropzone onDrop={ handleOnDrop }
-                              activeStyle={ activeStyle }
-                              multiple={ false }
-                              style={ dropStyle }>
-                        <div>
-                            <strong>
-                            Click here or drag-and-drop your Cast Vote Record .csv file to upload it                            </strong>
+            <div style={{width: '500px'}}>
+                <div className="mb-default">
+                    <label>
+                        <span className="form-group-label pt-ui-text-large font-weight-bold">
+                            CVR Export
+                        </span>
+                        <div className="dropzone">
+                            <Dropzone onDrop={handleOnDrop}
+                                      activeStyle={activeStyle}
+                                      multiple={false}
+                                      style={dropStyle}>
+                                <div>
+                                    <strong>
+                                        Click here or drag-and-drop your Cast Vote Record .csv file to upload
+                                        it </strong>
 
+                                </div>
+                            </Dropzone>
                         </div>
-                    </Dropzone>
-                    </div>
+                    </label>
                     <FormGroup>
                         <aside>
-                        <div className='import-file'
-                         style={ file ? { display: 'inline' } : {} }>
+                            <div className="import-file"
+                                 style={file ? {display: 'inline'} : {}}>
 
-                         <span className='uploaded-file-name' key={ fileName }>
-                                        { fileName } { file? "(" + file.size + "bytes.)" :'' } 
+                         <span className="uploaded-file-name" key={fileName}>
+                                        {fileName} {file ? '(' + file.size + 'bytes.)' : ''}
                         </span>
-                  
-                        </div>
+
+                            </div>
                         </aside>
-                   </FormGroup>
+                    </FormGroup>
                 </div>
-                <FormGroup label={
-                    <span className='form-group-label pt-ui-text-large font-weight-bold'>
+                <label>
+                    <FormGroup label={
+                        <span className="form-group-label pt-ui-text-large font-weight-bold">
                         SHA-256 hash for CVR Export
                     </span>
-                }>
-                    <EditableText className='pt-input'
-                                    minWidth={ 600 }
-                                    maxLength={ 64 }
-                                    value={ hash }
-                                    onChange={ onHashChange } />
-                </FormGroup>
+                    }>
+                        <EditableText className="pt-input"
+                                      minWidth={600}
+                                      maxLength={64}
+                                      value={hash}
+                                      onChange={onHashChange}/>
+                    </FormGroup>
+                </label>
             </div>
             <div className='form-controls'>
                 { renderedCancelButton }

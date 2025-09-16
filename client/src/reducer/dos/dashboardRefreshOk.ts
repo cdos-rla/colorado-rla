@@ -11,6 +11,7 @@ export default function dashboardRefreshOk(
     const nextState = merge({}, state, newState);
     nextState.auditedContests = newState.auditedContests;
     nextState.countyStatus = newState.countyStatus;
+    nextState.generateAssertionsSummaries = newState.generateAssertionsSummaries;
 
     return nextState;
 }

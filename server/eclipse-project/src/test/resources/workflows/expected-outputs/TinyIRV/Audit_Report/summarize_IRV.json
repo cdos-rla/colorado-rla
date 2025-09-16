@@ -1,0 +1,3 @@
+[{"contest_name":"TinyExample1","target_reason":"STATE_WIDE_CONTEST","winner":"Alice","error":"","message":""},
+{"contest_name":"Example3","target_reason":"COUNTY_WIDE_CONTEST","winner":"Cherry","error":"","message":""},
+{"contest_name":"Tied_IRV","target_reason":"Not targeted","winner":"","error":"TIED_WINNERS","message":"Tied winners: Alice, Chuan."}]

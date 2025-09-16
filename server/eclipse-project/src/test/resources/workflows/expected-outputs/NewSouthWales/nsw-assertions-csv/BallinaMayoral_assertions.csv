@@ -1,0 +1,19 @@
+Contest name,Ballina Mayoral
+Candidates,"WILLIAMS Keith,JOHNSON Jeff,MCCARTHY Steve,JOHNSTON Eoin,CADWALLADER Sharon"
+Winner,CADWALLADER Sharon
+Total universe,26913
+Risk limit,0.03000000
+
+Extreme item,Value,Assertion IDs
+Margin,3694,"4"
+Diluted margin,0.13725709,"4"
+Raire difficulty,7.285598267460747,"4"
+Current risk,1.00000000,"1, 2, 3, 4"
+Optimistic samples to audit,54,"4"
+Estimated samples to audit,54,"4"
+
+ID,Type,Winner,Loser,Assumed continuing,Difficulty,Margin,Diluted margin,Risk,Estimated samples to audit,Optimistic samples to audit,Two vote over count,One vote over count,Other discrepancy count,One vote under count,Two vote under count
+1,NEB,CADWALLADER Sharon,WILLIAMS Keith,,6.6109,4071,0.1513,1.00000000,49,49,0,0,0,0,0
+2,NEB,CADWALLADER Sharon,MCCARTHY Steve,,4.4418,6059,0.2251,1.00000000,33,33,0,0,0,0,0
+3,NEB,CADWALLADER Sharon,JOHNSTON Eoin,,5.5651,4836,0.1797,1.00000000,41,41,0,0,0,0,0
+4,NEN,CADWALLADER Sharon,JOHNSON Jeff,"JOHNSON Jeff,CADWALLADER Sharon",7.2856,3694,0.1373,1.00000000,54,54,0,0,0,0,0
