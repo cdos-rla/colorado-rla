@@ -22,7 +22,7 @@ raire-service. If not, see <https://www.gnu.org/licenses/>.
 package au.org.democracydevelopers.corla.model;
 
 import au.org.democracydevelopers.corla.query.AssertionQueries;
-import com.google.inject.internal.util.ImmutableList;
+import com.google.common.collect.ImmutableList;
 
 import java.util.*;
 import javax.persistence.*;

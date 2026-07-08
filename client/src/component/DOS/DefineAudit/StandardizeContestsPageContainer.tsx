@@ -10,9 +10,11 @@ import standardizeContests from 'corla/action/dos/standardizeContests';
 
 import StandardizeContestsPage from './StandardizeContestsPage';
 
+import dashboardRefresh from 'corla/action/dos/dashboardRefresh';
+import fetchContestsIgnoreManifests from 'corla/action/dos/fetchContestsIgnoreManifests';
+import resetAudit from 'corla/action/dos/resetAudit';
 import withDOSState from 'corla/component/withDOSState';
 import withPoll from 'corla/component/withPoll';
-import resetAudit from 'corla/action/dos/resetAudit';
 
 import counties from 'corla/data/counties';
 
@@ -60,10 +62,13 @@ const StandardizeContestsPageContainer = (props: Props) => {
         standardizeContests(contestsIgnoringManifests, data).then(function(r) {
             // use the result here
             if (r.ok) {
-                history.push(NEXT_PATH);
+                // Reload contests after standardization
+                fetchContestsIgnoreManifests().then(() => {
+                    history.push(NEXT_PATH);
+                });
             }
         })
-        .catch(function(reason){
+        .catch(function(reason) {
             console.log("standardizeContests error in submitAction " + reason);
         });
     };

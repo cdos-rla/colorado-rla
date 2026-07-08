@@ -139,7 +139,7 @@ const TableRow = (props: TableRowProps) => {
             <td>{ row.choiceName } </td>
             <td>
                 <form>
-                    <select className='max-width-select'
+                    <select
                             onChange={ changeHandler }
                             aria-label={ `Standardize Choice Name For ${row.choiceName}` }
                             value={_.defaultTo(_.find(formData[row.contestId],

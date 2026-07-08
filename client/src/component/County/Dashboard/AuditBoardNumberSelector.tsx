@@ -4,11 +4,25 @@ import { connect } from 'react-redux';
 import { Button, Intent, NumericInput } from '@blueprintjs/core';
 
 import setNumberOfAuditBoards from 'corla/action/county/setNumberOfAuditBoards';
+import * as Modal from 'react-modal';
+Modal.setAppElement('#root');
 
 /**
  * Minimum number of audit boards that can participate.
  */
 const MIN_AUDIT_BOARDS = 1;
+
+const modalStyles = {
+    content : {
+        width                 : '600px',
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)'
+    }
+};
 
 interface AuditBoardNumberSelectorProps {
     auditBoardCount: number;
@@ -57,28 +71,28 @@ class AuditBoardNumberSelector
 
         return (
             <div className='mt-default'>
-                <div className="container">
-                    <div className="confirmation-text">
-                    Please confirm you’d like to use { this.state.auditBoardCount } audit boards for this round of the audit. Remember, once the number is confirmed you may not change it until another round begins.
+                <Modal isOpen={this.state.enterTask}
+                       style={modalStyles} >
+                    <h2>Confirm Audit Board Amount</h2>
+                    <p> Please confirm you’d like to use { this.state.auditBoardCount } audit board{this.state.auditBoardCount > 1 ? 's' : ''} for this round of the audit. <br />
+                        Remember, once the number is confirmed you may not change it until another round begins.
+                    </p>
+                    <br />
+                    <div>
+                        <div className='audit-board-button-container'>
+                            <button
+                                className='cancel-button'
+                                onClick={() => this.setState({ enterTask: false })}>
+                                go back
+                            </button>
+                            <button
+                                className='confirmation-button'
+                                onClick={() => this.handleConfirmationBox()}>
+                                confirm
+                            </button>
+                        </div>
                     </div>
-                    <div className="button-container">
-                    <button 
-                        className="cancel-button" 
-                        onClick={() => this.handleGoBack()}>
-                        go back
-                    </button>
-                    <button 
-                        className="confirmation-button"
-                        onClick={() => this.handleConfirmationBox()}>
-                        confirm
-                        </button>
-                    </div>
-                </div>
-                <div 
-                    className="confirm-bg">
-                    onClick={() => this.handleConfirmationBox()}
-                </div>
-
+                </Modal>
                 <form>
                     <div className='pt-form-group'>
                         <label className='pt-label pt-ui-text-large font-weight-bold'
@@ -102,47 +116,46 @@ class AuditBoardNumberSelector
 
     private handleConfirmationBox() {
         if (!this.state.enterTask) {
-             this.handleConfirm();
+            this.handleConfirm();
         } else {
-            this.handleGoBack();
+            this.setState({ enterTask: false });
             this.handleSubmit();
         }
-
     }
 
     private handleConfirm() {
 
-        var bgItems:any = document.getElementsByClassName('confirm-bg');
+        const bgItems: any = document.getElementsByClassName('confirm-bg');
         for (let i = 0; i < bgItems.length; i++) {
-            let element = bgItems[i];
+            const element = bgItems[i];
             element.style.display = 'flex';
         }
- 
-        var containerItems:any = document.getElementsByClassName('container');
+
+        const containerItems: any = document.getElementsByClassName('container');
         for (let i = 0; i < containerItems.length; i++) {
-            let element = containerItems[i];
+            const element = containerItems[i];
             element.style.display = 'flex';
         }
-       this.setState({ enterTask: true })
- 
+        this.setState({ enterTask: true });
+
     }
-     
+
     private  handleGoBack() {
-        var bgItems:any = document.getElementsByClassName('confirm-bg');
+        const bgItems: any = document.getElementsByClassName('confirm-bg');
         for (let i = 0; i < bgItems.length; i++) {
-            let element = bgItems[i];
-            element.style.display = 'none';
-        }
- 
-        var containerItems:any = document.getElementsByClassName('container');
-        for (let i = 0; i < containerItems.length; i++) {
-            let element = containerItems[i];
+            const element = bgItems[i];
             element.style.display = 'none';
         }
 
-        this.setState({ enterTask: false })
+        const containerItems: any = document.getElementsByClassName('container');
+        for (let i = 0; i < containerItems.length; i++) {
+            const element = containerItems[i];
+            element.style.display = 'none';
+        }
+
+        this.setState({ enterTask: false });
     }
-    
+
     private handleChangeAuditBoards(asNumber: number, asString: string) {
         if (asNumber >= 1) {
           this.setState({ auditBoardCount: asNumber });
@@ -151,7 +164,7 @@ class AuditBoardNumberSelector
 
    // private handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     private handleSubmit() {
- 
+
       //  e.preventDefault();
 
         const { auditBoardCount } = this.state;

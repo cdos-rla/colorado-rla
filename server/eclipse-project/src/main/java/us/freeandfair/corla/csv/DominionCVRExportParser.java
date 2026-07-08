@@ -616,7 +616,7 @@ public class DominionCVRExportParser {
    * @return the resulting CVR.
    */
   @SuppressWarnings("PMD.CyclomaticComplexity")
-  private CastVoteRecord extractCVR(final CSVRecord the_line) {
+  private CastVoteRecord extractCVR(final CSVRecord the_line) throws CVRContestMarkingException {
     final int cvr_id =
       Integer.parseInt(
                        stripEqualQuotes(the_line.get(my_columns.get(CVR_NUMBER_HEADER))));
@@ -654,6 +654,12 @@ public class DominionCVRExportParser {
       for (final Choice ch : choices) {
         final String mark_string = the_line.get(index);
         final boolean p = !mark_string.isEmpty();
+
+        // Reject markings that may contain extra data (e.g. mark density "1 (98%)")
+        if (mark_string.length() > 1) {
+          throw new CVRContestMarkingException("Invalid ballot marking found: " + mark_string);
+        }
+
         final boolean mark = "1".equals(mark_string);
         present |= p;
         if (!ch.fictitious() && p && mark) {

@@ -1,6 +1,6 @@
 /*
  * Free & Fair Colorado RLA System
- * 
+ *
  * @title ColoradoRLA
  * @created Aug 30, 2017
  * @copyright 2017 Colorado Department of State
@@ -33,16 +33,12 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 
 import au.org.democracydevelopers.corla.model.ContestType;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.SpreadsheetVersion;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.AreaReference;
+import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFTable;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import us.freeandfair.corla.model.AuditSelection;
@@ -57,12 +53,12 @@ import us.freeandfair.corla.persistence.Persistence;
 
 /**
  * All the data required for a state audit report.
- * 
+ *
  * @author Daniel M. Zimmerman <dmz@freeandfair.us>
  * @version 1.0.0
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity",
-    "PMD.ModifiedCyclomaticComplexity", "PMD.ExcessiveImports", "PMD.GodClass"})
+        "PMD.ModifiedCyclomaticComplexity", "PMD.ExcessiveImports", "PMD.GodClass"})
 public class StateReport {
   /**
    * The font size for Excel.
@@ -71,44 +67,64 @@ public class StateReport {
   @SuppressWarnings("PMD.AvoidUsingShortType")
   public static final short FONT_SIZE = 12;
 
+  public static final short COUNTY_SHEET_COLUMN_WIDTH = 5;
+  public static final short SUMMARY_SHEET_COLUMN_WIDTH = 6;
+  public static final short EMPTY_ROW_HEIGHT = 300;
+
   /**
    * The date formatter.
    */
-  private static final DateTimeFormatter DATE_FORMATTER = 
-      DateTimeFormatter.ofPattern("MM/dd/yyyy");
-  
+  private static final DateTimeFormatter DATE_FORMATTER =
+          DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
   /**
    * The date/time formatter.
    */
-  private static final DateTimeFormatter DATE_TIME_FORMATTER = 
-      DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
-  
+  private static final DateTimeFormatter DATE_TIME_FORMATTER =
+          DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+
   /**
    * The date and time this report was generated.
    */
   private final Instant my_timestamp;
-  
+
   /**
    * The county audit reports.
    */
   private final SortedMap<County, CountyReport> my_county_reports;
-  
+
   /**
    * The DoS dashboard.
    */
   private final DoSDashboard my_dosdb;
-  
+
+  /**
+   * one workbook to hold multiple sheets, another way to say Excel file, xlsx
+   **/
+  private Workbook workbook;
+
+  //Styles
+  private CellStyle bold_style;
+  private CellStyle integer_style;
+  private CellStyle bold_right_style;
+  private CellStyle standard_style;
+  private CellStyle standard_right_style;
+  private CellStyle box_style;
+  private CellStyle decimal_style;
+  private CellStyle hiddenAccessibilityStyle;
+
   /**
    * Initialize a state report object, timestamped at the current time.
    */
   public StateReport() {
     this(Instant.now());
+    initialize();
   }
-  
+
   /**
    * Initialize a state report object with the specified timestamp. All
    * of the individual county reports will have the same timestamp.
-   * 
+   *
    * @param the_timestamp The timestamp.
    */
   public StateReport(final Instant the_timestamp) {
@@ -118,23 +134,74 @@ public class StateReport {
       my_county_reports.put(c, new CountyReport(c, my_timestamp));
     }
     my_dosdb = Persistence.getByID(DoSDashboard.ID, DoSDashboard.class);
+    initialize();
+
   }
-  
+
+  private void initialize() {
+    this.workbook = new XSSFWorkbook();
+    setStyles();
+  }
+
+  private void setStyles() {
+    // data format
+    final DataFormat format = workbook.createDataFormat();
+
+    // bold font for titles and such
+    final Font bold_font = workbook.createFont();
+    bold_font.setFontHeightInPoints(FONT_SIZE);
+    bold_font.setBold(true);
+    bold_style = workbook.createCellStyle();
+    bold_style.setFont(bold_font);
+    bold_right_style = workbook.createCellStyle();
+    bold_right_style.setFont(bold_font);
+    bold_right_style.setAlignment(HorizontalAlignment.RIGHT);
+
+    // regular font for other fields
+    final Font standard_font = workbook.createFont();
+    standard_font.setFontHeightInPoints(FONT_SIZE);
+    standard_style = workbook.createCellStyle();
+    standard_style.setFont(standard_font);
+    standard_style.setDataFormat(format.getFormat("@"));
+    standard_right_style = workbook.createCellStyle();
+    standard_right_style.setFont(standard_font);
+    standard_right_style.setAlignment(HorizontalAlignment.RIGHT);
+    standard_right_style.setDataFormat(format.getFormat("@"));
+    integer_style = workbook.createCellStyle();
+    integer_style.setFont(standard_font);
+    integer_style.setDataFormat(format.getFormat("0"));
+    decimal_style = workbook.createCellStyle();
+    decimal_style.setFont(standard_font);
+    decimal_style.setDataFormat(format.getFormat("0.000#####"));
+    box_style = workbook.createCellStyle();
+    box_style.setBorderBottom(BorderStyle.THICK);
+    box_style.setBorderTop(BorderStyle.THICK);
+    box_style.setBorderLeft(BorderStyle.THICK);
+    box_style.setBorderRight(BorderStyle.THICK);
+
+    final Font hiddenAccessibilityFont = workbook.createFont();
+    hiddenAccessibilityFont.setFontHeightInPoints(FONT_SIZE);
+    hiddenAccessibilityFont.setColor(IndexedColors.WHITE.getIndex());
+    this.hiddenAccessibilityStyle = workbook.createCellStyle();
+    this.hiddenAccessibilityStyle.setFillBackgroundColor(IndexedColors.WHITE.getIndex());
+    this.hiddenAccessibilityStyle.setFont(hiddenAccessibilityFont);
+  }
+
   /**
    * @return the timestamp of this report.
    */
   public Instant timestamp() {
     return my_timestamp;
   }
-  
+
   /**
    * @return the county reports comprising this report.
    */
   public Map<County, CountyReport> countyReports() {
     return Collections.unmodifiableMap(my_county_reports);
   }
-  
-  
+
+
   /**
    * @return the Excel representation of this report, as a byte array.
    * @exception IOException if the report cannot be generated.
@@ -148,210 +215,180 @@ public class StateReport {
     workbook.close();
     return baos.toByteArray();
   }
-  
+
   /**
    * @return the Excel workbook for this report.
    */
   @SuppressWarnings({"checkstyle:magicnumber", "checkstyle:executablestatementcount",
-      "checkstyle:methodlength", "PMD.ExcessiveMethodLength", "PMD.NcssMethodCount",
-      "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
-  public Workbook generateExcelWorkbook() {
-    final Workbook workbook = new XSSFWorkbook();
-
-    // data format
-    final DataFormat format = workbook.createDataFormat();
-    
-    // bold font for titles and such
-    final Font bold_font = workbook.createFont();
-    bold_font.setFontHeightInPoints(FONT_SIZE);
-    bold_font.setBold(true);
-    final CellStyle bold_style = workbook.createCellStyle();
-    bold_style.setFont(bold_font);
-    final CellStyle bold_right_style = workbook.createCellStyle();
-    bold_right_style.setFont(bold_font);
-    bold_right_style.setAlignment(HorizontalAlignment.RIGHT);
-    
-    // regular font for other fields
-    final Font standard_font = workbook.createFont();
-    standard_font.setFontHeightInPoints(FONT_SIZE);
-    final CellStyle standard_style = workbook.createCellStyle();
-    standard_style.setFont(standard_font);
-    standard_style.setDataFormat(format.getFormat("@"));
-    final CellStyle standard_right_style = workbook.createCellStyle();
-    standard_right_style.setFont(standard_font);
-    standard_right_style.setAlignment(HorizontalAlignment.RIGHT);
-    standard_right_style.setDataFormat(format.getFormat("@"));
-    final CellStyle integer_style = workbook.createCellStyle();
-    integer_style.setFont(standard_font);
-    integer_style.setDataFormat(format.getFormat("0"));
-    final CellStyle decimal_style = workbook.createCellStyle();
-    decimal_style.setFont(standard_font);
-    decimal_style.setDataFormat(format.getFormat("0.000#####"));
-    final CellStyle box_style = workbook.createCellStyle();
-    box_style.setBorderBottom(BorderStyle.THICK);
-    box_style.setBorderTop(BorderStyle.THICK);
-    box_style.setBorderLeft(BorderStyle.THICK);
-    box_style.setBorderRight(BorderStyle.THICK);
-    
+          "checkstyle:methodlength", "PMD.ExcessiveMethodLength", "PMD.NcssMethodCount",
+          "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
+  private Workbook generateExcelWorkbook() {
     // the summary sheet
-    final Sheet summary_sheet = workbook.createSheet("Summary");
+    final XSSFSheet summary_sheet = (XSSFSheet) workbook.createSheet("Summary");
     int row_number = 0;
     Row row = summary_sheet.createRow(row_number++);
     int cell_number = 0;
     int max_cell_number = 0;
-    
+
     Cell cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(bold_style);
     cell.setCellValue("State Audit Report");
-    
+
     row = summary_sheet.createRow(row_number++);
     cell_number = 0;
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(bold_style);
-    cell.setCellValue("Generated " + 
-                      DATE_TIME_FORMATTER.
-                      format(LocalDateTime.ofInstant(my_timestamp,
-                                                     TimeZone.getDefault().toZoneId())));
-    
+    cell.setCellValue("Generated " +
+            DATE_TIME_FORMATTER.
+                    format(LocalDateTime.ofInstant(my_timestamp,
+                            TimeZone.getDefault().toZoneId())));
+
     row = summary_sheet.createRow(row_number++);
     cell_number = 0;
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(bold_style);
-    if (my_dosdb.auditInfo().electionType() == null && 
-        my_dosdb.auditInfo().electionDate() == null) {
+    if (my_dosdb.auditInfo().electionType() == null &&
+            my_dosdb.auditInfo().electionDate() == null) {
       cell.setCellValue("ELECTION TYPE/DATE NOT SET");
     } else {
       cell.setCellValue(my_dosdb.auditInfo().capitalizedElectionType() + " Election - " +
-                        DATE_FORMATTER.
-                        format(LocalDateTime.ofInstant(my_dosdb.auditInfo().electionDate(), 
-                                                       ZoneOffset.UTC)));
+              DATE_FORMATTER.
+                      format(LocalDateTime.ofInstant(my_dosdb.auditInfo().electionDate(),
+                              ZoneOffset.UTC)));
     }
-    
-    row_number++;
+
+    summary_sheet.createRow(row_number++).setHeight(EMPTY_ROW_HEIGHT); // Create empty row
+
     row = summary_sheet.createRow(row_number++);
     cell_number = 0;
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(bold_style);
     cell.setCellValue("Audit Random Seed");
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(standard_right_style);
     cell.setCellValue(my_dosdb.auditInfo().seed());
-    
+
     row = summary_sheet.createRow(row_number++);
     cell_number = 0;
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(bold_style);
     cell.setCellValue("Audit Risk Limit");
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.NUMERIC);
     cell.setCellStyle(decimal_style);
     cell.setCellValue(my_dosdb.auditInfo().riskLimit().doubleValue());
-    
-    row_number++;
+
+    summary_sheet.createRow(row_number++).setHeight(EMPTY_ROW_HEIGHT); // Create empty row
+
     row = summary_sheet.createRow(row_number++);
     cell_number = 0;
-    
+
     int ballots_in_manifests = 0;
     int cvrs_in_export_files = 0;
     for (final CountyReport cr : my_county_reports.values()) {
       ballots_in_manifests += cr.dashboard().ballotsInManifest();
       cvrs_in_export_files += cr.dashboard().cvrsImported();
     }
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(bold_style);
     cell.setCellValue("Total Ballot Cards In Manifests");
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.NUMERIC);
     cell.setCellStyle(integer_style);
 
     cell.setCellValue(ballots_in_manifests);
-    
+
     row = summary_sheet.createRow(row_number++);
     cell_number = 0;
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(bold_style);
     cell.setCellValue("Total CVRs in CVR Export Files");
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.NUMERIC);
     cell.setCellStyle(integer_style);
     cell.setCellValue(cvrs_in_export_files);
-    
+
     row = summary_sheet.createRow(row_number++);
     cell_number = 0;
-    
+
     int ballots_audited = 0;
     int audit_rounds = 0;
     for (final CountyReport cr : my_county_reports.values()) {
       ballots_audited = ballots_audited + cr.dashboard().ballotsAudited();
       audit_rounds = Math.max(audit_rounds, cr.dashboard().rounds().size());
     }
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(bold_style);
     cell.setCellValue("Total Ballot Cards Audited");
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.NUMERIC);
     cell.setCellStyle(integer_style);
     cell.setCellValue(ballots_audited);
-    
+
     row = summary_sheet.createRow(row_number++);
     cell_number = 0;
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.STRING);
     cell.setCellStyle(bold_style);
     cell.setCellValue("Number of Audit Rounds");
-    
+
     cell = row.createCell(cell_number++);
     cell.setCellType(CellType.NUMERIC);
     cell.setCellStyle(integer_style);
     cell.setCellValue(audit_rounds);
-    
+
     max_cell_number = Math.max(max_cell_number, cell_number);
 
     for (final Entry<County, CountyReport> e : my_county_reports.entrySet()) {
-      row_number++;
+      summary_sheet.createRow(row_number++).setHeight(EMPTY_ROW_HEIGHT); // Create empty row
+
       row = summary_sheet.createRow(row_number++);
       cell_number = 0;
       cell = row.createCell(cell_number++);
       cell.setCellStyle(bold_style);
       cell.setCellType(CellType.STRING);
       cell.setCellValue(e.getKey().name() + " County");
-      
+
       if (e.getValue().drivingContestResults().isEmpty()) {
         cell.setCellValue(cell.getStringCellValue() + " - No Contests Audited");
-      } else {  
+      } else {
         if (!e.getValue().rounds().isEmpty()) {
+          // For table creation
+          int topMostRow = row_number - 1;
+          int leftMostColumn = 0;
+
           cell.setCellValue(cell.getStringCellValue() + " - Round Summary");
           for (final Round round : e.getValue().rounds()) {
             cell = row.createCell(cell_number++);
             cell.setCellType(CellType.STRING);
             cell.setCellStyle(bold_style);
-            cell.setCellValue(round.number());
+            cell.setCellValue("Rd. " + round.number());
           }
           cell = row.createCell(cell_number++);
           cell.setCellType(CellType.STRING);
           cell.setCellStyle(bold_right_style);
           cell.setCellValue("Total");
-          
+
           row = summary_sheet.createRow(row_number++);
           cell_number = 0;
           cell = row.createCell(cell_number++);
@@ -370,7 +407,7 @@ public class StateReport {
           cell.setCellStyle(integer_style);
           cell.setCellType(CellType.NUMERIC);
           cell.setCellValue(accumulator);
-          
+
           row = summary_sheet.createRow(row_number++);
           cell_number = 0;
           cell = row.createCell(cell_number++);
@@ -395,7 +432,7 @@ public class StateReport {
           cell.setCellStyle(integer_style);
           cell.setCellType(CellType.NUMERIC);
           cell.setCellValue(accumulator);
-          
+
           row = summary_sheet.createRow(row_number++);
           cell_number = 0;
           cell = row.createCell(cell_number++);
@@ -420,7 +457,7 @@ public class StateReport {
           cell.setCellStyle(integer_style);
           cell.setCellType(CellType.NUMERIC);
           cell.setCellValue(accumulator);
-          
+
           row = summary_sheet.createRow(row_number++);
           cell_number = 0;
           cell = row.createCell(cell_number++);
@@ -445,7 +482,7 @@ public class StateReport {
           cell.setCellStyle(integer_style);
           cell.setCellType(CellType.NUMERIC);
           cell.setCellValue(accumulator);
-          
+
           row = summary_sheet.createRow(row_number++);
           cell_number = 0;
           cell = row.createCell(cell_number++);
@@ -470,45 +507,81 @@ public class StateReport {
           cell.setCellStyle(integer_style);
           cell.setCellType(CellType.NUMERIC);
           cell.setCellValue(accumulator);
+
+          int bottomMostRow = row_number - 1;
+          int rightMostColumn = cell_number - 1;
+          String tableName = e.getKey().name() + "Summary";
+          WorkbookWriter.createTable(workbook, summary_sheet, tableName, topMostRow, leftMostColumn, bottomMostRow, rightMostColumn);
         }
-        
-        row_number++;
+
+        summary_sheet.createRow(row_number++).setHeight(EMPTY_ROW_HEIGHT); // Create empty row
         row = summary_sheet.createRow(row_number++);
         cell_number = 0;
         cell = row.createCell(cell_number++);
         cell.setCellStyle(bold_style);
         cell.setCellValue(e.getKey().name() + " County - Audited Contests");
-        
-        row_number = row_number - 1; // don't skip a line before first contest
 
         // County-level results really don't make sense for IRV. Therefore print a
         // very brief summary and a reference to the assertions csv.
         // At this stage, we don't want to print IRV choices.
+
+        int tableIndex = 1;
         for (final CountyContestResult ccr : e.getValue().drivingContestResults()) {
+          int topMostRow = row_number;
 
           final CellStatus status = makeContestSummary(row_number, max_cell_number, ccr, summary_sheet,
-              bold_style, integer_style, bold_right_style, decimal_style,
-              standard_style, standard_right_style);
+                  bold_style, integer_style, bold_right_style, decimal_style,
+                  standard_style, standard_right_style);
 
-            row_number = status.row_number;
-            max_cell_number = status.max_cell_number;
+          row_number = status.row_number;
+          max_cell_number = status.max_cell_number;
+
+          int bottomMostRow = row_number - 1;
+          int leftMostColumn = 1;
+          int rightMostColumn = max_cell_number - 1;
+          String tableName = ccr.county().name() + tableIndex++;
+          WorkbookWriter.createTable(workbook, summary_sheet, tableName, topMostRow, leftMostColumn, bottomMostRow, rightMostColumn);
+          summary_sheet.createRow(row_number++).setHeight(EMPTY_ROW_HEIGHT); // Create empty row
         }
       }
     }
-    
+
     for (int i = 0; i < max_cell_number; i++) {
       summary_sheet.autoSizeColumn(i);
     }
-    
+
+    WorkbookWriter.hideUnusedRowsAndColumns(summary_sheet, SUMMARY_SHEET_COLUMN_WIDTH);
+    WorkbookWriter.markEmptyCellsAsNoData(summary_sheet, SUMMARY_SHEET_COLUMN_WIDTH, this.hiddenAccessibilityStyle);
+    //Create "end of document" row at bottom for accessibility
+    WorkbookWriter.createEndingRow(summary_sheet, summary_sheet.getLastRowNum() + 1, this.hiddenAccessibilityStyle);
+
     // county sheets
-    
     for (final Entry<County, CountyReport> e : my_county_reports.entrySet()) {
       if (e.getValue().drivingContestResults().isEmpty()) {
         // don't generate empty sheets
         continue;
       }
-      final Sheet county_sheet = workbook.createSheet(e.getKey().name() + " County");
-      row_number = 0;
+
+      generateCountySheet(workbook, e);
+    }
+
+    return workbook;
+  }
+
+  private void generateCountySheet(Workbook workbook, Entry<County, CountyReport> e) {
+    final XSSFSheet county_sheet = (XSSFSheet) workbook.createSheet(e.getKey().name() + " County");
+
+    int row_number = 0;
+    Row row = county_sheet.createRow(row_number++);
+    int cell_number = 0;
+    int max_cell_number = 0;
+
+    Cell cell = row.createCell(cell_number++);
+    cell.setCellType(CellType.STRING);
+    cell.setCellStyle(bold_style);
+    cell.setCellValue(e.getKey().name() + " County Summary Report");
+    for (final Round round : e.getValue().rounds()) {
+      row_number++;
       row = county_sheet.createRow(row_number++);
       cell_number = 0;
       max_cell_number = 0;
@@ -516,171 +589,167 @@ public class StateReport {
       cell = row.createCell(cell_number++);
       cell.setCellType(CellType.STRING);
       cell.setCellStyle(bold_style);
-      cell.setCellValue(e.getKey().name() + " County Summary Report");
-      for (final Round round : e.getValue().rounds()) {
-        row_number++;
-        row = county_sheet.createRow(row_number++);
-        cell_number = 0;
-        max_cell_number = 0;
+      cell.setCellValue("Round " + round.number());
 
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_style);
-        cell.setCellValue("Round " + round.number());
+      row_number++;
+      row = county_sheet.createRow(row_number++);
+      max_cell_number = Math.max(max_cell_number, cell_number);
+      cell_number = 0;
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.STRING);
+      cell.setCellStyle(bold_style);
+      cell.setCellValue("Number of Ballot Cards Audited");
 
-        row_number++;
-        row = county_sheet.createRow(row_number++);
-        max_cell_number = Math.max(max_cell_number, cell_number);
-        cell_number = 0;
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_style);
-        cell.setCellValue("Number of Ballot Cards Audited");
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.NUMERIC);
+      cell.setCellStyle(integer_style);
+      cell.setCellValue(round.actualCount());
 
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.NUMERIC);
-        cell.setCellStyle(integer_style);
-        cell.setCellValue(round.actualCount());
+      row = county_sheet.createRow(row_number++);
+      cell_number = 1; // these are headers for audit selections
+      final List<AuditSelection> listed_selections = new ArrayList<>();
+      final Map<AuditSelection, Integer> discrepancies = round.discrepancies();
+      final Map<AuditSelection, Integer> disagreements = round.disagreements();
 
-        row = county_sheet.createRow(row_number++);
-        cell_number = 1; // these are headers for audit selections
-        final List<AuditSelection> listed_selections = new ArrayList<>();
-        final Map<AuditSelection, Integer> discrepancies = round.discrepancies();
-        final Map<AuditSelection, Integer> disagreements = round.disagreements();
-        
-        for (final AuditSelection r : AuditSelection.values()) {
-          if (discrepancies.containsKey(r) && discrepancies.get(r) >= 0 || 
-              disagreements.containsKey(r) && disagreements.get(r) >= 0) {
-            listed_selections.add(r);
-          }
+      for (final AuditSelection r : AuditSelection.values()) {
+        if (discrepancies.containsKey(r) && discrepancies.get(r) >= 0 ||
+                disagreements.containsKey(r) && disagreements.get(r) >= 0) {
+          listed_selections.add(r);
         }
-        
-        Collections.sort(listed_selections);
-        
+      }
+
+      Collections.sort(listed_selections);
+
+      for (final AuditSelection s : listed_selections) {
+        cell = row.createCell(cell_number++);
+        cell.setCellStyle(bold_right_style);
+        cell.setCellValue(s.prettyString());
+      }
+
+      row = county_sheet.createRow(row_number++);
+      max_cell_number = Math.max(max_cell_number, cell_number);
+      cell_number = 0;
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.STRING);
+      cell.setCellStyle(bold_style);
+      if (discrepancies.isEmpty()) {
+        cell.setCellValue("No Discrepancies Recorded");
+      } else {
+        cell.setCellValue("Discrepancies Recorded");
         for (final AuditSelection s : listed_selections) {
           cell = row.createCell(cell_number++);
-          cell.setCellStyle(bold_right_style);
-          cell.setCellValue(s.prettyString());
-        }
-        
-        row = county_sheet.createRow(row_number++);
-        max_cell_number = Math.max(max_cell_number, cell_number);
-        cell_number = 0;
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_style);
-        if (discrepancies.isEmpty()) {
-          cell.setCellValue("No Discrepancies Recorded");
-        } else {
-          cell.setCellValue("Discrepancies Recorded");
-          for (final AuditSelection s : listed_selections) {
-            cell = row.createCell(cell_number++);
-            cell.setCellType(CellType.NUMERIC);
-            cell.setCellStyle(integer_style);
-            final int cell_value;
-            if (discrepancies.containsKey(s)) {
-              cell_value = discrepancies.get(s);
-            } else {
-              cell_value = 0;
-            }
-            cell.setCellValue(cell_value);
-          }
-        }
-        
-        row = county_sheet.createRow(row_number++);
-        max_cell_number = Math.max(max_cell_number, cell_number);
-        cell_number = 0;
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_style);
-        if (disagreements.isEmpty()) {
-          cell.setCellValue("No Disagreements Recorded");
-        } else {
-          cell.setCellValue("Disagreements Recorded");
-          for (final AuditSelection s : listed_selections) {
-            cell = row.createCell(cell_number++);
-            cell.setCellType(CellType.NUMERIC);
-            cell.setCellStyle(integer_style);
-            final int cell_value;
-            if (disagreements.containsKey(s)) {
-              cell_value = disagreements.get(s);
-            } else {
-              cell_value = 0;
-            }
-            cell.setCellValue(cell_value);
-          }
-        }
-        row_number++;
-        row = county_sheet.createRow(row_number++);
-        max_cell_number = Math.max(max_cell_number, cell_number);
-        cell_number = 0;
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_style);
-        cell.setCellValue("Ballot Cards Selected");
-
-        row = county_sheet.createRow(row_number++);
-        cell_number = 0;
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_style);
-        cell.setCellValue("Imprinted ID");
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_right_style);
-        cell.setCellValue("Audited");
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_right_style);
-        cell.setCellValue("Discrepancy");
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_right_style);
-        cell.setCellValue("Disagreement");
-        cell = row.createCell(cell_number++);
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(bold_right_style);
-        cell.setCellValue("Ballot Type");
-
-        max_cell_number = Math.max(max_cell_number, cell_number);
-        for (final CVRAuditInfo audit_info : 
-             e.getValue().cvrsToAuditByRound().get(round.number())) {
-          row = county_sheet.createRow(row_number++);
-          cell_number = 0;
-          cell = row.createCell(cell_number++);
-          cell.setCellType(CellType.STRING);
-          cell.setCellStyle(standard_style);
-          cell.setCellValue(audit_info.cvr().imprintedID());
-          cell = row.createCell(cell_number++);
-          cell.setCellType(CellType.STRING);
-          cell.setCellStyle(standard_right_style);
-          if (audit_info.acvr() == null) {
-            cell.setCellValue(booleanYesNo(false));
+          cell.setCellType(CellType.NUMERIC);
+          cell.setCellStyle(integer_style);
+          final int cell_value;
+          if (discrepancies.containsKey(s)) {
+            cell_value = discrepancies.get(s);
           } else {
-            cell.setCellValue(booleanYesNo(audit_info.acvr().recordType() == 
-                                           RecordType.AUDITOR_ENTERED));
+            cell_value = 0;
           }
-          cell = row.createCell(cell_number++);
-          cell.setCellType(CellType.STRING);
-          cell.setCellStyle(standard_right_style);
-          cell.setCellValue(booleanYesNo(!audit_info.discrepancy().isEmpty()));
-          cell = row.createCell(cell_number++);
-          cell.setCellType(CellType.STRING);
-          cell.setCellStyle(standard_right_style);
-          cell.setCellValue(booleanYesNo(!audit_info.disagreement().isEmpty()));
-          cell = row.createCell(cell_number++);
-          cell.setCellType(CellType.STRING);
-          cell.setCellStyle(standard_right_style);
-          cell.setCellValue(audit_info.cvr().ballotType());
-
+          cell.setCellValue(cell_value);
         }
       }
-      for (int i = 0; i < max_cell_number; i++) {
-        county_sheet.autoSizeColumn(i);
+
+      row = county_sheet.createRow(row_number++);
+      max_cell_number = Math.max(max_cell_number, cell_number);
+      cell_number = 0;
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.STRING);
+      cell.setCellStyle(bold_style);
+      if (disagreements.isEmpty()) {
+        cell.setCellValue("No Disagreements Recorded");
+      } else {
+        cell.setCellValue("Disagreements Recorded");
+        for (final AuditSelection s : listed_selections) {
+          cell = row.createCell(cell_number++);
+          cell.setCellType(CellType.NUMERIC);
+          cell.setCellStyle(integer_style);
+          final int cell_value;
+          if (disagreements.containsKey(s)) {
+            cell_value = disagreements.get(s);
+          } else {
+            cell_value = 0;
+          }
+          cell.setCellValue(cell_value);
+        }
+      }
+      row_number++;
+      row = county_sheet.createRow(row_number++);
+      max_cell_number = Math.max(max_cell_number, cell_number);
+      cell_number = 0;
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.STRING);
+      cell.setCellStyle(bold_style);
+      cell.setCellValue("Ballot Cards Selected");
+
+      List<CVRAuditInfo> infoList = e.getValue().cvrsToAuditByRound().get(round.number());
+
+      String tableName = e.getKey().name() + "Ballots";
+      WorkbookWriter.createTable(workbook, county_sheet, tableName, row_number, 0, row_number + infoList.size(), 4);
+
+      row = county_sheet.createRow(row_number++);
+      cell_number = 0;
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.STRING);
+      cell.setCellStyle(bold_style);
+      cell.setCellValue("Imprinted ID");
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.STRING);
+      cell.setCellStyle(bold_right_style);
+      cell.setCellValue("Audited");
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.STRING);
+      cell.setCellStyle(bold_right_style);
+      cell.setCellValue("Discrepancy");
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.STRING);
+      cell.setCellStyle(bold_right_style);
+      cell.setCellValue("Disagreement");
+      cell = row.createCell(cell_number++);
+      cell.setCellType(CellType.STRING);
+      cell.setCellStyle(bold_right_style);
+      cell.setCellValue("Ballot Type");
+
+      max_cell_number = Math.max(max_cell_number, cell_number);
+      for (final CVRAuditInfo audit_info : infoList) {
+        row = county_sheet.createRow(row_number++);
+        cell_number = 0;
+        cell = row.createCell(cell_number++);
+        cell.setCellType(CellType.STRING);
+        cell.setCellStyle(standard_style);
+        cell.setCellValue(audit_info.cvr().imprintedID());
+        cell = row.createCell(cell_number++);
+        cell.setCellType(CellType.STRING);
+        cell.setCellStyle(standard_right_style);
+        if (audit_info.acvr() == null) {
+          cell.setCellValue(booleanYesNo(false));
+        } else {
+          cell.setCellValue(booleanYesNo(audit_info.acvr().recordType() ==
+                  RecordType.AUDITOR_ENTERED));
+        }
+        cell = row.createCell(cell_number++);
+        cell.setCellType(CellType.STRING);
+        cell.setCellStyle(standard_right_style);
+        cell.setCellValue(booleanYesNo(!audit_info.discrepancy().isEmpty()));
+        cell = row.createCell(cell_number++);
+        cell.setCellType(CellType.STRING);
+        cell.setCellStyle(standard_right_style);
+        cell.setCellValue(booleanYesNo(!audit_info.disagreement().isEmpty()));
+        cell = row.createCell(cell_number++);
+        cell.setCellType(CellType.STRING);
+        cell.setCellStyle(standard_right_style);
+        cell.setCellValue(audit_info.cvr().ballotType());
+
       }
     }
-    
-    return workbook;
+    for (int i = 0; i < max_cell_number; i++) {
+      county_sheet.autoSizeColumn(i);
+    }
+
+    WorkbookWriter.hideUnusedRowsAndColumns(county_sheet, COUNTY_SHEET_COLUMN_WIDTH);
+    WorkbookWriter.markEmptyCellsAsNoData(county_sheet, COUNTY_SHEET_COLUMN_WIDTH, this.hiddenAccessibilityStyle);
+    //Create "end of document" row at bottom for accessibility
+    WorkbookWriter.createEndingRow(county_sheet, county_sheet.getLastRowNum() + 1, this.hiddenAccessibilityStyle);
   }
 
   /**
@@ -703,9 +772,9 @@ public class StateReport {
    *         and what maximum cell number has been used.
    */
   protected static CellStatus makeContestSummary(int row_number, int max_cell_number, final CountyContestResult ccr,
-            final Sheet summary_sheet, final CellStyle bold_style, final CellStyle integer_style, final CellStyle bold_right_style,
-            final CellStyle decimal_style, final CellStyle standard_style, final CellStyle standard_right_style) {
-    row_number++;
+                                                 final Sheet summary_sheet, final CellStyle bold_style, final CellStyle integer_style, final CellStyle bold_right_style,
+                                                 final CellStyle decimal_style, final CellStyle standard_style, final CellStyle standard_right_style) {
+
     Row row = summary_sheet.createRow(row_number++);
     int cell_number = 0;
 
@@ -804,32 +873,32 @@ public class StateReport {
   public byte[] generatePDF() {
     return new byte[0];
   }
-  
+
   /**
    * @return the filename for the Excel version of this report.
    */
   public String filenameExcel() {
     // the file name should be constructed from the county name, election
     // type and date, and report generation time
-    final LocalDateTime election_datetime = 
-        LocalDateTime.ofInstant(my_dosdb.auditInfo().electionDate(), ZoneOffset.UTC);
-    final LocalDateTime report_datetime = 
-        LocalDateTime.ofInstant(my_timestamp, TimeZone.getDefault().toZoneId()).
-        truncatedTo(ChronoUnit.SECONDS);
+    final LocalDateTime election_datetime =
+            LocalDateTime.ofInstant(my_dosdb.auditInfo().electionDate(), ZoneOffset.UTC);
+    final LocalDateTime report_datetime =
+            LocalDateTime.ofInstant(my_timestamp, TimeZone.getDefault().toZoneId()).
+                    truncatedTo(ChronoUnit.SECONDS);
     final StringBuilder sb = new StringBuilder(32);
 
     sb.append("state-");
     sb.append(my_dosdb.auditInfo().electionType().
-              toLowerCase(Locale.getDefault()).replace(" ", "_"));
+            toLowerCase(Locale.getDefault()).replace(" ", "_"));
     sb.append('-');
     sb.append(DATE_FORMATTER.format(election_datetime).replace("/", "-"));
     sb.append("-report-");
     sb.append(DATE_TIME_FORMATTER.format(report_datetime).replace("/", "-").replace(":", "_"));
     sb.append(".xlsx");
-    
+
     return sb.toString();
   }
-  
+
   /**
    * @return the filename for the PDF version of this report.
    */

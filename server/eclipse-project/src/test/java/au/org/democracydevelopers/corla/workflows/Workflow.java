@@ -65,7 +65,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.http.HttpStatus;

@@ -115,7 +115,7 @@ public class ContestNameParserTest {
       assertFalse(p.errors().isEmpty(), "Parse failure results in errors");
 
       assertEquals(p.errors().first().toString(),
-                   "malformed record: ({Contest Name	=, County Name\"=boulder}) on line 2",
+                   "malformed record: ({County Name\"=boulder, Contest Name	=}) on line 2",
                    "Line two is missing a contest name value");
     } catch (Exception e) { fail("Edge case", e);}
   }

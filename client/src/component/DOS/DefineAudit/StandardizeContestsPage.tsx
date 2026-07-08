@@ -131,7 +131,7 @@ const ContestRow = (props: ContestRowProps) => {
             <td>{ contest.name }</td>
             <td>
                 <form>
-                    <select className='max-width-select'
+                    <select
                             name={ String(contest.id) }
                             aria-label={ `Standardize Contest Name For ${contest.name}` }
                             onChange={ changeHandler }

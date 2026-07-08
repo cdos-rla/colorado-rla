@@ -153,10 +153,6 @@ hr {
   margin-bottom: 20px;
 }
 
-.max-width-select {
-  max-width: 450px;
-}
-
 /* Custom table */
 
 .pt-html-table.rla-table {
@@ -925,12 +921,24 @@ th.rla-county-contest-info {
   font-size: 1rem;
 }
 
+.audit-board-button-container {
+    display: flex;
+    margin-top: auto;
+    justify-content: space-between;
+}
+
 .cancel-button {
-  background-color: #999999;
+    display: inline-flex;
+    background-color: darkred;
+    color: white;
+    padding: 0.7rem 1.4rem;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 1rem;
 }
 
 .confirmation-button:hover {
-  background-color: red;
+  background-color: #b2b2b2;
   cursor: pointer;
 }
 

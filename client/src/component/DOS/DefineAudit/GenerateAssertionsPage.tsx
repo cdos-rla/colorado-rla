@@ -158,7 +158,7 @@ class GenerateAssertionsPage extends React.Component<GenerateAssertionsPageProps
             const successString = combinedData.succeeded ? 'Success' : 'Failure';
             const retryString = combinedData.retry ? 'Yes' : 'No';
             return (
-                <tr>
+                <tr style={{wordWrap: 'break-word'}}>
                     <td>{combinedData.contestName}</td>
                     <td>{combinedData.county}</td>
                     <td style={{color: combinedData.succeeded ? 'green' : 'red'}}>
@@ -284,7 +284,8 @@ class GenerateAssertionsPage extends React.Component<GenerateAssertionsPageProps
                     &nbsp;|&nbsp;
                     <a href='#' onClick={exportAssertionsAsJson}>JSON</a>
                 </span>
-                    <table className='pt-html-table pt-html-table-striped rla-table mt-default'>
+                    <table style={{tableLayout: 'fixed'}}
+                           className='pt-html-table pt-html-table-striped rla-table mt-default'>
                         <thead>
                         <tr>
                             <th>Contest</th>
