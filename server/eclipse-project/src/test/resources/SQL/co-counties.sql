@@ -3,7 +3,7 @@
 -- Includes counties, administrators, dashboards and asm states.
 
 --
--- Data for Name: asm_state; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: asm_state; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.asm_state (id, asm_class, asm_identity, state_class, state_value, version) VALUES (44639, 'us.freeandfair.corla.asm.DoSDashboardASM', 'DoS', 'us.freeandfair.corla.asm.ASMState$DoSDashboardState', 'DOS_INITIAL_STATE', 0);
@@ -138,7 +138,7 @@ INSERT INTO public.asm_state (id, asm_class, asm_identity, state_class, state_va
 
 
 --
--- Data for Name: county; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: county; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.county (id, name, version) VALUES (44, 'Morgan', 0);
@@ -208,7 +208,7 @@ INSERT INTO public.county (id, name, version) VALUES (43, 'Montrose', 0);
 
 
 --
--- Data for Name: county_dashboard; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: county_dashboard; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.county_dashboard (id, audit_board_count, driving_contests, audit_timestamp, audited_prefix_length, audited_sample_count, ballots_audited, ballots_in_manifest, current_round_index, cvr_import_error_message, cvr_import_state, cvr_import_timestamp, cvrs_imported, disagreements, discrepancies, version, county_id, cvr_file_id, manifest_file_id) VALUES (44, NULL, '[]', NULL, NULL, NULL, 0, 0, NULL, NULL, 'NOT_ATTEMPTED', '2024-06-05 16:10:01.872368', 0, '{}', '{}', 0, 44, NULL, NULL);
@@ -277,13 +277,13 @@ INSERT INTO public.county_dashboard (id, audit_board_count, driving_contests, au
 INSERT INTO public.county_dashboard (id, audit_board_count, driving_contests, audit_timestamp, audited_prefix_length, audited_sample_count, ballots_audited, ballots_in_manifest, current_round_index, cvr_import_error_message, cvr_import_state, cvr_import_timestamp, cvrs_imported, disagreements, discrepancies, version, county_id, cvr_file_id, manifest_file_id) VALUES (43, NULL, '[]', NULL, NULL, NULL, 0, 0, NULL, NULL, 'NOT_ATTEMPTED', '2024-06-05 16:10:02.159136', 0, '{}', '{}', 0, 43, NULL, NULL);
 
 --
--- Data for Name: dos_dashboard; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: dos_dashboard; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.dos_dashboard (id, canonical_choices, canonical_contests, election_date, election_type, public_meeting_date, risk_limit, seed, version) VALUES (0, '{}', '{}', NULL, NULL, NULL, NULL, NULL, 0);
 
 --
--- Data for Name: administrator; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: administrator; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.administrator (id, full_name, last_login_time, last_logout_time, type, username, version, county_id) VALUES (-1, 'State Administrator 1', NULL, NULL, 'STATE', 'stateadmin1', 0, NULL);

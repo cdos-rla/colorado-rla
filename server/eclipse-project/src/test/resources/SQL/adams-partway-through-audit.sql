@@ -5,7 +5,7 @@
 -- (or equivalent) are already loaded.
 
 --
--- Data for Name: asm_state; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: asm_state; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 UPDATE public.county_dashboard

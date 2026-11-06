@@ -193,18 +193,18 @@ In order to use the Postgres database in development, one must:
 
 1. Install PostgreSQL 
 2. Create a database called "`corla`", and grant all privileges on it
-   to a user called "`corlaadmin`" with password "`corlasecret`".
+   to a user called "`[YOUR_DB_USERNAME]`" with password "`[YOUR_DB_PASSWORD]`".
 3. Initialize the "`corla`" database with test administrator data.
 
 The following instructions explain how.
 
    For example, to accomplish the above on MacOS using Homebrew, one
-   issues the following commands.  Type 'corlasecret' when prompted for a password.
+   issues the following commands.  Type '[YOUR_DB_PASSWORD]' when prompted for a password.
 
 ```
 brew install postgres
-createuser -P corlaadmin
-createdb -O corlaadmin corla
+createuser -P [YOUR_DB_USERNAME]
+createdb -O [YOUR_DB_USERNAME] corla
 ```
 alternatively you can use following commands to create new corla db. (Usually password for 
 user postgres is postgres unless you changed it at installation time)
@@ -213,22 +213,22 @@ user postgres is postgres unless you changed it at installation time)
 psql -U postgres
 create database corla with owner postgres;
 \c corla
-grant all on schema public to corlaadmin;
+grant all on schema public to [YOUR_DB_USERNAME];
 ```
 
 On Linux, 
 
 ```
 sudo apt install postgresql
-sudo -u postgres createuser -P corlaadmin
-sudo -u postgres createdb -O corlaadmin corla
+sudo -u postgres createuser -P [YOUR_DB_USERNAME]
+sudo -u postgres createdb -O [YOUR_DB_USERNAME] corla
 ```
 
 
-and in order to give "`corlaadmin`" appropriate privileges:
+and in order to give "`[YOUR_DB_USERNAME]`" appropriate privileges:
 ```
 sudo -u postgres psql
-postgres=# GRANT ALL PRIVILEGES ON DATABASE "corla" TO corlaadmin;
+postgres=# GRANT ALL PRIVILEGES ON DATABASE "corla" TO [YOUR_DB_USERNAME];
 ```
 and whatever is equivalent on MacOS.
  
@@ -287,14 +287,14 @@ java -jar ./target/corla-server-[VERSION]-SNAPSHOT.jar
    command on OS X:
    
 ```
-psql -U corlaadmin -d corla -a -f ./test/corla-test-credentials.psql
+psql -U [YOUR_DB_USERNAME] -d corla -a -f ./test/corla-test-credentials.psql
 ```
    command on Linux:
 ```
-psql -U corlaadmin -h localhost -d corla -a -f ./test/corla-test-credentials.psql
+psql -U [YOUR_DB_USERNAME] -h localhost -d corla -a -f ./test/corla-test-credentials.psql
 ```
 
-When prompted for the password, enter `corlasecret`. 
+When prompted for the password, enter `[YOUR_DB_PASSWORD]`. 
 
 11. Now everything should be working. Note that the .jar is expected to hang when working.
 
