@@ -1,5 +1,5 @@
 --
--- Data for Name: administrator; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: administrator; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.administrator (id, full_name, last_login_time, last_logout_time, type, username, version, county_id) VALUES (-1, 'State Administrator 1', NULL, NULL, 'STATE', 'stateadmin1', 0, NULL);

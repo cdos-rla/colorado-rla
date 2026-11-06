@@ -1,6 +1,6 @@
 -- Super-simple dataset with one plurality contest and one IRV contest: TinyExample1 (IRV) and PluralityExample1.
 --
--- Data for Name: cast_vote_record; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: cast_vote_record; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.cast_vote_record (id, audit_board_index, comment, cvr_id, ballot_type, batch_id, county_id, cvr_number, imprinted_id, record_id, record_type, scanner_id, sequence_number, "timestamp", version, rand, revision, round_number, uri) VALUES (240509, NULL, NULL, NULL, 'Ballot 1 - Type 1', '1', 1, 1, '1-1-1', 1, 'UPLOADED', 1, 0, NULL, 0, NULL, NULL, NULL, 'cvr:1:1-1-1');
@@ -35,7 +35,7 @@ INSERT INTO public.cast_vote_record (id, audit_board_index, comment, cvr_id, bal
 INSERT INTO public.cast_vote_record (id, audit_board_index, comment, cvr_id, ballot_type, batch_id, county_id, cvr_number, imprinted_id, record_id, record_type, scanner_id, sequence_number, "timestamp", version, rand, revision, round_number, uri) VALUES (241066, NULL, NULL, NULL, 'Ballot 1 - Type 1', '1', 3, 10, '1-1-10', 10, 'UPLOADED', 1, 9, NULL, 0, NULL, NULL, NULL, 'cvr:3:1-1-10');
 
 --
--- Data for Name: contest; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: contest; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.contest (id, description, name, sequence_number, version, votes_allowed, winners_allowed, county_id) VALUES (240503, 'IRV', 'TinyExample1', 0, 0, 3, 1, 1);
@@ -48,7 +48,7 @@ INSERT INTO public.contest (id, description, name, sequence_number, version, vot
 
 
 --
--- Data for Name: contest_choice; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: contest_choice; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.contest_choice (contest_id, description, fictitious, name, qualified_write_in, index) VALUES (240503, '', false, 'Alice', false, 0);
@@ -74,7 +74,7 @@ INSERT INTO public.contest_choice (contest_id, description, fictitious, name, qu
 -- INSERT INTO public.contest_choice (contest_id, description, fictitious, name, qualified_write_in, index) VALUES (241055, '', false, 'Imogen', false, 2);
 
 --
--- Data for Name: county_contest_result; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: county_contest_result; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.county_contest_result (id, contest_ballot_count, county_ballot_count, losers, max_margin, min_margin, version, winners, winners_allowed, contest_id, county_id) VALUES (240504, 10, 10, '["Alice","Chuan"]', 0, 0, 1, '["Bob"]', 1, 240503, 1);
@@ -87,7 +87,7 @@ INSERT INTO public.county_contest_result (id, contest_ballot_count, county_ballo
 
 
 --
--- Data for Name: county_contest_vote_total; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: county_contest_vote_total; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.county_contest_vote_total (result_id, vote_total, choice) VALUES (240504, 10, 'Bob');
@@ -113,7 +113,7 @@ INSERT INTO public.county_contest_vote_total (result_id, vote_total, choice) VAL
 -- INSERT INTO public.county_contest_vote_total (result_id, vote_total, choice) VALUES (241056, 10, 'Gertrude');
 
 --
--- Data for Name: cvr_contest_info; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: cvr_contest_info; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.cvr_contest_info (cvr_id, county_id, choices, comment, consensus, contest_id, index) VALUES (240509, 1, '["Alice","Bob","Chuan"]', NULL, NULL, 240503, 0);
@@ -190,7 +190,7 @@ INSERT INTO public.cvr_contest_info (cvr_id, county_id, choices, comment, consen
 
 
 --
--- Data for Name: uploaded_file; Type: TABLE DATA; Schema: public; Owner: corlaadmin
+-- Data for Name: uploaded_file; Type: TABLE DATA; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 INSERT INTO public.uploaded_file (id, computed_hash, approximate_record_count, file, filename, size, "timestamp", version, result, status, submitted_hash, county_id) VALUES (240488, '7760C6690CAACD2568CA80ED10B8D3362D561D4573890DA867B2CAC10EE89659', 14, 17313, 'ThreeCandidatesTenVotesPlusPlurality.csv', 1718, '2024-06-13 19:42:48.902499', 1, '{"success":true,"importedCount":10}', 'IMPORTED', '7760C6690CAACD2568CA80ED10B8D3362D561D4573890DA867B2CAC10EE89659', 1);

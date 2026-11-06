@@ -1,6 +1,6 @@
 create sequence hibernate_sequence;
 
-alter sequence hibernate_sequence owner to corlaadmin;
+alter sequence hibernate_sequence owner to [YOUR_DB_USERNAME];
 
 create table assertion_context
 (
@@ -9,7 +9,7 @@ create table assertion_context
 );
 
 alter table assertion_context
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table asm_state
 (
@@ -23,7 +23,7 @@ create table asm_state
 );
 
 alter table asm_state
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table assertion
 (
@@ -48,7 +48,7 @@ create table assertion
 );
 
 alter table assertion
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table assertion_assumed_continuing
 (
@@ -59,7 +59,7 @@ create table assertion_assumed_continuing
 );
 
 alter table assertion_assumed_continuing
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table assertion_discrepancies
 (
@@ -72,7 +72,7 @@ create table assertion_discrepancies
 );
 
 alter table assertion_discrepancies
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table ballot_manifest_info
 (
@@ -92,7 +92,7 @@ create table ballot_manifest_info
 );
 
 alter table ballot_manifest_info
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create index idx_bmi_county
     on ballot_manifest_info (county_id);
@@ -127,7 +127,7 @@ create table cast_vote_record
 );
 
 alter table cast_vote_record
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create index idx_cvr_county_type
     on cast_vote_record (county_id, record_type);
@@ -166,7 +166,7 @@ create table contest_result
 );
 
 alter table contest_result
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table comparison_audit
 (
@@ -198,7 +198,7 @@ create table comparison_audit
 );
 
 alter table comparison_audit
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table audit_to_assertions
 (
@@ -211,7 +211,7 @@ create table audit_to_assertions
 );
 
 alter table audit_to_assertions
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table contest_vote_total
 (
@@ -224,7 +224,7 @@ create table contest_vote_total
 );
 
 alter table contest_vote_total
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table county
 (
@@ -237,7 +237,7 @@ create table county
 );
 
 alter table county
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table administrator
 (
@@ -257,7 +257,7 @@ create table administrator
 );
 
 alter table administrator
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table contest
 (
@@ -277,7 +277,7 @@ create table contest
 );
 
 alter table contest
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create index idx_contest_name
     on contest (name);
@@ -301,7 +301,7 @@ create table contest_choice
 );
 
 alter table contest_choice
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table contests_to_contest_results
 (
@@ -317,7 +317,7 @@ create table contests_to_contest_results
 );
 
 alter table contests_to_contest_results
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table counties_to_contest_results
 (
@@ -331,7 +331,7 @@ create table counties_to_contest_results
 );
 
 alter table counties_to_contest_results
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table county_contest_result
 (
@@ -356,7 +356,7 @@ create table county_contest_result
 );
 
 alter table county_contest_result
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create index idx_ccr_county
     on county_contest_result (county_id);
@@ -375,7 +375,7 @@ create table county_contest_vote_total
 );
 
 alter table county_contest_vote_total
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table cvr_audit_info
 (
@@ -395,7 +395,7 @@ create table cvr_audit_info
 );
 
 alter table cvr_audit_info
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table contest_comparison_audit_disagreement
 (
@@ -409,7 +409,7 @@ create table contest_comparison_audit_disagreement
 );
 
 alter table contest_comparison_audit_disagreement
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table contest_comparison_audit_discrepancy
 (
@@ -424,7 +424,7 @@ create table contest_comparison_audit_discrepancy
 );
 
 alter table contest_comparison_audit_discrepancy
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table cvr_contest_info
 (
@@ -443,7 +443,7 @@ create table cvr_contest_info
 );
 
 alter table cvr_contest_info
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create index idx_cvrci_uri
     on cvr_contest_info (county_id, contest_id);
@@ -463,7 +463,7 @@ create table dos_dashboard
 );
 
 alter table dos_dashboard
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table generate_assertions_summary
 (
@@ -496,7 +496,7 @@ create table irv_ballot_interpretation
 );
 
 alter table irv_ballot_interpretation
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table contest_to_audit
 (
@@ -511,7 +511,7 @@ create table contest_to_audit
 );
 
 alter table contest_to_audit
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table log
 (
@@ -530,7 +530,7 @@ create table log
 );
 
 alter table log
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table tribute
 (
@@ -548,7 +548,7 @@ create table tribute
 );
 
 alter table tribute
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table uploaded_file
 (
@@ -570,7 +570,7 @@ create table uploaded_file
 );
 
 alter table uploaded_file
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table county_dashboard
 (
@@ -605,7 +605,7 @@ create table county_dashboard
 );
 
 alter table county_dashboard
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table audit_board
 (
@@ -620,7 +620,7 @@ create table audit_board
 );
 
 alter table audit_board
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table audit_intermediate_report
 (
@@ -634,7 +634,7 @@ create table audit_intermediate_report
 );
 
 alter table audit_intermediate_report
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table audit_investigation_report
 (
@@ -649,7 +649,7 @@ create table audit_investigation_report
 );
 
 alter table audit_investigation_report
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table county_contest_comparison_audit
 (
@@ -684,7 +684,7 @@ create table county_contest_comparison_audit
 );
 
 alter table county_contest_comparison_audit
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create index idx_ccca_dashboard
     on county_contest_comparison_audit (dashboard_id);
@@ -701,7 +701,7 @@ create table county_contest_comparison_audit_disagreement
 );
 
 alter table county_contest_comparison_audit_disagreement
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table county_contest_comparison_audit_discrepancy
 (
@@ -716,7 +716,7 @@ create table county_contest_comparison_audit_discrepancy
 );
 
 alter table county_contest_comparison_audit_discrepancy
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table county_dashboard_to_comparison_audit
 (
@@ -730,7 +730,7 @@ create table county_dashboard_to_comparison_audit
 );
 
 alter table county_dashboard_to_comparison_audit
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create table round
 (
@@ -757,13 +757,13 @@ create table round
 );
 
 alter table round
-    owner to corlaadmin;
+    owner to [YOUR_DB_USERNAME];
 
 create index idx_uploaded_file_county
     on uploaded_file (county_id);
 
 --
--- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: corlaadmin
+-- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: [YOUR_DB_USERNAME]
 --
 
 SELECT pg_catalog.setval('public.hibernate_sequence', 44767, true);
